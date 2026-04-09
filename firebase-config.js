@@ -9,10 +9,11 @@
 // ============================================================
 
 window.firebaseConfig = {
-  apiKey: "PEGAR_AQUI",
-  authDomain: "PEGAR_AQUI.firebaseapp.com",
-  projectId: "PEGAR_AQUI",
-  storageBucket: "PEGAR_AQUI.appspot.com",
-  messagingSenderId: "PEGAR_AQUI",
-  appId: "PEGAR_AQUI"
+  apiKey: "AIzaSyD67_xhKALACOxO-yv071_X91uJtbUulCc",
+  authDomain: "marketing-747bc.firebaseapp.com",
+  projectId: "marketing-747bc",
+  storageBucket: "marketing-747bc.firebasestorage.app",
+  messagingSenderId: "108051033182",
+  appId: "1:108051033182:web:405d3700659dfcd4e298cf",
+  measurementId: "G-VQDZH0ZNLF"
 };
