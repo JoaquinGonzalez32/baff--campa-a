@@ -742,6 +742,19 @@
     cursor: pointer;
   }
   .btn-ghost:hover { background: var(--bg2); }
+  .mic-btn {
+    font-size: 11px;
+    padding: 4px 10px;
+    background: var(--surface);
+    color: var(--ink2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .mic-btn:hover { background: var(--bg2); }
+  .mic-btn.recording { background: #d64545; color: #fff; border-color: #d64545; animation: micPulse 1.2s ease-in-out infinite; }
+  @keyframes micPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.65; } }
+  .mic-status { font-size: 11px; color: var(--ink3); font-style: italic; }
   .btn-danger {
     font-size: 12px;
     padding: 7px 14px;
@@ -1013,9 +1026,17 @@
 
       <!-- COPY -->
       <div style="margin-top:18px;">
-        <div class="edit-label">Copy</div>
+        <div class="edit-label" style="display:flex;align-items:center;gap:8px;">
+          <span>Copy</span>
+          <button type="button" class="mic-btn" id="micBtn-editTextarea" onclick="toggleDictation('editTextarea', this)" title="Dictar por voz">🎤 Dictar</button>
+          <span class="mic-status" id="micStatus-editTextarea"></span>
+        </div>
         <textarea class="edit-textarea" id="editTextarea"></textarea>
-        <div class="edit-label" style="margin-top:14px;">Nota visual / producción</div>
+        <div class="edit-label" style="margin-top:14px;display:flex;align-items:center;gap:8px;">
+          <span>Nota visual / producción</span>
+          <button type="button" class="mic-btn" id="micBtn-editNoteInput" onclick="toggleDictation('editNoteInput', this)" title="Dictar por voz">🎤 Dictar</button>
+          <span class="mic-status" id="micStatus-editNoteInput"></span>
+        </div>
         <textarea class="edit-textarea" id="editNoteInput" style="min-height:70px;font-style:italic;"></textarea>
         <div>
           <button class="save-btn" onclick="savePiece()">Guardar cambios</button>
@@ -1280,8 +1301,24 @@ const state = {
   calYear: new Date().getFullYear(),
   calMonth: new Date().getMonth(),
   commentType: 'comment',
-  unsubComments: null
+  unsubComments: null,
+  modalSnapshot: null            // snapshot del form para detectar cambios sin guardar
 };
+
+function getModalFormSnapshot() {
+  return JSON.stringify({
+    title: document.getElementById('modalTitleInput').value,
+    pilar: document.getElementById('modalPilar').value,
+    channel: document.getElementById('modalChannel').value,
+    format: document.getElementById('modalFormat').value,
+    status: document.getElementById('modalStatus').value,
+    copy: document.getElementById('editTextarea').value,
+    note: document.getElementById('editNoteInput').value
+  });
+}
+function isModalDirty() {
+  return state.modalSnapshot !== null && getModalFormSnapshot() !== state.modalSnapshot;
+}
 
 const MONTH_NAMES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
@@ -1738,6 +1775,7 @@ function openModal(id, focusComments) {
   state.currentId = id;
   state.isCreating = false;
   syncModalFromPiece(item, true);
+  state.modalSnapshot = getModalFormSnapshot();
   subscribeComments(id);
   document.getElementById('modalOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -1793,15 +1831,87 @@ function openCreateModal() {
   document.getElementById('commentsList').innerHTML = '<p style="font-size:13px;color:var(--ink3);">Guardá la pieza para poder comentar.</p>';
   document.getElementById('modalOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
+  state.modalSnapshot = getModalFormSnapshot();
 }
 
-function closeModal() {
+async function closeModal(force) {
+  if (!force && isModalDirty()) {
+    const r = confirm('Tenés cambios sin guardar. ¿Querés guardarlos antes de salir?\n\nAceptar = guardar y cerrar\nCancelar = descartar cambios');
+    if (r) {
+      try { await savePiece(); }
+      catch (e) { return; }
+    }
+  }
+  stopDictationIfActive();
+  state.modalSnapshot = null;
   document.getElementById('modalOverlay').classList.remove('open');
   document.body.style.overflow = '';
   state.currentId = null;
   state.isCreating = false;
   if (state.unsubComments) { state.unsubComments(); state.unsubComments = null; }
 }
+// ============================================================
+// DICTADO POR VOZ (Web Speech API)
+// ============================================================
+const dictation = { rec: null, targetId: null, baseText: '' };
+function toggleDictation(targetId, btn) {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) {
+    alert('Tu navegador no soporta dictado por voz. Probá Chrome o Edge.');
+    return;
+  }
+  // Si ya está grabando este target, detener
+  if (dictation.rec && dictation.targetId === targetId) {
+    dictation.rec.stop();
+    return;
+  }
+  // Si está grabando otro target, detener primero
+  if (dictation.rec) { try { dictation.rec.stop(); } catch(e){} }
+
+  const ta = document.getElementById(targetId);
+  const statusEl = document.getElementById('micStatus-' + targetId);
+  const rec = new SR();
+  rec.lang = 'es-AR';
+  rec.continuous = true;
+  rec.interimResults = true;
+
+  dictation.rec = rec;
+  dictation.targetId = targetId;
+  dictation.baseText = ta.value ? ta.value.replace(/\s+$/, '') + ' ' : '';
+
+  rec.onstart = () => {
+    btn.classList.add('recording');
+    btn.textContent = '⏹ Detener';
+    if (statusEl) statusEl.textContent = 'Escuchando…';
+  };
+  rec.onresult = (event) => {
+    let finalText = '';
+    let interim = '';
+    for (let i = 0; i < event.results.length; i++) {
+      const r = event.results[i];
+      if (r.isFinal) finalText += r[0].transcript;
+      else interim += r[0].transcript;
+    }
+    ta.value = dictation.baseText + finalText + interim;
+  };
+  rec.onerror = (e) => {
+    if (statusEl) statusEl.textContent = 'Error: ' + e.error;
+  };
+  rec.onend = () => {
+    btn.classList.remove('recording');
+    btn.textContent = '🎤 Dictar';
+    if (statusEl) statusEl.textContent = '';
+    dictation.rec = null;
+    dictation.targetId = null;
+  };
+
+  try { rec.start(); }
+  catch (e) { alert('No se pudo iniciar el dictado: ' + e.message); }
+}
+function stopDictationIfActive() {
+  if (dictation.rec) { try { dictation.rec.stop(); } catch(e){} }
+}
+
 function closeModalOutside(e) {
   if (e.target === document.getElementById('modalOverlay')) closeModal();
 }
@@ -1837,6 +1947,7 @@ async function savePiece() {
     } else {
       await dbFs.collection('pieces').doc(state.currentId).update(data);
     }
+    state.modalSnapshot = getModalFormSnapshot();
     flashSaved();
   } catch (e) {
     console.error(e);
