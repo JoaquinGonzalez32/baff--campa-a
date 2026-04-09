@@ -795,6 +795,34 @@
     color: var(--ink);
   }
 
+  /* PILLAR MANAGER */
+  .pmgr-list { display: flex; flex-direction: column; gap: 6px; }
+  .pmgr-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    background: var(--bg);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+  .pmgr-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .pmgr-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+    flex: 1;
+  }
+  .pmgr-count {
+    font-size: 11px;
+    color: var(--ink3);
+  }
+
   /* CONNECTION badge */
   .conn-badge {
     font-size: 10px;
@@ -826,6 +854,29 @@
     </div>
   </div>
 </header>
+
+<!-- PILLAR MANAGER -->
+<div class="modal-overlay" id="pillarMgrOverlay" onclick="if(event.target===this)closePillarManager()">
+  <div class="modal" style="max-width:520px;">
+    <div class="modal-header">
+      <h2 class="modal-title">Gestionar pilares</h2>
+      <button class="modal-close" onclick="closePillarManager()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-section-title" style="margin-top:0;">Pilares actuales</div>
+      <div id="pillarMgrList" class="pmgr-list"></div>
+
+      <div class="modal-section">
+        <div class="modal-section-title">Crear nuevo pilar</div>
+        <div class="modal-row">
+          <input class="modal-input" id="newPillarLabel" placeholder="Nombre (ej. Producto)" style="flex:1;min-width:180px;" />
+          <input type="color" id="newPillarColor" value="#C85A2A" style="width:48px;height:38px;border:1px solid var(--border);border-radius:7px;background:var(--bg);cursor:pointer;" />
+          <button class="save-btn" style="margin-top:0;" onclick="createPillar()">Crear</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- NAME GATE -->
 <div class="gate-overlay" id="gateOverlay">
@@ -1171,6 +1222,7 @@ const CALENDAR_DATA = [
 const state = {
   user: null,                  // nombre del usuario actual
   pieces: [],                  // todas las piezas desde Firestore
+  pillars: [],                 // pilares dinámicos desde Firestore
   currentId: null,             // pieza abierta en el modal
   isCreating: false,           // modal en modo "crear nueva"
   filterPilar: 'all',
@@ -1179,6 +1231,21 @@ const state = {
   commentType: 'comment',
   unsubComments: null
 };
+
+const DEFAULT_PILLARS = [
+  { id: 'desc', label: 'Descubrimiento',   color: '#4A3F8A' },
+  { id: 'com',  label: 'Comunidad',        color: '#2E6B4F' },
+  { id: 'cul',  label: 'Cultura Baffé',    color: '#C85A2A' },
+  { id: 'det',  label: 'Detrás de escena', color: '#9B3060' }
+];
+
+function getPillar(id) {
+  const p = state.pillars.find(x => x.id === id);
+  if (p) return { id: p.id, label: p.label, color: p.color, bg: p.color + '22', stripe: p.color };
+  const f = PILLAR_CONFIG[id];
+  if (f) return { id, ...f };
+  return { id, label: id || 'sin pilar', color: '#888', bg: '#eee', stripe: '#888' };
+}
 
 // ============================================================
 // FIREBASE INIT
@@ -1282,6 +1349,123 @@ async function seedIfEmpty() {
 }
 
 // ============================================================
+// PILARES (categorías dinámicas)
+// ============================================================
+async function seedPillarsIfEmpty() {
+  const snap = await dbFs.collection('pillars').limit(1).get();
+  if (!snap.empty) return;
+  console.log('[seed] sembrando pilares default');
+  const batch = dbFs.batch();
+  DEFAULT_PILLARS.forEach((p, i) => {
+    batch.set(dbFs.collection('pillars').doc(p.id), {
+      label: p.label,
+      color: p.color,
+      order: i,
+      isDefault: true,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+  });
+  await batch.commit();
+}
+
+function subscribePillars() {
+  dbFs.collection('pillars').orderBy('order', 'asc').onSnapshot(snap => {
+    state.pillars = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderPillarFilters();
+    renderPillarSelect();
+    renderCards();
+    renderCalendar();
+    renderPillarManagerList();
+  }, err => console.error('[subscribe pillars]', err));
+}
+
+function renderPillarFilters() {
+  const wrap = document.querySelector('.pillar-filters');
+  if (!wrap) return;
+  const all = `<button class="pfilter all ${state.filterPilar==='all'?'active':''}" onclick="filterPilar('all', this)">Todos</button>`;
+  const items = state.pillars.map(p => {
+    const active = state.filterPilar === p.id;
+    return `<button class="pfilter" data-pid="${p.id}" style="border-color:${p.color};color:${active?'#fff':p.color};background:${active?p.color:'transparent'};" onclick="filterPilar('${p.id}', this)">${escapeHtml(p.label)}</button>`;
+  }).join('');
+  const manage = `<button class="pfilter" style="border-color:var(--ink3);color:var(--ink3);" onclick="openPillarManager()">⚙ Gestionar</button>`;
+  wrap.innerHTML = all + items + manage;
+}
+
+function renderPillarSelect() {
+  const sel = document.getElementById('modalPilar');
+  if (!sel) return;
+  const current = sel.value;
+  sel.innerHTML = state.pillars.map(p => `<option value="${p.id}">${escapeHtml(p.label)}</option>`).join('');
+  if (current && state.pillars.find(p => p.id === current)) sel.value = current;
+}
+
+function openPillarManager() {
+  document.getElementById('pillarMgrOverlay').classList.add('open');
+  renderPillarManagerList();
+}
+function closePillarManager() {
+  document.getElementById('pillarMgrOverlay').classList.remove('open');
+}
+function renderPillarManagerList() {
+  const list = document.getElementById('pillarMgrList');
+  if (!list) return;
+  list.innerHTML = state.pillars.map(p => {
+    const inUse = state.pieces.filter(x => x.pilar === p.id && !x.archived).length;
+    return `
+      <div class="pmgr-item">
+        <span class="pmgr-dot" style="background:${p.color}"></span>
+        <span class="pmgr-label">${escapeHtml(p.label)}</span>
+        <span class="pmgr-count">${inUse} pieza${inUse===1?'':'s'}</span>
+        <button class="btn-ghost" onclick="editPillar('${p.id}')">Editar</button>
+        <button class="btn-danger" onclick="deletePillar('${p.id}')">Eliminar</button>
+      </div>
+    `;
+  }).join('');
+}
+
+async function createPillar() {
+  if (!state.user) { changeName(); return; }
+  const label = document.getElementById('newPillarLabel').value.trim();
+  const color = document.getElementById('newPillarColor').value;
+  if (!label) { alert('Poné un nombre'); return; }
+  const id = 'p_' + Date.now();
+  await dbFs.collection('pillars').doc(id).set({
+    label,
+    color,
+    order: state.pillars.length,
+    isDefault: false,
+    createdBy: state.user,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  });
+  document.getElementById('newPillarLabel').value = '';
+}
+
+async function editPillar(id) {
+  const p = state.pillars.find(x => x.id === id);
+  if (!p) return;
+  const newLabel = prompt('Nuevo nombre del pilar:', p.label);
+  if (newLabel === null) return;
+  const newColor = prompt('Color en hex (ej. #4A3F8A):', p.color);
+  if (newColor === null) return;
+  await dbFs.collection('pillars').doc(id).update({
+    label: newLabel.trim() || p.label,
+    color: /^#[0-9A-Fa-f]{6}$/.test(newColor) ? newColor : p.color
+  });
+}
+
+async function deletePillar(id) {
+  const p = state.pillars.find(x => x.id === id);
+  if (!p) return;
+  const inUse = state.pieces.filter(x => x.pilar === id && !x.archived).length;
+  if (inUse > 0) {
+    alert(`No podés eliminar "${p.label}" porque tiene ${inUse} pieza(s) usándolo. Cambialas de pilar primero o archivalas.`);
+    return;
+  }
+  if (!confirm(`¿Eliminar el pilar "${p.label}"?`)) return;
+  await dbFs.collection('pillars').doc(id).delete();
+}
+
+// ============================================================
 // SUBSCRIPCIÓN PRINCIPAL
 // ============================================================
 function subscribePieces() {
@@ -1303,9 +1487,8 @@ function subscribePieces() {
 // HELPERS
 // ============================================================
 function pillarTag(pilar) {
-  const p = PILLAR_CONFIG[pilar];
-  if (!p) return '';
-  return `<span class="pilar-tag" style="background:${p.bg};color:${p.color}">${p.label}</span>`;
+  const p = getPillar(pilar);
+  return `<span class="pilar-tag" style="background:${p.bg};color:${p.color}">${escapeHtml(p.label)}</span>`;
 }
 function statusPill(status) {
   return `<span class="status-pill status-${status}">${status}</span>`;
@@ -1342,7 +1525,7 @@ function renderCards() {
     <div class="stat"><div class="stat-num">${state.pieces.filter(p=>!p.archived).length}</div><div class="stat-label">piezas activas</div></div>
     <div class="stat"><div class="stat-num">${aprobadas}</div><div class="stat-label">aprobadas</div></div>
     <div class="stat"><div class="stat-num">${enCalendario}</div><div class="stat-label">en calendario</div></div>
-    <div class="stat"><div class="stat-num">${Object.keys(PILLAR_CONFIG).length}</div><div class="stat-label">pilares</div></div>
+    <div class="stat"><div class="stat-num">${state.pillars.length || Object.keys(PILLAR_CONFIG).length}</div><div class="stat-label">pilares</div></div>
   `;
 
   if (items.length === 0) {
@@ -1351,7 +1534,7 @@ function renderCards() {
   }
 
   grid.innerHTML = items.map(item => {
-    const p = PILLAR_CONFIG[item.pilar] || PILLAR_CONFIG.det;
+    const p = getPillar(item.pilar);
     const status = item.status || 'idea';
     const updatedLine = item.updatedBy && item.updatedBy !== 'seed'
       ? `<span style="font-size:11px;color:var(--ink3);margin-left:6px;">· editado por ${escapeHtml(item.updatedBy)} ${relTime(item.updatedAt)}</span>`
@@ -1413,9 +1596,9 @@ function renderCalendar() {
               return `<td><div class="cal-empty" onclick="quickAssign(${w},'${ch}')">+ asignar</div></td>`;
             }
             return `<td>${list.map(p => {
-              const cfg = PILLAR_CONFIG[p.pilar];
+              const cfg = getPillar(p.pilar);
               return `<div class="cal-cell-inner" onclick="openModal('${p.id}')">
-                <span class="pilar-tag" style="background:${cfg.bg};color:${cfg.color};font-size:10px;">${cfg.label}</span><br>
+                <span class="pilar-tag" style="background:${cfg.bg};color:${cfg.color};font-size:10px;">${escapeHtml(cfg.label)}</span><br>
                 ${escapeHtml(p.title)}
               </div>`;
             }).join('')}</td>`;
@@ -1769,6 +1952,8 @@ document.addEventListener('keydown', e => {
   loadUser();
   if (!initFirebase()) return;
   try {
+    await seedPillarsIfEmpty();
+    subscribePillars();
     await seedIfEmpty();
     subscribePieces();
   } catch (e) {
