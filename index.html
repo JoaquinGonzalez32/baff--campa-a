@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Baffé — Hub de contenido</title>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
+<script src="firebase-config.js"></script>
 <style>
   :root {
     --bg: #F7F4EF;
@@ -515,6 +519,292 @@
   }
   .stat-label { font-size: 11px; color: var(--ink3); margin-top: 2px; }
 
+  /* USER CHIP (header) */
+  .user-chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(247,244,239,0.08);
+    border: 1px solid rgba(247,244,239,0.18);
+    border-radius: 20px;
+    padding: 5px 10px 5px 12px;
+    font-size: 12px;
+    color: #F7F4EF;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .user-chip:hover { background: rgba(247,244,239,0.14); }
+  .user-chip .avatar {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  /* NAME GATE OVERLAY */
+  .gate-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(26,23,20,0.85);
+    z-index: 500;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .gate-overlay.open { display: flex; }
+  .gate-card {
+    background: var(--surface);
+    border-radius: 16px;
+    padding: 32px 32px 28px;
+    width: 100%;
+    max-width: 380px;
+    text-align: center;
+  }
+  .gate-card h2 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 26px;
+    margin-bottom: 6px;
+  }
+  .gate-card p {
+    font-size: 13px;
+    color: var(--ink2);
+    margin-bottom: 18px;
+    line-height: 1.5;
+  }
+  .gate-card input {
+    width: 100%;
+    padding: 11px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg);
+    margin-bottom: 12px;
+    outline: none;
+  }
+  .gate-card input:focus { border-color: var(--accent); }
+  .gate-card button {
+    width: 100%;
+    padding: 11px;
+    background: var(--ink);
+    color: #F7F4EF;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .gate-card button:hover { background: #3A3530; }
+
+  /* + NUEVA IDEA */
+  .btn-new {
+    margin-left: auto;
+    padding: 7px 14px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 7px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .btn-new:hover { background: #B54E22; }
+  .section-header { align-items: center; }
+
+  /* STATUS PILLS */
+  .status-pill {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 20px;
+    border: 1px solid;
+  }
+  .status-idea { color: var(--ink3); border-color: var(--ink3); background: var(--bg); }
+  .status-aprobado { color: var(--green); border-color: var(--green); background: var(--green-bg); }
+  .status-publicado { color: var(--purple); border-color: var(--purple); background: var(--purple-bg); }
+
+  .status-filters {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+  }
+  .status-filters label {
+    font-size: 11px;
+    color: var(--ink3);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-right: 4px;
+  }
+  .sfilter {
+    font-size: 11px;
+    padding: 4px 11px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--ink2);
+    cursor: pointer;
+  }
+  .sfilter.active { background: var(--ink); color: #F7F4EF; border-color: var(--ink); }
+  .archived-toggle {
+    margin-left: auto;
+    font-size: 11px;
+    color: var(--ink2);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+  }
+
+  .card-archived { opacity: 0.55; }
+
+  /* MODAL — secciones extra */
+  .modal-section {
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+  }
+  .modal-section-title {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    color: var(--ink3);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .modal-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .modal-input, .modal-select {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    padding: 8px 11px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    background: var(--bg);
+    color: var(--ink);
+    outline: none;
+  }
+  .modal-input:focus, .modal-select:focus { border-color: var(--accent); }
+  .modal-input.full { width: 100%; }
+  .btn-ghost {
+    font-size: 12px;
+    padding: 7px 14px;
+    background: var(--surface);
+    color: var(--ink2);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    cursor: pointer;
+  }
+  .btn-ghost:hover { background: var(--bg2); }
+  .btn-danger {
+    font-size: 12px;
+    padding: 7px 14px;
+    background: var(--surface);
+    color: var(--pink);
+    border: 1px solid var(--pink);
+    border-radius: 7px;
+    cursor: pointer;
+  }
+  .btn-danger:hover { background: var(--pink-bg); }
+
+  /* REFS GRID */
+  .refs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .ref-item {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+  }
+  .ref-item img, .ref-item video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: pointer;
+  }
+  .ref-item .ref-del {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: rgba(26,23,20,0.7);
+    color: #fff;
+    border: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 13px;
+    line-height: 1;
+  }
+  .ref-dropzone {
+    border: 1.5px dashed var(--border);
+    border-radius: 8px;
+    padding: 18px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--ink3);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .ref-dropzone:hover, .ref-dropzone.drag {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent2);
+  }
+
+  /* CALENDAR slot empty */
+  .cal-empty {
+    border: 1.5px dashed var(--border);
+    border-radius: 10px;
+    min-height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink3);
+    font-size: 11px;
+    cursor: pointer;
+  }
+  .cal-empty:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* COMMENT author */
+  .comment-author {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  /* CONNECTION badge */
+  .conn-badge {
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 20px;
+    background: var(--green-bg);
+    color: var(--green);
+  }
+  .conn-badge.off { background: var(--pink-bg); color: var(--pink); }
+
   /* RESPONSIVE */
   @media (max-width: 600px) {
     header { padding: 16px 20px; }
@@ -528,8 +818,24 @@
 
 <header>
   <div class="logo">Baffé <span>·</span> contenido</div>
-  <div class="header-meta">hub del equipo</div>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <span class="conn-badge" id="connBadge">conectando…</span>
+    <div class="user-chip" id="userChip" onclick="changeName()" title="Cambiar nombre">
+      <div class="avatar" id="userAvatar">?</div>
+      <span id="userName">—</span>
+    </div>
+  </div>
 </header>
+
+<!-- NAME GATE -->
+<div class="gate-overlay" id="gateOverlay">
+  <div class="gate-card">
+    <h2>¿Cómo te llamás?</h2>
+    <p>Tu nombre va a aparecer en las ediciones y comentarios para que el equipo sepa quién hizo qué.</p>
+    <input type="text" id="gateInput" placeholder="Tu nombre" maxlength="40" />
+    <button onclick="saveName()">Entrar</button>
+  </div>
+</div>
 
 <div class="tabs" id="tabBar">
   <button class="tab active" onclick="switchTab('ideas')">Ideas de contenido</button>
@@ -544,6 +850,7 @@
     <div class="section-header">
       <h1 class="section-title">Todas las piezas</h1>
       <span class="section-count" id="cardCount"></span>
+      <button class="btn-new" onclick="openCreateModal()">+ Nueva idea</button>
     </div>
     <div class="pillar-filters">
       <button class="pfilter all active" onclick="filterPilar('all', this)">Todos</button>
@@ -551,6 +858,14 @@
       <button class="pfilter com" onclick="filterPilar('com', this)">Comunidad</button>
       <button class="pfilter cul" onclick="filterPilar('cul', this)">Cultura Baffé</button>
       <button class="pfilter det" onclick="filterPilar('det', this)">Detrás de escena</button>
+    </div>
+    <div class="status-filters">
+      <label>Estado</label>
+      <button class="sfilter active" data-status="all" onclick="filterStatus('all', this)">Todos</button>
+      <button class="sfilter" data-status="idea" onclick="filterStatus('idea', this)">Idea</button>
+      <button class="sfilter" data-status="aprobado" onclick="filterStatus('aprobado', this)">Aprobado</button>
+      <button class="sfilter" data-status="publicado" onclick="filterStatus('publicado', this)">Publicado</button>
+      <label class="archived-toggle"><input type="checkbox" id="showArchived" onchange="renderCards()"> ver archivadas</label>
     </div>
     <div class="cards-grid" id="cardsGrid"></div>
   </div>
@@ -571,20 +886,83 @@
 <div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
   <div class="modal" id="modal">
     <div class="modal-header">
-      <div>
-        <div id="modalMeta" style="margin-bottom:6px;display:flex;gap:6px;flex-wrap:wrap;"></div>
-        <h2 class="modal-title" id="modalTitle"></h2>
+      <div style="flex:1;">
+        <div id="modalMeta" style="margin-bottom:6px;display:flex;gap:6px;flex-wrap:wrap;align-items:center;"></div>
+        <input class="modal-input full" id="modalTitleInput" placeholder="Título" style="font-family:'Instrument Serif',serif;font-size:20px;border:none;background:transparent;padding:0;" />
+        <div style="font-size:11px;color:var(--ink3);margin-top:4px;" id="modalAuthorLine"></div>
       </div>
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
     <div class="modal-body">
-      <div class="edit-label">Copy</div>
-      <textarea class="edit-textarea" id="editTextarea"></textarea>
-      <div class="edit-note" id="editNote"></div>
-      <div>
-        <button class="save-btn" onclick="saveEdit()">Guardar cambios</button>
-        <span class="saved-msg" id="savedMsg">✓ Guardado</span>
+
+      <!-- META EDITABLE -->
+      <div class="modal-section" style="margin-top:0;padding-top:0;border:none;">
+        <div class="modal-row">
+          <select class="modal-select" id="modalPilar">
+            <option value="desc">Descubrimiento</option>
+            <option value="com">Comunidad</option>
+            <option value="cul">Cultura Baffé</option>
+            <option value="det">Detrás de escena</option>
+          </select>
+          <select class="modal-select" id="modalChannel">
+            <option>Instagram</option>
+            <option>TikTok</option>
+            <option>En la app</option>
+          </select>
+          <input class="modal-input" id="modalFormat" placeholder="Formato (ej. Carrusel)" style="flex:1;min-width:140px;" />
+          <select class="modal-select" id="modalStatus">
+            <option value="idea">Idea</option>
+            <option value="aprobado">Aprobado</option>
+            <option value="publicado">Publicado</option>
+          </select>
+        </div>
       </div>
+
+      <!-- COPY -->
+      <div style="margin-top:18px;">
+        <div class="edit-label">Copy</div>
+        <textarea class="edit-textarea" id="editTextarea"></textarea>
+        <div class="edit-label" style="margin-top:14px;">Nota visual / producción</div>
+        <textarea class="edit-textarea" id="editNoteInput" style="min-height:70px;font-style:italic;"></textarea>
+        <div>
+          <button class="save-btn" onclick="savePiece()">Guardar cambios</button>
+          <span class="saved-msg" id="savedMsg">✓ Guardado</span>
+        </div>
+      </div>
+
+      <!-- CALENDARIO -->
+      <div class="modal-section">
+        <div class="modal-section-title">Asignar al calendario</div>
+        <div class="modal-row">
+          <select class="modal-select" id="slotWeek">
+            <option value="">— sin asignar —</option>
+            <option value="1">Semana 1</option>
+            <option value="2">Semana 2</option>
+            <option value="3">Semana 3</option>
+            <option value="4">Semana 4</option>
+          </select>
+          <select class="modal-select" id="slotChannel">
+            <option value="">— canal —</option>
+            <option>Instagram</option>
+            <option>TikTok</option>
+            <option>En la app</option>
+          </select>
+          <button class="btn-ghost" onclick="saveSlot()">Asignar</button>
+          <button class="btn-ghost" onclick="clearSlot()">Quitar</button>
+        </div>
+      </div>
+
+      <!-- REFERENCIAS -->
+      <div class="modal-section">
+        <div class="modal-section-title">Referencias visuales</div>
+        <div class="refs-grid" id="refsGrid"></div>
+        <div class="ref-dropzone" id="refDropzone" onclick="document.getElementById('refInput').click()">
+          + Subir imagen o video
+        </div>
+        <input type="file" id="refInput" accept="image/*,video/*" multiple style="display:none;" onchange="handleRefUpload(event)" />
+      </div>
+
+      <!-- COMENTARIOS -->
       <div class="comments-section">
         <div class="comments-title" id="commentsTitle">Comentarios y sugerencias</div>
         <div id="commentsList"></div>
@@ -598,6 +976,15 @@
           <button class="submit-comment" onclick="submitComment()">Publicar</button>
         </div>
       </div>
+
+      <!-- ARCHIVAR -->
+      <div class="modal-section" id="archiveSection">
+        <div class="modal-section-title">Zona peligrosa</div>
+        <div class="modal-row">
+          <button class="btn-danger" id="archiveBtn" onclick="toggleArchive()">Archivar pieza</button>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -778,90 +1165,260 @@ const CALENDAR_DATA = [
   }
 ];
 
-let currentCardId = null;
-let currentCommentType = 'comment';
+// ============================================================
+// ESTADO GLOBAL
+// ============================================================
+const state = {
+  user: null,                  // nombre del usuario actual
+  pieces: [],                  // todas las piezas desde Firestore
+  currentId: null,             // pieza abierta en el modal
+  isCreating: false,           // modal en modo "crear nueva"
+  filterPilar: 'all',
+  filterStatus: 'all',
+  showArchived: false,
+  commentType: 'comment',
+  unsubComments: null
+};
 
-function getStorage() {
+// ============================================================
+// FIREBASE INIT
+// ============================================================
+let dbFs = null, storage = null;
+function initFirebase() {
   try {
-    const d = localStorage.getItem('baffe_content_v1');
-    return d ? JSON.parse(d) : { edits: {}, comments: {} };
-  } catch(e) { return { edits: {}, comments: {} }; }
+    if (!window.firebaseConfig || window.firebaseConfig.apiKey === 'PEGAR_AQUI') {
+      setConnBadge('falta config', false);
+      alert('Editá firebase-config.js con los datos de tu proyecto Firebase antes de usar la page.');
+      return false;
+    }
+    firebase.initializeApp(window.firebaseConfig);
+    dbFs = firebase.firestore();
+    storage = firebase.storage();
+    setConnBadge('en vivo', true);
+    return true;
+  } catch (e) {
+    console.error(e);
+    setConnBadge('error', false);
+    return false;
+  }
 }
-function setStorage(data) {
-  try { localStorage.setItem('baffe_content_v1', JSON.stringify(data)); } catch(e) {}
+function setConnBadge(text, ok) {
+  const b = document.getElementById('connBadge');
+  b.textContent = text;
+  b.classList.toggle('off', !ok);
 }
 
-function getContent(id) {
-  const s = getStorage();
-  const base = INITIAL_CONTENT.find(c => c.id === id);
-  if (!base) return null;
-  return { ...base, copy: s.edits[id] || base.copy };
+// ============================================================
+// IDENTIDAD
+// ============================================================
+function loadUser() {
+  state.user = localStorage.getItem('baffe_user');
+  if (!state.user) {
+    document.getElementById('gateOverlay').classList.add('open');
+    setTimeout(() => document.getElementById('gateInput').focus(), 50);
+  } else {
+    paintUser();
+  }
+}
+function saveName() {
+  const v = document.getElementById('gateInput').value.trim();
+  if (!v) return;
+  localStorage.setItem('baffe_user', v);
+  state.user = v;
+  document.getElementById('gateOverlay').classList.remove('open');
+  paintUser();
+}
+function changeName() {
+  const v = prompt('Nuevo nombre:', state.user || '');
+  if (v && v.trim()) {
+    localStorage.setItem('baffe_user', v.trim());
+    state.user = v.trim();
+    paintUser();
+  }
+}
+function paintUser() {
+  document.getElementById('userName').textContent = state.user;
+  document.getElementById('userAvatar').textContent = state.user.charAt(0);
 }
 
+// ============================================================
+// SEED (primera vez)
+// ============================================================
+async function seedIfEmpty() {
+  const snap = await dbFs.collection('pieces').limit(1).get();
+  if (!snap.empty) return;
+  console.log('[seed] colección vacía → sembrando 15 piezas + calendario');
+  const batch = dbFs.batch();
+  const now = firebase.firestore.FieldValue.serverTimestamp();
+  // mapa de pilar+title → slot del calendario inicial
+  const slotMap = {};
+  CALENDAR_DATA.forEach((row, wi) => {
+    row.cells.forEach(cell => {
+      const k = cell.pilar + '|' + cell.title.slice(0, 30);
+      slotMap[k] = { week: wi + 1, channel: cell.channel };
+    });
+  });
+  INITIAL_CONTENT.forEach((p, i) => {
+    const ref = dbFs.collection('pieces').doc(p.id);
+    batch.set(ref, {
+      pilar: p.pilar,
+      channel: p.channel,
+      format: p.format,
+      title: p.title,
+      copy: p.copy,
+      note: p.note || '',
+      status: 'idea',
+      archived: false,
+      calendarSlot: null,
+      refs: [],
+      order: i,
+      createdBy: 'seed',
+      createdAt: now,
+      updatedBy: 'seed',
+      updatedAt: now
+    });
+  });
+  await batch.commit();
+}
+
+// ============================================================
+// SUBSCRIPCIÓN PRINCIPAL
+// ============================================================
+function subscribePieces() {
+  dbFs.collection('pieces').orderBy('order', 'asc').onSnapshot(snap => {
+    state.pieces = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderCards();
+    renderCalendar();
+    if (state.currentId && !state.isCreating) {
+      const fresh = state.pieces.find(p => p.id === state.currentId);
+      if (fresh) syncModalFromPiece(fresh, false);
+    }
+  }, err => {
+    console.error('[subscribe pieces]', err);
+    setConnBadge('error', false);
+  });
+}
+
+// ============================================================
+// HELPERS
+// ============================================================
 function pillarTag(pilar) {
   const p = PILLAR_CONFIG[pilar];
+  if (!p) return '';
   return `<span class="pilar-tag" style="background:${p.bg};color:${p.color}">${p.label}</span>`;
 }
+function statusPill(status) {
+  return `<span class="status-pill status-${status}">${status}</span>`;
+}
+function escapeHtml(s) {
+  return (s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
+}
+function relTime(ts) {
+  if (!ts || !ts.toDate) return '';
+  const d = ts.toDate();
+  const diff = (Date.now() - d.getTime()) / 1000;
+  if (diff < 60) return 'hace instantes';
+  if (diff < 3600) return `hace ${Math.floor(diff/60)} min`;
+  if (diff < 86400) return `hace ${Math.floor(diff/3600)} h`;
+  return d.toLocaleDateString('es-AR', { day: 'numeric', month: 'short' });
+}
 
-function renderCards(filterPilarVal) {
+// ============================================================
+// RENDER CARDS
+// ============================================================
+function renderCards() {
   const grid = document.getElementById('cardsGrid');
-  const s = getStorage();
-  let items = INITIAL_CONTENT;
-  if (filterPilarVal !== 'all') items = items.filter(c => c.pilar === filterPilarVal);
+  let items = state.pieces.filter(p => state.showArchived || !p.archived);
+  if (state.filterPilar !== 'all') items = items.filter(c => c.pilar === state.filterPilar);
+  if (state.filterStatus !== 'all') items = items.filter(c => (c.status || 'idea') === state.filterStatus);
 
   document.getElementById('cardCount').textContent = items.length + ' piezas';
 
-  const totalComments = Object.values(s.comments).reduce((a, b) => a + b.length, 0);
-  const totalEdits = Object.keys(s.edits).length;
+  // status bar
+  const totalComments = state.pieces.reduce((a, p) => a + (p.commentCount || 0), 0);
+  const aprobadas = state.pieces.filter(p => p.status === 'aprobado' && !p.archived).length;
+  const enCalendario = state.pieces.filter(p => p.calendarSlot && !p.archived).length;
   document.getElementById('statusBar').innerHTML = `
-    <div class="stat"><div class="stat-num">${INITIAL_CONTENT.length}</div><div class="stat-label">piezas de contenido</div></div>
-    <div class="stat"><div class="stat-num">${totalEdits}</div><div class="stat-label">ediciones del equipo</div></div>
-    <div class="stat"><div class="stat-num">${totalComments}</div><div class="stat-label">comentarios y sugerencias</div></div>
+    <div class="stat"><div class="stat-num">${state.pieces.filter(p=>!p.archived).length}</div><div class="stat-label">piezas activas</div></div>
+    <div class="stat"><div class="stat-num">${aprobadas}</div><div class="stat-label">aprobadas</div></div>
+    <div class="stat"><div class="stat-num">${enCalendario}</div><div class="stat-label">en calendario</div></div>
     <div class="stat"><div class="stat-num">${Object.keys(PILLAR_CONFIG).length}</div><div class="stat-label">pilares</div></div>
   `;
 
+  if (items.length === 0) {
+    grid.innerHTML = '<div class="empty-state">No hay piezas con estos filtros.</div>';
+    return;
+  }
+
   grid.innerHTML = items.map(item => {
-    const p = PILLAR_CONFIG[item.pilar];
-    const copy = s.edits[item.id] || item.copy;
-    const comments = s.comments[item.id] || [];
-    const edited = s.edits[item.id] ? '<span style="font-size:11px;color:var(--accent);margin-left:6px;">editado</span>' : '';
+    const p = PILLAR_CONFIG[item.pilar] || PILLAR_CONFIG.det;
+    const status = item.status || 'idea';
+    const updatedLine = item.updatedBy && item.updatedBy !== 'seed'
+      ? `<span style="font-size:11px;color:var(--ink3);margin-left:6px;">· editado por ${escapeHtml(item.updatedBy)} ${relTime(item.updatedAt)}</span>`
+      : '';
+    const refCount = (item.refs || []).length;
     return `
-      <div class="content-card" data-pilar="${item.pilar}">
+      <div class="content-card ${item.archived ? 'card-archived' : ''}" data-pilar="${item.pilar}">
         <div class="card-stripe" style="background:${p.stripe}"></div>
         <div class="card-body">
           <div class="card-meta">
             ${pillarTag(item.pilar)}
-            <span class="channel-tag">${item.channel}</span>
-            <span class="format-tag">${item.format}</span>
+            <span class="channel-tag">${escapeHtml(item.channel)}</span>
+            <span class="format-tag">${escapeHtml(item.format)}</span>
+            ${statusPill(status)}
           </div>
-          <h3 class="card-title">${item.title}${edited}</h3>
-          <p class="copy-preview">${copy}</p>
+          <h3 class="card-title">${escapeHtml(item.title)}${updatedLine}</h3>
+          <p class="copy-preview">${escapeHtml(item.copy)}</p>
         </div>
         <div class="card-actions">
           <button class="btn-action" onclick="openModal('${item.id}')">Ver y editar</button>
-          <button class="btn-action" onclick="openModalComments('${item.id}')">Comentar</button>
-          <span class="comment-count">${comments.length > 0 ? `💬 ${comments.length}` : ''}</span>
+          <button class="btn-action" onclick="openModal('${item.id}', true)">Comentar</button>
+          <span class="comment-count">
+            ${refCount > 0 ? `🖼 ${refCount}` : ''}
+            ${(item.commentCount > 0) ? `💬 ${item.commentCount}` : ''}
+          </span>
         </div>
       </div>
     `;
   }).join('');
 }
 
+// ============================================================
+// RENDER CALENDAR
+// ============================================================
 function renderCalendar() {
   const table = document.getElementById('calTable');
-  const headers = ['', 'Instagram', 'TikTok', 'En la app', 'Acción extra'];
+  const channels = ['Instagram', 'TikTok', 'En la app'];
+  const headers = ['', ...channels];
+  const weeks = [1, 2, 3, 4];
+
+  // index pieces by slot
+  const slotIndex = {};
+  state.pieces.filter(p => p.calendarSlot && !p.archived).forEach(p => {
+    const k = p.calendarSlot.week + '|' + p.calendarSlot.channel;
+    if (!slotIndex[k]) slotIndex[k] = [];
+    slotIndex[k].push(p);
+  });
+
   table.innerHTML = `
     <thead><tr>${headers.map(h => `<th>${h}</th>`).join('')}</tr></thead>
     <tbody>
-      ${CALENDAR_DATA.map(row => `
+      ${weeks.map(w => `
         <tr>
-          <td><div class="cal-week-label">${row.week}</div></td>
-          ${row.cells.map(cell => {
-            const p = PILLAR_CONFIG[cell.pilar];
-            return `<td><div class="cal-cell-inner">
-              <span class="pilar-tag" style="background:${p.bg};color:${p.color};font-size:10px;">${p.label}</span><br>
-              ${cell.title}
-            </div></td>`;
+          <td><div class="cal-week-label">S${w}</div></td>
+          ${channels.map(ch => {
+            const k = w + '|' + ch;
+            const list = slotIndex[k] || [];
+            if (list.length === 0) {
+              return `<td><div class="cal-empty" onclick="quickAssign(${w},'${ch}')">+ asignar</div></td>`;
+            }
+            return `<td>${list.map(p => {
+              const cfg = PILLAR_CONFIG[p.pilar];
+              return `<div class="cal-cell-inner" onclick="openModal('${p.id}')">
+                <span class="pilar-tag" style="background:${cfg.bg};color:${cfg.color};font-size:10px;">${cfg.label}</span><br>
+                ${escapeHtml(p.title)}
+              </div>`;
+            }).join('')}</td>`;
           }).join('')}
         </tr>
       `).join('')}
@@ -869,121 +1426,356 @@ function renderCalendar() {
   `;
 }
 
+function quickAssign(week, channel) {
+  const unassigned = state.pieces.filter(p => !p.calendarSlot && !p.archived);
+  if (unassigned.length === 0) {
+    alert('No hay piezas sin asignar. Crea una nueva o quitá una existente del calendario.');
+    return;
+  }
+  const list = unassigned.map((p, i) => `${i+1}. ${p.title}`).join('\n');
+  const choice = prompt(`Elegí una pieza para asignar a S${week} / ${channel}:\n\n${list}\n\nEscribí el número:`);
+  const idx = parseInt(choice, 10) - 1;
+  if (isNaN(idx) || !unassigned[idx]) return;
+  dbFs.collection('pieces').doc(unassigned[idx].id).update({
+    calendarSlot: { week, channel },
+    updatedBy: state.user,
+    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+  });
+}
+
+// ============================================================
+// FILTROS
+// ============================================================
 function filterPilar(val, btn) {
   document.querySelectorAll('.pfilter').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  renderCards(val);
+  state.filterPilar = val;
+  renderCards();
 }
+function filterStatus(val, btn) {
+  document.querySelectorAll('.sfilter').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  state.filterStatus = val;
+  renderCards();
+}
+document.addEventListener('change', e => {
+  if (e.target && e.target.id === 'showArchived') {
+    state.showArchived = e.target.checked;
+    renderCards();
+  }
+});
 
+// ============================================================
+// MODAL
+// ============================================================
 function openModal(id, focusComments) {
-  const item = getContent(id);
+  const item = state.pieces.find(p => p.id === id);
   if (!item) return;
-  currentCardId = id;
-  const s = getStorage();
-  const p = PILLAR_CONFIG[item.pilar];
-
-  document.getElementById('modalMeta').innerHTML =
-    pillarTag(item.pilar) +
-    `<span class="channel-tag">${item.channel}</span>` +
-    `<span class="format-tag">${item.format}</span>`;
-  document.getElementById('modalTitle').textContent = item.title;
-  document.getElementById('editTextarea').value = item.copy;
-  document.getElementById('editNote').textContent = item.note || '';
-  document.getElementById('savedMsg').style.opacity = '0';
-
-  renderComments(id);
+  state.currentId = id;
+  state.isCreating = false;
+  syncModalFromPiece(item, true);
+  subscribeComments(id);
   document.getElementById('modalOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
-
   if (focusComments) {
-    setTimeout(() => {
-      document.getElementById('commentInput').scrollIntoView({ behavior: 'smooth' });
-    }, 300);
+    setTimeout(() => document.getElementById('commentInput').scrollIntoView({ behavior: 'smooth' }), 300);
   }
 }
 
-function openModalComments(id) { openModal(id, true); }
+function syncModalFromPiece(item, resetInputs) {
+  // No pisar lo que el usuario está editando si solo es un sync remoto
+  if (resetInputs) {
+    document.getElementById('modalTitleInput').value = item.title || '';
+    document.getElementById('modalPilar').value = item.pilar || 'det';
+    document.getElementById('modalChannel').value = item.channel || 'Instagram';
+    document.getElementById('modalFormat').value = item.format || '';
+    document.getElementById('modalStatus').value = item.status || 'idea';
+    document.getElementById('editTextarea').value = item.copy || '';
+    document.getElementById('editNoteInput').value = item.note || '';
+    document.getElementById('slotWeek').value = item.calendarSlot ? String(item.calendarSlot.week) : '';
+    document.getElementById('slotChannel').value = item.calendarSlot ? item.calendarSlot.channel : '';
+  }
+  document.getElementById('modalMeta').innerHTML = pillarTag(item.pilar) + statusPill(item.status || 'idea');
+  document.getElementById('modalAuthorLine').textContent =
+    (item.updatedBy && item.updatedBy !== 'seed')
+      ? `editado por ${item.updatedBy} · ${relTime(item.updatedAt)}`
+      : (item.createdBy && item.createdBy !== 'seed' ? `creado por ${item.createdBy}` : '');
+  renderRefs(item);
+  document.getElementById('archiveBtn').textContent = item.archived ? 'Desarchivar' : 'Archivar pieza';
+  document.getElementById('savedMsg').style.opacity = '0';
+}
+
+function openCreateModal() {
+  if (!state.user) { changeName(); return; }
+  state.currentId = null;
+  state.isCreating = true;
+  document.getElementById('modalTitleInput').value = '';
+  document.getElementById('modalPilar').value = 'desc';
+  document.getElementById('modalChannel').value = 'Instagram';
+  document.getElementById('modalFormat').value = '';
+  document.getElementById('modalStatus').value = 'idea';
+  document.getElementById('editTextarea').value = '';
+  document.getElementById('editNoteInput').value = '';
+  document.getElementById('slotWeek').value = '';
+  document.getElementById('slotChannel').value = '';
+  document.getElementById('modalMeta').innerHTML = '<span style="font-size:11px;color:var(--accent);">NUEVA IDEA</span>';
+  document.getElementById('modalAuthorLine').textContent = '';
+  document.getElementById('refsGrid').innerHTML = '<p style="font-size:12px;color:var(--ink3);">Guardá la pieza para poder subir referencias.</p>';
+  document.getElementById('archiveBtn').textContent = 'Archivar pieza';
+  document.getElementById('commentsList').innerHTML = '<p style="font-size:13px;color:var(--ink3);">Guardá la pieza para poder comentar.</p>';
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
 
 function closeModal() {
   document.getElementById('modalOverlay').classList.remove('open');
   document.body.style.overflow = '';
-  currentCardId = null;
-  renderCards(document.querySelector('.pfilter.active').getAttribute('onclick').match(/'(\w+)'/)[1]);
+  state.currentId = null;
+  state.isCreating = false;
+  if (state.unsubComments) { state.unsubComments(); state.unsubComments = null; }
 }
-
 function closeModalOutside(e) {
   if (e.target === document.getElementById('modalOverlay')) closeModal();
 }
 
-function saveEdit() {
-  const s = getStorage();
-  s.edits[currentCardId] = document.getElementById('editTextarea').value;
-  setStorage(s);
+// ============================================================
+// SAVE / CREATE
+// ============================================================
+async function savePiece() {
+  if (!state.user) { changeName(); return; }
+  const data = {
+    title: document.getElementById('modalTitleInput').value.trim() || 'Sin título',
+    pilar: document.getElementById('modalPilar').value,
+    channel: document.getElementById('modalChannel').value,
+    format: document.getElementById('modalFormat').value.trim(),
+    status: document.getElementById('modalStatus').value,
+    copy: document.getElementById('editTextarea').value,
+    note: document.getElementById('editNoteInput').value,
+    updatedBy: state.user,
+    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+  };
+  try {
+    if (state.isCreating) {
+      data.archived = false;
+      data.calendarSlot = null;
+      data.refs = [];
+      data.createdBy = state.user;
+      data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+      data.order = state.pieces.length;
+      const ref = await dbFs.collection('pieces').add(data);
+      state.currentId = ref.id;
+      state.isCreating = false;
+      subscribeComments(ref.id);
+    } else {
+      await dbFs.collection('pieces').doc(state.currentId).update(data);
+    }
+    flashSaved();
+  } catch (e) {
+    console.error(e);
+    alert('Error al guardar: ' + e.message);
+  }
+}
+function flashSaved() {
   const msg = document.getElementById('savedMsg');
   msg.style.opacity = '1';
-  setTimeout(() => { msg.style.opacity = '0'; }, 2000);
+  setTimeout(() => { msg.style.opacity = '0'; }, 1800);
 }
 
-function renderComments(id) {
-  const s = getStorage();
-  const comments = s.comments[id] || [];
-  const list = document.getElementById('commentsList');
-  const title = document.getElementById('commentsTitle');
-  title.textContent = `Comentarios y sugerencias (${comments.length})`;
+async function toggleArchive() {
+  if (state.isCreating || !state.currentId) return;
+  const item = state.pieces.find(p => p.id === state.currentId);
+  if (!item) return;
+  const target = !item.archived;
+  if (target && !confirm('¿Archivar esta pieza? Se puede recuperar con el toggle "ver archivadas".')) return;
+  await dbFs.collection('pieces').doc(state.currentId).update({
+    archived: target,
+    updatedBy: state.user,
+    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+  });
+  if (target) closeModal();
+}
 
+// ============================================================
+// CALENDAR SLOT
+// ============================================================
+async function saveSlot() {
+  if (state.isCreating || !state.currentId) { alert('Guardá la pieza primero.'); return; }
+  const week = parseInt(document.getElementById('slotWeek').value, 10);
+  const channel = document.getElementById('slotChannel').value;
+  if (!week || !channel) { alert('Elegí semana y canal.'); return; }
+  await dbFs.collection('pieces').doc(state.currentId).update({
+    calendarSlot: { week, channel },
+    updatedBy: state.user,
+    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+  });
+  flashSaved();
+}
+async function clearSlot() {
+  if (state.isCreating || !state.currentId) return;
+  await dbFs.collection('pieces').doc(state.currentId).update({
+    calendarSlot: null,
+    updatedBy: state.user,
+    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+  });
+  document.getElementById('slotWeek').value = '';
+  document.getElementById('slotChannel').value = '';
+  flashSaved();
+}
+
+// ============================================================
+// REFS (imágenes / videos)
+// ============================================================
+function renderRefs(item) {
+  const grid = document.getElementById('refsGrid');
+  const refs = item.refs || [];
+  if (refs.length === 0) { grid.innerHTML = ''; return; }
+  grid.innerHTML = refs.map((r, i) => {
+    const tag = r.type === 'video'
+      ? `<video src="${r.url}" muted onclick="window.open('${r.url}','_blank')"></video>`
+      : `<img src="${r.url}" onclick="window.open('${r.url}','_blank')" />`;
+    return `<div class="ref-item">${tag}<button class="ref-del" onclick="deleteRef(${i})">×</button></div>`;
+  }).join('');
+}
+
+async function handleRefUpload(ev) {
+  if (state.isCreating || !state.currentId) { alert('Guardá la pieza primero.'); return; }
+  const files = Array.from(ev.target.files || []);
+  for (const file of files) {
+    try {
+      const path = `refs/${state.currentId}/${Date.now()}_${file.name}`;
+      const snap = await storage.ref(path).put(file);
+      const url = await snap.ref.getDownloadURL();
+      const newRef = {
+        url,
+        path,
+        type: file.type.startsWith('video') ? 'video' : 'image',
+        name: file.name,
+        uploadedBy: state.user,
+        uploadedAt: new Date().toISOString()
+      };
+      await dbFs.collection('pieces').doc(state.currentId).update({
+        refs: firebase.firestore.FieldValue.arrayUnion(newRef),
+        updatedBy: state.user,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    } catch (e) {
+      console.error(e);
+      alert('Error al subir: ' + e.message);
+    }
+  }
+  ev.target.value = '';
+}
+
+async function deleteRef(index) {
+  const item = state.pieces.find(p => p.id === state.currentId);
+  if (!item || !item.refs || !item.refs[index]) return;
+  if (!confirm('¿Eliminar esta referencia?')) return;
+  const target = item.refs[index];
+  const newRefs = item.refs.filter((_, i) => i !== index);
+  try {
+    if (target.path) await storage.ref(target.path).delete().catch(() => {});
+    await dbFs.collection('pieces').doc(state.currentId).update({
+      refs: newRefs,
+      updatedBy: state.user,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+  } catch (e) { console.error(e); }
+}
+
+// ============================================================
+// COMENTARIOS
+// ============================================================
+function subscribeComments(pieceId) {
+  if (state.unsubComments) state.unsubComments();
+  state.unsubComments = dbFs.collection('pieces').doc(pieceId).collection('comments')
+    .orderBy('createdAt', 'asc')
+    .onSnapshot(snap => {
+      const comments = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      renderComments(comments);
+      // actualizar count en la pieza local (no persistido)
+      const p = state.pieces.find(x => x.id === pieceId);
+      if (p) p.commentCount = comments.length;
+    });
+}
+function renderComments(comments) {
+  const list = document.getElementById('commentsList');
+  document.getElementById('commentsTitle').textContent = `Comentarios y sugerencias (${comments.length})`;
   if (comments.length === 0) {
     list.innerHTML = '<p style="font-size:13px;color:var(--ink3);margin-bottom:12px;">Todavía no hay comentarios. Sé el primero.</p>';
     return;
   }
-  list.innerHTML = comments.map((c, i) => `
+  list.innerHTML = comments.map(c => `
     <div class="comment-item ${c.type === 'suggestion' ? 'suggestion' : ''}">
-      <button class="delete-comment" onclick="deleteComment(${i})" title="Eliminar">×</button>
+      <button class="delete-comment" onclick="deleteComment('${c.id}')" title="Eliminar">×</button>
       <div class="comment-meta">
         <span class="comment-type ${c.type === 'suggestion' ? 'type-suggestion' : 'type-comment'}">${c.type === 'suggestion' ? 'Sugerencia' : 'Comentario'}</span>
-        <span class="comment-date">${c.date}</span>
+        <span class="comment-author">${escapeHtml(c.author || 'anónimo')}</span>
+        <span class="comment-date">${relTime(c.createdAt)}</span>
       </div>
-      <p class="comment-text">${c.text}</p>
+      <p class="comment-text">${escapeHtml(c.text)}</p>
     </div>
   `).join('');
 }
-
 function setCommentType(type) {
-  currentCommentType = type;
+  state.commentType = type;
   document.getElementById('btnComment').classList.toggle('active', type === 'comment');
   document.getElementById('btnSuggestion').classList.toggle('active', type === 'suggestion');
 }
-
-function submitComment() {
+async function submitComment() {
+  if (state.isCreating || !state.currentId) { alert('Guardá la pieza primero.'); return; }
+  if (!state.user) { changeName(); return; }
   const input = document.getElementById('commentInput');
   const text = input.value.trim();
-  if (!text || !currentCardId) return;
-  const s = getStorage();
-  if (!s.comments[currentCardId]) s.comments[currentCardId] = [];
-  s.comments[currentCardId].push({
-    type: currentCommentType,
-    text: text,
-    date: new Date().toLocaleDateString('es-AR', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })
+  if (!text) return;
+  await dbFs.collection('pieces').doc(state.currentId).collection('comments').add({
+    text,
+    type: state.commentType,
+    author: state.user,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
   });
-  setStorage(s);
   input.value = '';
-  renderComments(currentCardId);
+}
+async function deleteComment(commentId) {
+  if (!state.currentId) return;
+  if (!confirm('¿Eliminar comentario?')) return;
+  await dbFs.collection('pieces').doc(state.currentId).collection('comments').doc(commentId).delete();
 }
 
-function deleteComment(index) {
-  const s = getStorage();
-  s.comments[currentCardId].splice(index, 1);
-  setStorage(s);
-  renderComments(currentCardId);
-}
-
+// ============================================================
+// TABS
+// ============================================================
 function switchTab(name) {
   document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', ['ideas','calendar'][i] === name));
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById('view-' + name).classList.add('active');
 }
 
-renderCards('all');
-renderCalendar();
+// ============================================================
+// ENTER en el name gate
+// ============================================================
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && document.getElementById('gateOverlay').classList.contains('open')) {
+    saveName();
+  }
+  if (e.key === 'Escape' && document.getElementById('modalOverlay').classList.contains('open')) {
+    closeModal();
+  }
+});
+
+// ============================================================
+// BOOTSTRAP
+// ============================================================
+(async function() {
+  loadUser();
+  if (!initFirebase()) return;
+  try {
+    await seedIfEmpty();
+    subscribePieces();
+  } catch (e) {
+    console.error(e);
+    setConnBadge('error', false);
+  }
+})();
 </script>
 </body>
 </html>
