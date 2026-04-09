@@ -449,6 +449,36 @@
   .submit-comment:hover { background: #B54E22; }
 
   /* CALENDAR VIEW */
+  .cal-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  .cal-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 38px;
+    line-height: 1;
+    letter-spacing: -0.5px;
+    text-transform: capitalize;
+    margin: 0 4px;
+  }
+  .cal-nav {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--ink);
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .cal-nav:hover { background: var(--bg2); }
+
   .cal-wrapper { overflow-x: auto; }
   .cal-table {
     width: 100%;
@@ -923,8 +953,20 @@
 
   <!-- CALENDAR VIEW -->
   <div class="view" id="view-calendar">
-    <div class="section-header">
-      <h1 class="section-title">Primer mes</h1>
+    <div class="cal-header">
+      <button class="cal-nav" onclick="calPrev()">‹</button>
+      <h1 class="cal-title" id="calTitle">—</h1>
+      <button class="cal-nav" onclick="calNext()">›</button>
+      <button class="btn-ghost" onclick="calToday()" style="margin-left:8px;">Hoy</button>
+      <div style="margin-left:auto;display:flex;gap:8px;">
+        <select class="modal-select" onchange="calPickMonth(this.value)" id="calMonthPick">
+          <option value="0">Enero</option><option value="1">Febrero</option><option value="2">Marzo</option>
+          <option value="3">Abril</option><option value="4">Mayo</option><option value="5">Junio</option>
+          <option value="6">Julio</option><option value="7">Agosto</option><option value="8">Septiembre</option>
+          <option value="9">Octubre</option><option value="10">Noviembre</option><option value="11">Diciembre</option>
+        </select>
+        <input type="number" class="modal-input" id="calYearPick" min="2024" max="2099" style="width:90px;" onchange="calPickYear(this.value)" />
+      </div>
     </div>
     <div class="cal-wrapper">
       <table class="cal-table" id="calTable"></table>
@@ -985,8 +1027,15 @@
       <div class="modal-section">
         <div class="modal-section-title">Asignar al calendario</div>
         <div class="modal-row">
+          <select class="modal-select" id="slotMonth">
+            <option value="0">Enero</option><option value="1">Febrero</option><option value="2">Marzo</option>
+            <option value="3">Abril</option><option value="4">Mayo</option><option value="5">Junio</option>
+            <option value="6">Julio</option><option value="7">Agosto</option><option value="8">Septiembre</option>
+            <option value="9">Octubre</option><option value="10">Noviembre</option><option value="11">Diciembre</option>
+          </select>
+          <input type="number" class="modal-input" id="slotYear" min="2024" max="2099" style="width:90px;" />
           <select class="modal-select" id="slotWeek">
-            <option value="">— sin asignar —</option>
+            <option value="">— semana —</option>
             <option value="1">Semana 1</option>
             <option value="2">Semana 2</option>
             <option value="3">Semana 3</option>
@@ -1228,9 +1277,13 @@ const state = {
   filterPilar: 'all',
   filterStatus: 'all',
   showArchived: false,
+  calYear: new Date().getFullYear(),
+  calMonth: new Date().getMonth(),
   commentType: 'comment',
   unsubComments: null
 };
+
+const MONTH_NAMES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
 const DEFAULT_PILLARS = [
   { id: 'desc', label: 'Descubrimiento',   color: '#4A3F8A' },
@@ -1571,14 +1624,20 @@ function renderCards() {
 // ============================================================
 function renderCalendar() {
   const table = document.getElementById('calTable');
+  const titleEl = document.getElementById('calTitle');
+  if (titleEl) titleEl.textContent = MONTH_NAMES[state.calMonth] + ' ' + state.calYear;
+  const mp = document.getElementById('calMonthPick'); if (mp) mp.value = String(state.calMonth);
+  const yp = document.getElementById('calYearPick'); if (yp) yp.value = String(state.calYear);
   const channels = ['Instagram', 'TikTok', 'En la app'];
   const headers = ['', ...channels];
   const weeks = [1, 2, 3, 4];
 
-  // index pieces by slot
+  // index pieces by slot — solo del mes/año actual
   const slotIndex = {};
   state.pieces.filter(p => p.calendarSlot && !p.archived).forEach(p => {
-    const k = p.calendarSlot.week + '|' + p.calendarSlot.channel;
+    const s = p.calendarSlot;
+    if (s.year !== state.calYear || s.month !== state.calMonth) return;
+    const k = s.week + '|' + s.channel;
     if (!slotIndex[k]) slotIndex[k] = [];
     slotIndex[k].push(p);
   });
@@ -1610,21 +1669,43 @@ function renderCalendar() {
 }
 
 function quickAssign(week, channel) {
-  const unassigned = state.pieces.filter(p => !p.calendarSlot && !p.archived);
-  if (unassigned.length === 0) {
-    alert('No hay piezas sin asignar. Crea una nueva o quitá una existente del calendario.');
-    return;
-  }
-  const list = unassigned.map((p, i) => `${i+1}. ${p.title}`).join('\n');
-  const choice = prompt(`Elegí una pieza para asignar a S${week} / ${channel}:\n\n${list}\n\nEscribí el número:`);
+  // mostrar piezas que no están en este mes/canal/semana
+  const candidates = state.pieces.filter(p => {
+    if (p.archived) return false;
+    if (!p.calendarSlot) return true;
+    const s = p.calendarSlot;
+    return !(s.year === state.calYear && s.month === state.calMonth && s.week === week && s.channel === channel);
+  });
+  if (candidates.length === 0) { alert('No hay piezas disponibles.'); return; }
+  const list = candidates.map((p, i) => `${i+1}. ${p.title}`).join('\n');
+  const choice = prompt(`${MONTH_NAMES[state.calMonth]} ${state.calYear} — S${week} / ${channel}\n\nElegí una pieza:\n\n${list}\n\nNúmero:`);
   const idx = parseInt(choice, 10) - 1;
-  if (isNaN(idx) || !unassigned[idx]) return;
-  dbFs.collection('pieces').doc(unassigned[idx].id).update({
-    calendarSlot: { week, channel },
+  if (isNaN(idx) || !candidates[idx]) return;
+  dbFs.collection('pieces').doc(candidates[idx].id).update({
+    calendarSlot: { year: state.calYear, month: state.calMonth, week, channel },
     updatedBy: state.user,
     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
   });
 }
+
+function calPrev() {
+  if (state.calMonth === 0) { state.calMonth = 11; state.calYear--; }
+  else state.calMonth--;
+  renderCalendar();
+}
+function calNext() {
+  if (state.calMonth === 11) { state.calMonth = 0; state.calYear++; }
+  else state.calMonth++;
+  renderCalendar();
+}
+function calToday() {
+  const d = new Date();
+  state.calYear = d.getFullYear();
+  state.calMonth = d.getMonth();
+  renderCalendar();
+}
+function calPickMonth(val) { state.calMonth = parseInt(val, 10); renderCalendar(); }
+function calPickYear(val) { state.calYear = parseInt(val, 10); renderCalendar(); }
 
 // ============================================================
 // FILTROS
@@ -1677,6 +1758,8 @@ function syncModalFromPiece(item, resetInputs) {
     document.getElementById('editNoteInput').value = item.note || '';
     document.getElementById('slotWeek').value = item.calendarSlot ? String(item.calendarSlot.week) : '';
     document.getElementById('slotChannel').value = item.calendarSlot ? item.calendarSlot.channel : '';
+    document.getElementById('slotMonth').value = (item.calendarSlot && item.calendarSlot.month != null) ? String(item.calendarSlot.month) : String(state.calMonth);
+    document.getElementById('slotYear').value = (item.calendarSlot && item.calendarSlot.year != null) ? String(item.calendarSlot.year) : String(state.calYear);
   }
   document.getElementById('modalMeta').innerHTML = pillarTag(item.pilar) + statusPill(item.status || 'idea');
   document.getElementById('modalAuthorLine').textContent =
@@ -1701,6 +1784,8 @@ function openCreateModal() {
   document.getElementById('editNoteInput').value = '';
   document.getElementById('slotWeek').value = '';
   document.getElementById('slotChannel').value = '';
+  document.getElementById('slotMonth').value = String(state.calMonth);
+  document.getElementById('slotYear').value = String(state.calYear);
   document.getElementById('modalMeta').innerHTML = '<span style="font-size:11px;color:var(--accent);">NUEVA IDEA</span>';
   document.getElementById('modalAuthorLine').textContent = '';
   document.getElementById('refsGrid').innerHTML = '<p style="font-size:12px;color:var(--ink3);">Guardá la pieza para poder subir referencias.</p>';
@@ -1785,9 +1870,11 @@ async function saveSlot() {
   if (state.isCreating || !state.currentId) { alert('Guardá la pieza primero.'); return; }
   const week = parseInt(document.getElementById('slotWeek').value, 10);
   const channel = document.getElementById('slotChannel').value;
-  if (!week || !channel) { alert('Elegí semana y canal.'); return; }
+  const month = parseInt(document.getElementById('slotMonth').value, 10);
+  const year = parseInt(document.getElementById('slotYear').value, 10);
+  if (!week || !channel || isNaN(month) || isNaN(year)) { alert('Elegí mes, año, semana y canal.'); return; }
   await dbFs.collection('pieces').doc(state.currentId).update({
-    calendarSlot: { week, channel },
+    calendarSlot: { year, month, week, channel },
     updatedBy: state.user,
     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
   });
