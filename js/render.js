@@ -160,8 +160,9 @@ function filterStatus(val, btn) {
 // ============================================================
 function switchTab(name) {
   document.querySelectorAll('.tab').forEach(function(t, i) {
-    t.classList.toggle('active', ['ideas','calendar'][i] === name);
+    t.classList.toggle('active', ['ideas','calendar','plan'][i] === name);
   });
   document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
   document.getElementById('view-' + name).classList.add('active');
+  document.body.classList.toggle('plan-mode', name === 'plan');
 }

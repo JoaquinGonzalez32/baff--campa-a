@@ -60,6 +60,7 @@
 <div class="tabs" id="tabBar">
   <button class="tab active" onclick="switchTab('ideas')">Ideas de contenido</button>
   <button class="tab" onclick="switchTab('calendar')">Calendario</button>
+  <button class="tab" onclick="switchTab('plan')">Plan</button>
 </div>
 
 <main>
@@ -110,6 +111,290 @@
     <div class="cal-wrapper">
       <table class="cal-table" id="calTable"></table>
     </div>
+  </div>
+
+  <!-- PLAN VIEW (documento de presentación) -->
+  <div class="view" id="view-plan">
+    <article class="plan-doc">
+
+      <header class="plan-cover">
+        <div class="plan-eyebrow">Plan de campaña · Mayo–Julio 2026</div>
+        <h1 class="plan-title">Baffé, en boca de la gente que sale.</h1>
+        <p class="plan-lede">Cómo pasamos de una app de descubrimiento más, a la guía de cafés y bares de Montevideo hecha por los que ya saben — en 10 semanas, con presupuesto chico y sin perder identidad.</p>
+        <div class="plan-meta">
+          <span><strong>Duración:</strong> 10 semanas (2 producto + 6–8 marketing)</span>
+          <span><strong>Inicio:</strong> 11 de mayo · <strong>Hard launch:</strong> 1 de junio · <strong>Cierre:</strong> 26 de julio</span>
+          <span><strong>Presupuesto:</strong> USD 100–500 (orientado a USD ~480–570)</span>
+        </div>
+      </header>
+
+      <section class="plan-section">
+        <div class="plan-kicker">01 · Contexto</div>
+        <h2 class="plan-h2">Por qué este plan, y por qué ahora.</h2>
+        <p>Baffé está vivo pero sin tracción. Hoy: 100–500 seguidores en IG, descargas iniciales, y <strong>2 semanas de silencio en redes</strong> que nos dejaron sin momento natural para empujar. Tenemos un producto bueno (mapa, filtros, reviews, posts, owners verificados) y una tesis fuerte: la guía la construye la comunidad.</p>
+        <p>El riesgo de empujar sin estrategia es claro: gastar el poco budget en ads cold y volver a la base. Lo que necesitamos es un <strong>multiplicador</strong> que convierta cada peso y cada hora en algo que se autoamplifica. Ese multiplicador son los curadores.</p>
+        <div class="plan-callout">
+          <div class="plan-callout-label">Restricciones reales</div>
+          <ul>
+            <li>Solo Montevideo en estas 10 semanas. Expandir después si funciona.</li>
+            <li>Equipo chico con capacidad de video, pocos contactos previos en gastronomía.</li>
+            <li>Budget bajo (USD 100–500). No hay margen para experimentar a ciegas.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="plan-section">
+        <div class="plan-kicker">02 · Objetivos</div>
+        <h2 class="plan-h2">Qué tiene que pasar al final de las 10 semanas.</h2>
+        <div class="plan-grid-4">
+          <div class="plan-goal">
+            <div class="plan-goal-num">3.000–4.000</div>
+            <div class="plan-goal-label">Seguidores reales en IG</div>
+            <div class="plan-goal-note">5K era la meta original. La revisamos a la baja: 3.500 con comunidad activa vale más que 5K vacíos por sorteos. Los 5K se cierran en mes 3.</div>
+          </div>
+          <div class="plan-goal">
+            <div class="plan-goal-num">↑↑</div>
+            <div class="plan-goal-label">Descargas en stores</div>
+            <div class="plan-goal-note">Medidas con UTM en bio. Comparación semana a semana. Pico esperado en sem 8 ("semana de descargas").</div>
+          </div>
+          <div class="plan-goal">
+            <div class="plan-goal-num">100/sem</div>
+            <div class="plan-goal-label">Aportes de comunidad</div>
+            <div class="plan-goal-note">Locales nuevos + reviews + posts. ≥30 en sem 6, ≥100 en sem 10. La métrica más importante para el diferencial.</div>
+          </div>
+          <div class="plan-goal">
+            <div class="plan-goal-num">5–8</div>
+            <div class="plan-goal-label">Curadores activos</div>
+            <div class="plan-goal-note">Posteando ≥1 vez/semana en su perfil de Baffé. Sostenidos durante toda la campaña.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="plan-section">
+        <div class="plan-kicker">03 · La gran apuesta</div>
+        <h2 class="plan-h2">Curadores verificados como motor de todo.</h2>
+        <p>En vez de pelear contra Google Maps con un "descubrí lugares en MVD" genérico — que no podemos ganar — convertimos a <strong>5–8 microinfluencers gastronómicos</strong> en curadores verificados dentro de la app. Cada uno encarna un nicho (café de especialidad, remote workers, bares/after office). Su comunidad existente baja la app para seguirlos. Sus posts son contenido orgánico que circula en su perfil personal Y dentro de Baffé.</p>
+        <div class="plan-grid-3">
+          <div class="plan-card">
+            <div class="plan-card-num">a.</div>
+            <div class="plan-card-title">Comunidad cálida, no fría</div>
+            <p>Los seguidores de un curador ya confían en su criterio. La conversión de esa audiencia → descarga es 5–10× más alta que ads a frío.</p>
+          </div>
+          <div class="plan-card">
+            <div class="plan-card-num">b.</div>
+            <div class="plan-card-title">Interacción real en muroSocial</div>
+            <p>El feed social de la app necesita input. Los curadores postean adentro y los nuevos usuarios tienen a quién seguir desde el día 1.</p>
+          </div>
+          <div class="plan-card">
+            <div class="plan-card-num">c.</div>
+            <div class="plan-card-title">Identidad que se construye sola</div>
+            <p>"Baffé es la guía hecha por X, Y y Z" se cuenta sin esfuerzo cuando esos X, Y, Z son personas reales con nombre y cara.</p>
+          </div>
+        </div>
+        <div class="plan-callout plan-callout-soft">
+          <div class="plan-callout-label">Lo que NO hacemos en estas 10 semanas</div>
+          <ul>
+            <li>Contratar UGC fija (creator de la casa). Tiene tensión con el diferencial de comunidad y el budget no banca algo serio. Decisión post-mes-2 con datos reales.</li>
+            <li>Influencer pesado al inicio. Recién en sem 8, una vez validados los formatos con los curadores chicos.</li>
+            <li>Sorteos masivos tipo "follow + tag". Generan followers vacíos. Solo sorteos atados a aportes reales.</li>
+            <li>Mensaje genérico "descubrí MVD". Perdemos contra Google Maps. Vamos nichados.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="plan-section">
+        <div class="plan-kicker">04 · Pre-condición</div>
+        <h2 class="plan-h2">Tres cambios de producto que destraban todo.</h2>
+        <p>El plan depende de que el muroSocial tenga <em>discovery</em>. La infraestructura ya existe (seguir perfiles + feed funcionan), pero seguir gente está oculto. Sin estos 3 cambios, los nuevos usuarios entran, no encuentran a quién seguir, y el feed muere por falta de input. <strong>Resultado:</strong> perdemos el efecto multiplicador que justificaba toda la estrategia.</p>
+        <div class="plan-grid-3">
+          <div class="plan-card">
+            <div class="plan-card-title">1. Onboarding "seguí curadores"</div>
+            <p>Al crear cuenta, mostrar 5–8 perfiles verificados con avatar + bio + botón seguir. Cada usuario nuevo se vuelve follower automático del curador.</p>
+          </div>
+          <div class="plan-card">
+            <div class="plan-card-title">2. Sección "Curadores" prominente</div>
+            <p>Carousel en home o tab dedicado en muroSocial. Hace que descubrir gente sea natural, no oculto.</p>
+          </div>
+          <div class="plan-card">
+            <div class="plan-card-title">3. Badge verificado visible</div>
+            <p>En posts, reviews, y feed. Es el incentivo de status que hace que un influencer quiera estar adentro.</p>
+          </div>
+        </div>
+        <p class="plan-fineprint">Rol técnico nuevo: <code>verified_curator</code> separado de <code>verified_owner</code>. Estimación realista: 1.5–2 semanas si es prioridad única.</p>
+      </section>
+
+      <section class="plan-section">
+        <div class="plan-kicker">05 · Las 10 semanas</div>
+        <h2 class="plan-h2">Foco, objetivo y entregable de cada semana.</h2>
+
+        <div class="plan-week">
+          <div class="plan-week-tag">Sem 0 · 11–17 may</div>
+          <div class="plan-week-body">
+            <h3>Kickoff silencioso</h3>
+            <p class="plan-week-focus"><strong>Foco:</strong> arrancar producto + outreach. Ningún contenido público.</p>
+            <p class="plan-week-objective"><strong>Objetivo:</strong> migración del rol <code>verified_curator</code> en marcha, 6 mensajes de outreach enviados, paleta visual definida.</p>
+            <p><strong>Entregable:</strong> ≥4 candidatos a curador con interés confirmado al final de la semana.</p>
+          </div>
+        </div>
+
+        <div class="plan-week">
+          <div class="plan-week-tag">Sem 1 · 18–24 may</div>
+          <div class="plan-week-body">
+            <h3>Producto cerrando, contenido en stock</h3>
+            <p class="plan-week-focus"><strong>Foco:</strong> dejar las 3 features estables y cerrar el roster de curadores. Grabar el primer batch de reels.</p>
+            <p class="plan-week-objective"><strong>Objetivo:</strong> deploy a staging con 2 curadores piloto probando, 8–10 reels editados o en edición.</p>
+            <p><strong>Entregable (checkpoint domingo 24):</strong> 5–8 curadores firmados + features estables. Si no se cumple → posponer launch 1 semana.</p>
+          </div>
+        </div>
+
+        <div class="plan-week">
+          <div class="plan-week-tag">Sem 2 · 25–31 may</div>
+          <div class="plan-week-body">
+            <h3>Teaser y carga interna</h3>
+            <p class="plan-week-focus"><strong>Foco:</strong> los curadores cargan su primer contenido en Baffé. Romper el silencio en IG con teaser.</p>
+            <p class="plan-week-objective"><strong>Objetivo:</strong> cada curador con ≥1 review/recomendación adentro. Teaser jueves 28 + 2 stories de countdown.</p>
+            <p><strong>Entregable:</strong> coordinación cerrada con todos los curadores para postear el lunes 1 de junio simultáneo.</p>
+          </div>
+        </div>
+
+        <div class="plan-week plan-week-highlight">
+          <div class="plan-week-tag">Sem 3 · 1–7 jun</div>
+          <div class="plan-week-body">
+            <h3>HARD LAUNCH</h3>
+            <p class="plan-week-focus"><strong>Foco:</strong> el evento se fabrica. Post fijado + reel principal + 5–8 curadores posteando coordinados + USD 30–50 de Meta Ads ese día puntual.</p>
+            <p class="plan-week-objective"><strong>Objetivo:</strong> arrancar serie "30 cafés en 30 días" (1 reel/día). Highlights IG armados ("Cómo aportar", "Curadores", "Top cafés", "FAQ").</p>
+            <p><strong>Entregable:</strong> +500 followers en la semana, primer pico de descargas, 6 reels publicados.</p>
+          </div>
+        </div>
+
+        <div class="plan-week">
+          <div class="plan-week-tag">Sem 4 · 8–14 jun</div>
+          <div class="plan-week-body">
+            <h3>Activación de aportes</h3>
+            <p class="plan-week-focus"><strong>Foco:</strong> lanzar campaña "Sumá tu lugar" (sorteo semanal atado a aportes reales). Curador remote workers al frente.</p>
+            <p class="plan-week-objective"><strong>Objetivo:</strong> ≥20 locales nuevos sumados por usuarios. Primer sorteo viernes 12. Ads USD 5–7/día sobre los 2 mejores reels orgánicos.</p>
+            <p><strong>Entregable:</strong> primer caso público de un usuario común que sumó un lugar y aparece reposteado.</p>
+          </div>
+        </div>
+
+        <div class="plan-week">
+          <div class="plan-week-tag">Sem 5 · 15–21 jun</div>
+          <div class="plan-week-body">
+            <h3>Consolidación</h3>
+            <p class="plan-week-focus"><strong>Foco:</strong> sostener cadencia. Reposteo sistemático de UGC. Feature "Curador del mes" arranca con el de café de especialidad.</p>
+            <p class="plan-week-objective"><strong>Objetivo:</strong> 6 reels (3 café + 3 remote workers), 2 reposts de UGC al feed, ads USD 7–10/día. Mini-checkpoint domingo 21.</p>
+            <p><strong>Entregable:</strong> &gt;1.000 followers totales, &gt;15 aportes/semana sostenidos.</p>
+          </div>
+        </div>
+
+        <div class="plan-week plan-week-highlight">
+          <div class="plan-week-tag">Sem 6 · 22–28 jun</div>
+          <div class="plan-week-body">
+            <h3>Checkpoint duro + rotación a bares</h3>
+            <p class="plan-week-focus"><strong>Foco:</strong> revisión de números mid-marketing. Si followers &lt;1.500 o aportes/sem &lt;20 → pivot. Arranca curador de bares/after office.</p>
+            <p class="plan-week-objective"><strong>Objetivo:</strong> 6 reels (2 café + 1 remote + 3 bares). Ads USD 10–12/día concentrados en mejor performer. Cerrar contrato con influencer pesado para sem 8.</p>
+            <p><strong>Entregable:</strong> decisión documentada de qué nicho/curador escalar y cuál cortar.</p>
+          </div>
+        </div>
+
+        <div class="plan-week">
+          <div class="plan-week-tag">Sem 7 · 29 jun – 5 jul</div>
+          <div class="plan-week-body">
+            <h3>UGC al frente</h3>
+            <p class="plan-week-focus"><strong>Foco:</strong> lanzar serie "Reseña destacada" (republicamos las mejores reviews con crédito) + concurso "Mostranos tu favorito de MVD".</p>
+            <p class="plan-week-objective"><strong>Objetivo:</strong> ≥30 stories etiquetando @baffemvd con #BaffeMVD. 6 reels. Ads USD 12–15/día.</p>
+            <p><strong>Entregable:</strong> 5 mejores stories del concurso al feed + 1 ganador con canje en local aliado.</p>
+          </div>
+        </div>
+
+        <div class="plan-week plan-week-highlight">
+          <div class="plan-week-tag">Sem 8 · 6–12 jul</div>
+          <div class="plan-week-body">
+            <h3>Semana de descargas</h3>
+            <p class="plan-week-focus"><strong>Foco:</strong> conversión pura. Pinned post nuevo + bio cambiada + stories diarias con CTA explícito a la app.</p>
+            <p class="plan-week-objective"><strong>Objetivo:</strong> 5 reels "¿Sabías que podés...?" (uno por día). Colab con influencer pesado entregada. Ads USD 15/día sostenido.</p>
+            <p><strong>Entregable:</strong> mayor pico semanal de descargas de toda la campaña.</p>
+          </div>
+        </div>
+
+        <div class="plan-week">
+          <div class="plan-week-tag">Sem 9 · 13–19 jul</div>
+          <div class="plan-week-body">
+            <h3>Push final + Baffé Crawl</h3>
+            <p class="plan-week-focus"><strong>Foco:</strong> evento físico (opcional según budget). Recorrida de 3 cafés/bares un sábado, gratis para los primeros 30 que descarguen + se inscriban.</p>
+            <p class="plan-week-objective"><strong>Objetivo:</strong> 5 reels en la semana, documentación masiva del evento (foto/video/audio) para reusar en sem 10.</p>
+            <p><strong>Entregable:</strong> stock de UGC del evento para 2 semanas de contenido posterior.</p>
+          </div>
+        </div>
+
+        <div class="plan-week">
+          <div class="plan-week-tag">Sem 10 · 20–26 jul</div>
+          <div class="plan-week-body">
+            <h3>Cierre y decisión</h3>
+            <p class="plan-week-focus"><strong>Foco:</strong> recap build-in-public. Reposteo del Crawl. Postmortem completo el domingo 26.</p>
+            <p class="plan-week-objective"><strong>Objetivo:</strong> 4 reels de cierre + carrusel de números reales + decisión documentada para mes 3.</p>
+            <p><strong>Entregable:</strong> qué nicho/curador escalar en mes 3, sí/no a UGC fija, plan de retención de los nuevos usuarios.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="plan-section">
+        <div class="plan-kicker">06 · Cómo activamos aportes</div>
+        <h2 class="plan-h2">El objetivo más difícil tiene su propia mecánica.</h2>
+        <p>Llegar a 100 aportes por semana no es función del marketing — es función de la <strong>fricción mínima + reconocimiento visible</strong>. Cinco palancas concretas:</p>
+        <ol class="plan-numbered">
+          <li><strong>Visibilidad del aporte.</strong> Cada aporte aparece en el feed con avatar y nombre del usuario. Es prioridad de producto, no de marketing.</li>
+          <li><strong>Reposteo sistemático.</strong> Toda review larga o foto buena se reposta en IG con crédito. El incentivo más barato y efectivo.</li>
+          <li><strong>Gamificación liviana.</strong> Highlight "Top aportadores del mes". No requiere sistema completo.</li>
+          <li><strong>Sorteos atados a aportes reales</strong>, nunca a follow + tag.</li>
+          <li><strong>CTA fijo</strong> al final de cada reel: <em>"¿Conocés un lugar que falta? Sumalo en Baffé."</em></li>
+        </ol>
+      </section>
+
+      <section class="plan-section">
+        <div class="plan-kicker">07 · Presupuesto</div>
+        <h2 class="plan-h2">Dónde se va cada dólar.</h2>
+        <table class="plan-table">
+          <thead><tr><th>Semana</th><th>Diario (USD)</th><th>Total semana</th><th>Foco del gasto</th></tr></thead>
+          <tbody>
+            <tr><td>Sem 3</td><td>30–50 (lunes 1)</td><td>30–50</td><td>Amplificar reel del hard launch ese día</td></tr>
+            <tr><td>Sem 4</td><td>5–7</td><td>35–49</td><td>Reels orgánicos top de sem 3</td></tr>
+            <tr><td>Sem 5</td><td>7–10</td><td>49–70</td><td>Mejor performer + curador del mes</td></tr>
+            <tr><td>Sem 6</td><td>10–12</td><td>70–84</td><td>Concentrado en el ganador post-checkpoint</td></tr>
+            <tr><td>Sem 7</td><td>12–15</td><td>84–105</td><td>Concurso + Reseña destacada</td></tr>
+            <tr><td>Sem 8</td><td>15</td><td>105</td><td>Semana de descargas</td></tr>
+            <tr><td>Sem 9</td><td>15</td><td>105</td><td>Push + colab pesada</td></tr>
+            <tr><td>Sem 10</td><td>0</td><td>0</td><td>Cierre orgánico</td></tr>
+            <tr class="plan-table-total"><td><strong>Total</strong></td><td>—</td><td><strong>~480–570</strong></td><td>Ajustable a la baja sin tocar sem 7–9</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="plan-section">
+        <div class="plan-kicker">08 · Riesgos</div>
+        <h2 class="plan-h2">Qué puede romper el plan, y qué hacemos si pasa.</h2>
+        <table class="plan-table">
+          <thead><tr><th>Riesgo</th><th>Mitigación</th></tr></thead>
+          <tbody>
+            <tr><td>Las 3 features de producto se atrasan más de 2 sem.</td><td>Marketing en paralelo no se detiene. El launch se posterga, no se hace a medias.</td></tr>
+            <tr><td>No conseguimos 5–8 curadores firmados antes del launch.</td><td>Sem 2 con &lt;4 cerrados → posponer launch 1 semana antes que arrancar débil.</td></tr>
+            <tr><td>Curadores no postean después del launch.</td><td>Contrato verbal claro de cadencia, check-in semanal, "curador del mes" como zanahoria.</td></tr>
+            <tr><td>3.000–4.000 seguidores se vuelve agresivo igual.</td><td>Sem 6 checkpoint duro. Si va &lt;1.500, redirigir todo el budget al ganador.</td></tr>
+            <tr><td>Followers vacíos por sorteos.</td><td>No hacer follow+tag. Solo sorteos atados a aportes reales.</td></tr>
+            <tr><td>Quemar los pocos aliados existentes.</td><td>Empezar con 2–3, rotar, pedir poco (un repost), dar mucho (feature en app + IG).</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="plan-section plan-closing">
+        <div class="plan-kicker">09 · Por qué este plan funciona</div>
+        <h2 class="plan-h2">No estamos comprando atención. Estamos construyendo confianza.</h2>
+        <p>El silencio de 2 semanas, lejos de ser una pérdida, juega a favor: el primer post post-silencio captura más atención algorítmica si es grande, no si es un reel suelto. El hard launch <em>es</em> el evento.</p>
+        <p>Cada decisión del plan se ancla en el mismo principio: <strong>la guía la construye la gente que sale</strong>. Los curadores son la primera capa, los aportes de usuarios son la segunda, y Baffé es la plataforma que los hace visibles. Cuando esto funciona, no necesitamos pelear contra Google Maps — somos algo distinto.</p>
+        <p class="plan-signature">Mes 3 lo decidimos con datos, no con corazonadas. Hasta entonces, ejecutar.</p>
+      </section>
+
+    </article>
   </div>
 
 </main>
