@@ -532,6 +532,27 @@ var DEFAULT_PILLARS = [
   { id: 'det',  label: 'Detrás de escena', color: '#9B3060' }
 ];
 
+var DEFAULT_CHANNELS = [
+  'Instagram',
+  'TikTok',
+  'En la app',
+  'Newsletter',
+  'WhatsApp'
+];
+
+var DEFAULT_FORMATS = [
+  'Reel/TikTok',
+  'Carrusel',
+  'Post + stories',
+  'Story',
+  'Repost UGC',
+  'Template TikTok',
+  'Template carrusel',
+  'Template stories',
+  'Tarea interna',
+  'CTA recurrente'
+];
+
 // IDs del plan rechazado 2026-05-07 (influencer-centric).
 // Se borran de Firestore en migración one-shot — ver firebase-init.js cleanupRejectedPieces().
 var REJECTED_PIECE_IDS = [
