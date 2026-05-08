@@ -3,8 +3,9 @@
 // ============================================================
 function renderCards() {
   var grid = document.getElementById('cardsGrid');
+  if (!grid) return;
   var items = state.pieces.filter(function(p) { return state.showArchived || !p.archived; });
-  if (state.filterPilar !== 'all') items = items.filter(function(c) { return c.pilar === state.filterPilar; });
+  if (state.filterPilar !== 'all') items = items.filter(function(c) { return pilarMatches(c.pilar, state.filterPilar); });
   if (state.filterStatus !== 'all') items = items.filter(function(c) { return (c.status || 'idea') === state.filterStatus; });
 
   document.getElementById('cardCount').textContent = items.length + ' piezas';
@@ -23,21 +24,22 @@ function renderCards() {
   }
 
   grid.innerHTML = items.map(function(item) {
-    var p = getPillar(item.pilar);
+    var stripe = pilarPrimaryColor(item.pilar);
     var status = item.status || 'idea';
     var updatedLine = item.updatedBy && item.updatedBy !== 'seed'
       ? '<span style="font-size:11px;color:var(--ink3);margin-left:6px;">· editado por ' + escapeHtml(item.updatedBy) + ' ' + relTime(item.updatedAt) + '</span>'
       : '';
     var refCount = (item.refs || []).length;
+    var channels = parseList(item.channel);
+    var formats = parseList(item.format);
+    var chHtml = channels.map(function(c) { return '<span class="channel-tag">' + escapeHtml(c) + '</span>'; }).join('');
+    var fmtHtml = formats.map(function(f) { return '<span class="format-tag">' + escapeHtml(f) + '</span>'; }).join('');
     return '' +
-      '<div class="content-card ' + (item.archived ? 'card-archived' : '') + '" data-pilar="' + item.pilar + '">' +
-        '<div class="card-stripe" style="background:' + p.stripe + '"></div>' +
+      '<div class="content-card ' + (item.archived ? 'card-archived' : '') + '">' +
+        '<div class="card-stripe" style="background:' + stripe + '"></div>' +
         '<div class="card-body">' +
           '<div class="card-meta">' +
-            pillarTag(item.pilar) +
-            '<span class="channel-tag">' + escapeHtml(item.channel) + '</span>' +
-            '<span class="format-tag">' + escapeHtml(item.format) + '</span>' +
-            statusPill(status) +
+            pillarTag(item.pilar) + chHtml + fmtHtml + statusPill(status) +
           '</div>' +
           '<h3 class="card-title">' + escapeHtml(item.title) + updatedLine + '</h3>' +
           '<p class="copy-preview">' + escapeHtml(item.copy) + '</p>' +
@@ -55,69 +57,112 @@ function renderCards() {
 }
 
 // ============================================================
-// RENDER CALENDAR
+// RENDER CALENDAR (semanas × canales)
 // ============================================================
+function daysInMonth(year, month) { return new Date(year, month + 1, 0).getDate(); }
+
+function getMonthWeeks(year, month) {
+  var firstDay = new Date(year, month, 1);
+  var lastDay = new Date(year, month + 1, 0);
+  var weeks = [];
+  var ws = new Date(firstDay);
+  var dow = ws.getDay(); // 0=Sun..6=Sat
+  ws.setDate(ws.getDate() - ((dow + 6) % 7)); // back to Monday
+  ws.setHours(0, 0, 0, 0);
+  while (ws <= lastDay) {
+    var we = new Date(ws);
+    we.setDate(we.getDate() + 6);
+    we.setHours(23, 59, 59, 999);
+    weeks.push({ start: new Date(ws), end: new Date(we) });
+    ws.setDate(ws.getDate() + 7);
+  }
+  return weeks;
+}
+function shortDate(d) { return d.getDate() + ' ' + MONTH_NAMES[d.getMonth()].slice(0, 3); }
+
+// Día efectivo de una pieza (compat con CAMPAIGN_DAY_MAP).
+function getPieceDay(piece) {
+  var s = piece.calendarSlot;
+  if (!s) return null;
+  if (s.day) return s.day;
+  if (CAMPAIGN_DAY_MAP[piece.id] && CAMPAIGN_DAY_MAP[piece.id].month === s.month) {
+    return CAMPAIGN_DAY_MAP[piece.id].day;
+  }
+  if (s.week) return Math.min((s.week - 1) * 7 + 3, daysInMonth(s.year, s.month));
+  return null;
+}
+function getPieceMonth(piece) {
+  var s = piece.calendarSlot;
+  if (!s) return null;
+  if (CAMPAIGN_DAY_MAP[piece.id] && s.day == null) return CAMPAIGN_DAY_MAP[piece.id].month;
+  return s.month;
+}
+
 function renderCalendar() {
   var table = document.getElementById('calTable');
+  if (!table) return;
   var titleEl = document.getElementById('calTitle');
   if (titleEl) titleEl.textContent = MONTH_NAMES[state.calMonth] + ' ' + state.calYear;
   var mp = document.getElementById('calMonthPick'); if (mp) mp.value = String(state.calMonth);
   var yp = document.getElementById('calYearPick'); if (yp) yp.value = String(state.calYear);
-  var channels = ['Instagram', 'TikTok', 'En la app'];
-  var headers = [''].concat(channels);
-  var weeks = [1, 2, 3, 4];
 
-  var slotIndex = {};
+  var channels = getChannelNames();
+  if (!channels.length) channels = DEFAULT_CHANNELS;
+
+  var weeks = getMonthWeeks(state.calYear, state.calMonth);
+
+  // Construir entries: cada pieza visible se asocia a una fecha.
+  var entries = [];
   state.pieces.filter(function(p) { return p.calendarSlot && !p.archived; }).forEach(function(p) {
     var s = p.calendarSlot;
-    if (s.year !== state.calYear || s.month !== state.calMonth) return;
-    var k = s.week + '|' + s.channel;
-    if (!slotIndex[k]) slotIndex[k] = [];
-    slotIndex[k].push(p);
+    if (s.year !== state.calYear) return;
+    var month = getPieceMonth(p);
+    if (month !== state.calMonth) return;
+    var day = getPieceDay(p);
+    if (!day) return;
+    var date = new Date(state.calYear, state.calMonth, day, 12, 0, 0);
+    entries.push({ piece: p, date: date, day: day });
   });
 
-  table.innerHTML =
-    '<thead><tr>' + headers.map(function(h) { return '<th>' + h + '</th>'; }).join('') + '</tr></thead>' +
-    '<tbody>' +
-      weeks.map(function(w) {
-        return '<tr>' +
-          '<td><div class="cal-week-label">S' + w + '</div></td>' +
-          channels.map(function(ch) {
-            var k = w + '|' + ch;
-            var list = slotIndex[k] || [];
-            if (list.length === 0) {
-              return '<td><div class="cal-empty" onclick="quickAssign(' + w + ',\'' + ch + '\')">+ asignar</div></td>';
-            }
-            return '<td>' + list.map(function(p) {
-              var cfg = getPillar(p.pilar);
-              return '<div class="cal-cell-inner" onclick="openModal(\'' + p.id + '\')">' +
-                '<span class="pilar-tag" style="background:' + cfg.bg + ';color:' + cfg.color + ';font-size:10px;">' + escapeHtml(cfg.label) + '</span><br>' +
-                escapeHtml(p.title) +
-              '</div>';
-            }).join('') + '</td>';
-          }).join('') +
-        '</tr>';
-      }).join('') +
-    '</tbody>';
-}
+  // Header
+  var thead = '<thead><tr><th class="cal-week-col">Semana</th>' +
+    channels.map(function(c) { return '<th>' + escapeHtml(c) + '</th>'; }).join('') +
+    '</tr></thead>';
 
-function quickAssign(week, channel) {
-  var candidates = state.pieces.filter(function(p) {
-    if (p.archived) return false;
-    if (!p.calendarSlot) return true;
-    var s = p.calendarSlot;
-    return !(s.year === state.calYear && s.month === state.calMonth && s.week === week && s.channel === channel);
-  });
-  if (candidates.length === 0) { alert('No hay piezas disponibles.'); return; }
-  var list = candidates.map(function(p, i) { return (i+1) + '. ' + p.title; }).join('\n');
-  var choice = prompt(MONTH_NAMES[state.calMonth] + ' ' + state.calYear + ' — S' + week + ' / ' + channel + '\n\nElegí una pieza:\n\n' + list + '\n\nNúmero:');
-  var idx = parseInt(choice, 10) - 1;
-  if (isNaN(idx) || !candidates[idx]) return;
-  dbFs.collection('pieces').doc(candidates[idx].id).update({
-    calendarSlot: { year: state.calYear, month: state.calMonth, week: week, channel: channel },
-    updatedBy: state.user,
-    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-  });
+  var rows = weeks.map(function(week, wi) {
+    var weekEntries = entries.filter(function(e) { return e.date >= week.start && e.date <= week.end; });
+    var cells = channels.map(function(ch) {
+      var inCell = weekEntries.filter(function(e) {
+        var pieceChannels = parseList(e.piece.channel);
+        // si la pieza no tiene canal, fallback al canal del slot
+        if (!pieceChannels.length && e.piece.calendarSlot && e.piece.calendarSlot.channel) {
+          pieceChannels = [e.piece.calendarSlot.channel];
+        }
+        return pieceChannels.indexOf(ch) !== -1;
+      }).sort(function(a, b) { return a.day - b.day; });
+
+      if (!inCell.length) return '<td class="cal-week-cell"><span class="cal-empty-cell">—</span></td>';
+      var html = inCell.map(function(e) {
+        var p = e.piece;
+        var color = pilarPrimaryColor(p.pilar);
+        var bg = pilarPrimaryBg(p.pilar);
+        var tags = pillarTag(p.pilar);
+        var dateStr = e.day + ' ' + MONTH_NAMES[state.calMonth].slice(0, 3);
+        return '<div class="cal-item" style="background:' + bg + ';border-left-color:' + color + ';" onclick="openModal(\'' + p.id + '\')">' +
+          '<div class="cal-item-head"><span class="cal-item-tags">' + tags + '</span>' +
+          '<span class="cal-item-date">' + dateStr + '</span></div>' +
+          '<div class="cal-item-title">' + escapeHtml(p.title) + '</div>' +
+          '</div>';
+      }).join('');
+      return '<td class="cal-week-cell">' + html + '</td>';
+    }).join('');
+    return '<tr><td class="cal-week-col"><div class="cal-week-label">Semana ' + (wi + 1) + '</div>' +
+      '<div class="cal-week-dates">' + shortDate(week.start) + ' – ' + shortDate(week.end) + '</div></td>' +
+      cells + '</tr>';
+  }).join('');
+
+  table.innerHTML = thead + '<tbody>' + rows + '</tbody>';
+  table.className = 'cal-table cal-week-table';
 }
 
 function calPrev() {
@@ -144,13 +189,13 @@ function calPickYear(val) { state.calYear = parseInt(val, 10); renderCalendar();
 // ============================================================
 function filterPilar(val, btn) {
   document.querySelectorAll('.pfilter').forEach(function(b) { b.classList.remove('active'); });
-  btn.classList.add('active');
+  if (btn) btn.classList.add('active');
   state.filterPilar = val;
   renderCards();
 }
 function filterStatus(val, btn) {
   document.querySelectorAll('.sfilter').forEach(function(b) { b.classList.remove('active'); });
-  btn.classList.add('active');
+  if (btn) btn.classList.add('active');
   state.filterStatus = val;
   renderCards();
 }

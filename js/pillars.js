@@ -5,10 +5,10 @@ function subscribePillars() {
   dbFs.collection('pillars').orderBy('order', 'asc').onSnapshot(function(snap) {
     state.pillars = snap.docs.map(function(d) { return Object.assign({ id: d.id }, d.data()); });
     renderPillarFilters();
-    renderPillarSelect();
+    renderTaxonomyManager();
     renderCards();
     renderCalendar();
-    renderPillarManagerList();
+    if (state.currentId || state.isCreating) refreshModalChecklists();
   }, function(err) { console.error('[subscribe pillars]', err); });
 }
 
@@ -18,43 +18,62 @@ function renderPillarFilters() {
   var all = '<button class="pfilter all ' + (state.filterPilar==='all'?'active':'') + '" onclick="filterPilar(\'all\', this)">Todos</button>';
   var items = state.pillars.map(function(p) {
     var active = state.filterPilar === p.id;
-    return '<button class="pfilter" data-pid="' + p.id + '" style="border-color:' + p.color + ';color:' + (active?'#fff':p.color) + ';background:' + (active?p.color:'transparent') + ';" onclick="filterPilar(\'' + p.id + '\', this)">' + escapeHtml(p.label) + '</button>';
+    return '<button class="pfilter ' + (active?'active':'') + '" data-pid="' + p.id + '" style="border-color:' + p.color + ';color:' + (active?'#fff':p.color) + ';background:' + (active?p.color:'transparent') + ';" onclick="filterPilar(\'' + p.id + '\', this)">' + escapeHtml(p.label) + '</button>';
   }).join('');
   var manage = '<button class="pfilter" style="border-color:var(--ink3);color:var(--ink3);" onclick="openPillarManager()">⚙ Gestionar</button>';
   wrap.innerHTML = all + items + manage;
 }
 
-function renderPillarSelect() {
-  var sel = document.getElementById('modalPilar');
-  if (!sel) return;
-  var current = sel.value;
-  sel.innerHTML = state.pillars.map(function(p) {
-    return '<option value="' + p.id + '">' + escapeHtml(p.label) + '</option>';
-  }).join('');
-  if (current && state.pillars.find(function(p) { return p.id === current; })) sel.value = current;
-}
-
 function openPillarManager() {
   document.getElementById('pillarMgrOverlay').classList.add('open');
-  renderPillarManagerList();
+  renderTaxonomyManager();
 }
 function closePillarManager() {
   document.getElementById('pillarMgrOverlay').classList.remove('open');
 }
-function renderPillarManagerList() {
-  var list = document.getElementById('pillarMgrList');
-  if (!list) return;
-  list.innerHTML = state.pillars.map(function(p) {
-    var inUse = state.pieces.filter(function(x) { return x.pilar === p.id && !x.archived; }).length;
-    return '' +
-      '<div class="pmgr-item">' +
-        '<span class="pmgr-dot" style="background:' + p.color + '"></span>' +
-        '<span class="pmgr-label">' + escapeHtml(p.label) + '</span>' +
-        '<span class="pmgr-count">' + inUse + ' pieza' + (inUse===1?'':'s') + '</span>' +
-        '<button class="btn-ghost" onclick="editPillar(\'' + p.id + '\')">Editar</button>' +
-        '<button class="btn-danger" onclick="deletePillar(\'' + p.id + '\')">Eliminar</button>' +
-      '</div>';
-  }).join('');
+
+function renderTaxonomyManager() {
+  // Pilares
+  var pillarList = document.getElementById('pillarMgrList');
+  if (pillarList) {
+    pillarList.innerHTML = state.pillars.map(function(p) {
+      var inUse = state.pieces.filter(function(x) { return pilarMatches(x.pilar, p.id) && !x.archived; }).length;
+      return '' +
+        '<div class="pmgr-item">' +
+          '<span class="pmgr-dot" style="background:' + p.color + '"></span>' +
+          '<span class="pmgr-label">' + escapeHtml(p.label) + '</span>' +
+          '<span class="pmgr-count">' + inUse + ' pieza' + (inUse===1?'':'s') + '</span>' +
+          '<button class="btn-ghost" onclick="editPillar(\'' + p.id + '\')">Editar</button>' +
+          '<button class="btn-danger" onclick="deletePillar(\'' + p.id + '\')">Eliminar</button>' +
+        '</div>';
+    }).join('') || '<p style="font-size:12px;color:var(--ink3);">Sin pilares.</p>';
+  }
+  // Canales
+  var chList = document.getElementById('channelMgrList');
+  if (chList) {
+    chList.innerHTML = (state.channels || []).map(function(c) {
+      var inUse = state.pieces.filter(function(x) { return listMatches(x.channel, c.name) && !x.archived; }).length;
+      return '' +
+        '<div class="pmgr-item">' +
+          '<span class="pmgr-label">' + escapeHtml(c.name) + '</span>' +
+          '<span class="pmgr-count">' + inUse + ' pieza' + (inUse===1?'':'s') + '</span>' +
+          '<button class="btn-danger" onclick="deleteChannelPrompt(\'' + c.id + '\',\'' + escapeHtml(c.name).replace(/'/g,"\\'") + '\',' + inUse + ')">Eliminar</button>' +
+        '</div>';
+    }).join('') || '<p style="font-size:12px;color:var(--ink3);">Sin canales.</p>';
+  }
+  // Formatos
+  var fmtList = document.getElementById('formatMgrList');
+  if (fmtList) {
+    fmtList.innerHTML = (state.formats || []).map(function(f) {
+      var inUse = state.pieces.filter(function(x) { return listMatches(x.format, f.name) && !x.archived; }).length;
+      return '' +
+        '<div class="pmgr-item">' +
+          '<span class="pmgr-label">' + escapeHtml(f.name) + '</span>' +
+          '<span class="pmgr-count">' + inUse + ' pieza' + (inUse===1?'':'s') + '</span>' +
+          '<button class="btn-danger" onclick="deleteFormatPrompt(\'' + f.id + '\',\'' + escapeHtml(f.name).replace(/'/g,"\\'") + '\',' + inUse + ')">Eliminar</button>' +
+        '</div>';
+    }).join('') || '<p style="font-size:12px;color:var(--ink3);">Sin formatos.</p>';
+  }
 }
 
 async function createPillar() {
@@ -90,11 +109,34 @@ async function editPillar(id) {
 async function deletePillar(id) {
   var p = state.pillars.find(function(x) { return x.id === id; });
   if (!p) return;
-  var inUse = state.pieces.filter(function(x) { return x.pilar === id && !x.archived; }).length;
+  var inUse = state.pieces.filter(function(x) { return pilarMatches(x.pilar, id) && !x.archived; }).length;
   if (inUse > 0) {
     alert('No podés eliminar "' + p.label + '" porque tiene ' + inUse + ' pieza(s) usándolo. Cambialas de pilar primero o archivalas.');
     return;
   }
   if (!confirm('¿Eliminar el pilar "' + p.label + '"?')) return;
   await dbFs.collection('pillars').doc(id).delete();
+}
+
+async function createChannelFromInput() {
+  var name = (document.getElementById('newChannelName').value || '').trim();
+  if (!name) return;
+  await addChannel(name);
+  document.getElementById('newChannelName').value = '';
+}
+async function deleteChannelPrompt(id, name, inUse) {
+  if (inUse > 0) { alert('No podés eliminar "' + name + '" — tiene ' + inUse + ' pieza(s) usándolo.'); return; }
+  if (!confirm('¿Eliminar el canal "' + name + '"?')) return;
+  await deleteChannel(id);
+}
+async function createFormatFromInput() {
+  var name = (document.getElementById('newFormatName').value || '').trim();
+  if (!name) return;
+  await addFormat(name);
+  document.getElementById('newFormatName').value = '';
+}
+async function deleteFormatPrompt(id, name, inUse) {
+  if (inUse > 0) { alert('No podés eliminar "' + name + '" — tiene ' + inUse + ' pieza(s) usándolo.'); return; }
+  if (!confirm('¿Eliminar el formato "' + name + '"?')) return;
+  await deleteFormat(id);
 }

@@ -23,9 +23,9 @@ async function savePiece() {
   if (!state.user) { changeName(); return; }
   var data = {
     title: document.getElementById('modalTitleInput').value.trim() || 'Sin título',
-    pilar: document.getElementById('modalPilar').value,
-    channel: document.getElementById('modalChannel').value,
-    format: document.getElementById('modalFormat').value.trim(),
+    pilar: readChecklistValue('modalPilarChecklist'),
+    channel: readChecklistValue('modalChannelChecklist'),
+    format: readChecklistValue('modalFormatChecklist'),
     status: document.getElementById('modalStatus').value,
     copy: document.getElementById('editTextarea').value,
     note: document.getElementById('editNoteInput').value,
@@ -79,13 +79,12 @@ async function toggleArchive() {
 // ============================================================
 async function saveSlot() {
   if (state.isCreating || !state.currentId) { alert('Guardá la pieza primero.'); return; }
-  var week = parseInt(document.getElementById('slotWeek').value, 10);
-  var channel = document.getElementById('slotChannel').value;
+  var day = parseInt(document.getElementById('slotDay').value, 10);
   var month = parseInt(document.getElementById('slotMonth').value, 10);
   var year = parseInt(document.getElementById('slotYear').value, 10);
-  if (!week || !channel || isNaN(month) || isNaN(year)) { alert('Elegí mes, año, semana y canal.'); return; }
+  if (!day || isNaN(month) || isNaN(year)) { alert('Elegí mes, año y día.'); return; }
   await dbFs.collection('pieces').doc(state.currentId).update({
-    calendarSlot: { year: year, month: month, week: week, channel: channel },
+    calendarSlot: { year: year, month: month, day: day },
     updatedBy: state.user,
     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
   });
@@ -98,8 +97,7 @@ async function clearSlot() {
     updatedBy: state.user,
     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
   });
-  document.getElementById('slotWeek').value = '';
-  document.getElementById('slotChannel').value = '';
+  document.getElementById('slotDay').value = '';
   flashSaved();
 }
 

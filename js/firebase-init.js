@@ -29,6 +29,49 @@ function setConnBadge(text, ok) {
 }
 
 // ============================================================
+// CLEANUP — Migración one-shot 2026-05-07 (rechazo plan influencer-centric)
+// Borra piezas seedeadas del plan viejo. Marca meta/migrations.letterboxd_2026_05_07.
+// ============================================================
+async function cleanupRejectedPieces() {
+  try {
+    var migDoc = await dbFs.collection('meta').doc('migrations').get();
+    if (migDoc.exists && migDoc.data().letterboxd_2026_05_07) return;
+
+    if (!Array.isArray(REJECTED_PIECE_IDS) || REJECTED_PIECE_IDS.length === 0) {
+      await dbFs.collection('meta').doc('migrations').set(
+        { letterboxd_2026_05_07: true, ranAt: firebase.firestore.FieldValue.serverTimestamp() },
+        { merge: true }
+      );
+      return;
+    }
+
+    console.log('[cleanup] borrando ' + REJECTED_PIECE_IDS.length + ' piezas del plan rechazado');
+    var batch = dbFs.batch();
+    var deleted = 0;
+    for (var i = 0; i < REJECTED_PIECE_IDS.length; i++) {
+      var id = REJECTED_PIECE_IDS[i];
+      var ref = dbFs.collection('pieces').doc(id);
+      var snap = await ref.get();
+      if (!snap.exists) continue;
+      // Solo borramos piezas seedeadas — no tocamos las creadas a mano por usuarios
+      if (snap.data().createdBy === 'seed') {
+        batch.delete(ref);
+        deleted++;
+      }
+    }
+    if (deleted > 0) await batch.commit();
+    console.log('[cleanup] borradas ' + deleted + ' piezas');
+
+    await dbFs.collection('meta').doc('migrations').set(
+      { letterboxd_2026_05_07: true, ranAt: firebase.firestore.FieldValue.serverTimestamp(), deleted: deleted },
+      { merge: true }
+    );
+  } catch (e) {
+    console.error('[cleanup] error', e);
+  }
+}
+
+// ============================================================
 // SEED (primera vez)
 // ============================================================
 async function seedIfEmpty() {

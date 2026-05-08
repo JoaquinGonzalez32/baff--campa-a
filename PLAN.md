@@ -1,190 +1,316 @@
-# Plan de Marketing Baffé — 10 semanas (2 producto + 6–8 marketing)
+# Baffé — Hub de contenido (mayo–julio 2026)
 
-## Context
+Hub de ideas de contenido para los próximos 3 meses. La estrategia operativa (calendario, outreach, KPIs, hitos) vive en el wiki: [[baffe-marketing-q2-2026]]. Este archivo es solo el **banco de ideas** y el **manual de qué/cómo grabamos**.
 
-Baffé es una app/web de descubrimiento de cafés y bares en Montevideo (React + Supabase + Mapbox), con foco en aportes de la comunidad. Hoy hay base chica en IG (100–500), descargas iniciales sin tracción, **silencio de 2 semanas en redes**, y se quiere en ~2 meses:
+---
 
-1. **3.000–4.000 seguidores reales** en Instagram (objetivo revisado a la baja, ver más abajo).
-2. Aumentar descargas en App Store / Play Store.
-3. Instalar la identidad de marca: "la guía hecha por los que salen en MVD".
-4. Activar a usuarios para que aporten locales, filtros, posts y reviews.
+## Norte (recordatorio de 30 segundos)
 
-Restricciones: solo MVD, presupuesto bajo (USD 100–500), equipo chico con capacidad de producir video, pocos contactos previos en la escena gastronómica.
+Baffé es **Letterboxd para cafés y bares**. Cada pieza de contenido pasa por el filtro:
 
-## Decisión central: estrategia de curadores verificados
+> ¿Esto premia escribir, curar o seguir gente con gusto interesante?
 
-Reemplaza al enfoque puramente nichado. La idea: **influencers chicos/medianos de MVD entran a la app como "curadores verificados"**, postean recomendaciones desde adentro, y sus comunidades los siguen *dentro* de Baffé. Esto:
+Si no, no entra. Sirve para descartar ideas que parecen "buen marketing" pero diluyen la identidad (sorteos por follow, influencers genéricos, content viral sin criterio).
 
-- Trae comunidad cálida ya formada (no follower frío).
-- Genera interacción real en muroSocial.
-- Refuerza el diferencial "comunidad/aportes" sin que la app deje de ser útil para descubrir lugares.
-- Convierte a cada curador en un canal de adquisición que se autoamplifica.
+---
 
-Los nichos del plan original siguen vigentes pero ahora se mapean a curadores: cada curador "encarna" un nicho (café de especialidad, remote workers, bares/after office). Mismo producto, 3 puertas de entrada, vehículadas por personas con audiencia.
+## Qué buscamos en estos 3 meses
 
-UGC fija (creator de la casa) **se difiere a mes 3**: tiene tensión con el diferencial de comunidad y el budget no banca algo serio. Decisión post-mes-2 con datos reales.
+| Mes | Barrio | Foco narrativo | Métrica principal |
+|-----|--------|----------------|-------------------|
+| **Mayo** (Pocitos) | Pocitos solo | "Mostrar que existe la app + perfil de quién está adentro" | MAU 250–400, banco visual semilla |
+| **Junio** (+ Cordón) | Pocitos + Cordón | "Las reseñas y los rankings empiezan a venir de la gente, no de nosotros" | MAU 800–1.200, 25 founding partners, cuponera viva |
+| **Julio** (+ Ciudad Vieja) | Pocitos + Cordón + Ciudad Vieja | "Densidad: en Pocitos hay X usuarios activos. Mostralos." | MAU 1.500–2.000, arranca cobro early adopters |
 
-## Cambios de producto previos (sem 0–2)
+Lo que **no** buscamos: descargas a cualquier costo, seguidores IG vacíos, viralidad sin densidad geográfica, contenido genérico de "los mejores cafés de Uruguay".
 
-Sin estos 3 cambios, empujar tráfico ahora pierde el efecto multiplicador de los curadores. Asumimos 1–2 semanas de trabajo de producto, y trabajo de marketing en paralelo durante esa ventana.
+---
 
-1. **Onboarding "seguí a estos curadores"** — al crear cuenta, mostrar 5–8 perfiles verificados con avatar + bio corta + botón seguir. Convierte cada usuario nuevo en follower automático del curador, que es el incentivo concreto que le ofrecemos al curador para sumarse.
-2. **Sección "Curadores" prominente en muroSocial** — carousel en home o tab dedicado. Hoy "seguir usuarios está oculto" → el feed social muere por falta de input.
-3. **Badge de verificado visible** en posts, reviews y feed. Es el incentivo de status que hace que un influencer quiera estar adentro.
+## Pilares de contenido (de [[baffe-campana]])
 
-Rol técnico nuevo: `verified_curator` separado de `verified_owner` en `profiles.role`.
+| Pilar | Color | Pregunta que responde | Frecuencia |
+|-------|-------|------------------------|------------|
+| 🟪 **Descubrimiento** | morado `#4A3F8A` | "¿Dónde voy?" | Lunes — TikTok + reel IG |
+| 🟧 **Cultura Baffé** | naranja `#C85A2A` | "¿Quién decide qué es bueno?" | Miércoles — carrusel IG |
+| 🟩 **Comunidad** | verde `#2E6B4F` | "¿Quién más está acá?" | Viernes — repost UGC + stories |
+| 🟥 **Detalle** | rosa `#9B3060` | "¿Quién hace esto?" | Domingo — TikTok hablado a cámara |
 
-## Trabajo en paralelo durante sem 0–2 (mientras se construye producto)
+---
 
-- **Reclutamiento de curadores** (cuello de botella real): identificar 8–12 candidatos, contactar, llamadas, cerrar 5–8 antes del lanzamiento. Esto solo ya consume 2 semanas. Si esto falla, el lanzamiento se posterga — no al revés.
-- **Producción de contenido base**: grabar primer batch de 8–10 reels de "30 cafés en 30 días" en 1–2 días de salida. Tener stock listo para el día 1.
-- **Identidad visual y plantillas**: paleta, tipografía de reels, plantillas de top 3 / mapa / curador del mes.
-- **Bio, highlights, links con UTM**: todo armado para el día de lanzamiento.
-- **Teaser pre-launch (sem 2)**: romper el silencio 4–5 días antes del hard launch con un post "se viene algo distinto". No revelar qué.
+## Banco de ideas — TikTok
 
-## Hard launch: el evento se fabrica, no se hereda
+TikTok es el canal de **adquisición principal** este Q2. Vertical, 15–45 seg, raw cuando se puede, voz nuestra antes que stock.
 
-Las 2 semanas de silencio quemaron cualquier momento natural. Por eso el lanzamiento de curadores **es** el evento. Funciona a favor: el primer post post-silencio captura más atención del algoritmo si es grande, no si es un reel suelto.
+### Formatos prioritarios (Pocitos primero)
 
-Día del hard launch (inicio sem 3):
-- Post fijado + reel de presentación de los curadores.
-- Los 5–8 curadores postean el mismo día con hashtag común (`#BaffeMVD` o similar).
-- 2 stories coordinadas a lo largo del día.
-- USD 30–50 de Meta Ads ese día puntual sobre el reel principal.
-- Cobertura: pedirle a 1–2 cuentas medianas no-curadoras (medios locales chicos, cuentas foodie) que mencionen.
+**1. "Encontré este café" — Descubrimiento puro (15–25s)**
+- Cámara en mano entrando al lugar.
+- Plano del mostrador, café siendo servido, detalle.
+- Voiceover: ubicación + 1 dato específico ("queda a 2 cuadras de Williman, abre 8am, tienen un cold brew con tónica que no probé en otro lado").
+- Cierre: pantalla de la app mostrando el venue.
+- **Filtro identidad**: no es "10 cafés que tenés que probar" — es **un** café con criterio.
 
-## Posicionamiento y voz
+**2. "Reseña en 30 segundos" — Comunidad/Cultura (20–30s)**
+- Joaco (o un reseñador invitado) cuenta a cámara qué le pareció un lugar específico.
+- Estructura fija: "Fui a X. Lo bueno: Y. Lo discutible: Z. Volvería para: W."
+- Termina con captura de la reseña dentro de Baffé + estrellas.
+- **Filtro identidad**: la opinión personal con argumento es el corazón de Letterboxd.
 
-- **Tagline operativo**: "La guía de cafés y bares de MVD hecha por los que salen."
-- **Diferencial**: la comunidad construye la guía. Cada review, foto y aporte se ve y se reconoce.
-- **Tono**: cercano, montevideano, humor seco. No corporativo, no influencer fake. Referencias locales (barrios, jergas).
+**3. "Top 3 de [barrio] para [momento]" — Cultura Baffé (30–45s)**
+- Cuts rápidos de 3 venues, cada uno con 1 frase de por qué entra al ranking.
+- "Top 3 cafés de Pocitos para laburar". "Top 3 bares de Pocitos para primera cita". "Top 3 desayunos abiertos antes de las 8".
+- Termina con captura del ranking en la app.
+- **Hitos compartibles**: micro-rankings barriales se republican mejor que rankings país.
 
-## Funnel objetivo
+**4. POV "Abrí la app" — Cómo mostramos la app (15–20s)**
+- Pantalla de celular grabando el flujo real: abre Baffé → mapa con clusters → tap en venue → reseñas → CTA.
+- Voiceover ultra corto: "Esto es Baffé".
+- **Variante**: misma idea pero filtrando ("filtro por abierto ahora + cerca + cafetería").
+- Frecuencia: 1 cada 2 semanas máximo. No abusar — la gente cansa rápido del screen recording.
+
+**5. Behind the scenes — Detalle (20–40s)**
+- Joaco grabando b-roll de un café, hablando a cámara mientras camina.
+- "Estoy yendo al 5to café del día, todos van al banco visual de Baffé."
+- "Hoy onboardé al primer founding partner de Cordón, mostremos cómo se ve."
+- Honesto, sin guion. Construye la narrativa de "uno hace esto, no una empresa fría".
+
+**6. "Esto NO es Baffé" — diferenciación (15–25s)**
+- Mostrar Google reviews / TripAdvisor con reseñas vacías ("Todo lindo!! 5⭐").
+- Cortar a una reseña real de Baffé con argumento.
+- "Por eso existe esto."
+- **Filtro identidad**: define por contraste sin atacar marcas. Una vez al mes.
+
+**7. Reacción a UGC — Comunidad (15–30s)**
+- Captura de una reseña real de un usuario, leída en cámara.
+- "Esto lo escribió @fulano sobre [venue]. Coincido / no coincido por X."
+- Refuerza el ciclo: reseñar → ser visto → escribir más.
+
+### Cosas que **no** vamos a hacer en TikTok
+
+- ❌ Trends de baile / lipsync genéricos.
+- ❌ "Adivina dónde estoy" — viral sin densidad.
+- ❌ "Tag a alguien que..." — engagement bait.
+- ❌ Listas de 10+ lugares sin criterio claro.
+- ❌ Videos sin barrio explícito en el copy.
+
+---
+
+## Banco de ideas — Reels IG
+
+Reel = TikTok pero más prolijo. Reusamos el material del lunes pero con corte más estético, música más calmada, y descripción más larga.
+
+- Mismo set de formatos prioritarios 1, 2, 3 (TikTok).
+- **Reel propio de Reels**: "carrusel narrado" — 5 fotos con texto on-screen y música, formato reel. Funciona bien para reseña visual.
+- Cross-post de TikTok solo si el formato lo permite (sin watermark visible). Ideal: editar la versión IG aparte.
+
+---
+
+## Banco de ideas — Carruseles IG
+
+Carrusel = el formato del pilar **Cultura Baffé**. Es donde mejor entra el "Letterboxd-ismo": ranking, opinión argumentada, curaduría.
+
+### Plantillas reutilizables
+
+**1. "Top 5 [categoría] de [barrio]"**
+- Slide 1: portada con número + barrio + categoría.
+- Slides 2–6: un venue por slide. Foto del lugar + frase corta de por qué entra.
+- Slide 7: cierre con CTA "Ranking completo y reseñas en la app".
+- Ejemplos: "Top 5 cafés para laburar en Pocitos", "Top 5 bares para primera cita en Cordón", "Top 5 desayunos para domingo lluvioso".
+
+**2. "Reseña destacada de la semana"**
+- Slide 1: foto del venue.
+- Slide 2: cita textual de la reseña (con permiso del autor).
+- Slide 3–4: foto del venue + foto del autor (o avatar Baffé).
+- Slide 5: CTA "Leé la reseña completa en Baffé / @usuario".
+- Reposte sistemático = el incentivo más barato y efectivo para que la gente escriba.
+
+**3. "Reseñador del mes"**
+- Slide 1: avatar + nombre + handle Baffé.
+- Slide 2: stats (cuántas reseñas, barrios cubiertos, top venue para él/ella).
+- Slide 3–5: 3 lugares que recomendó + por qué.
+- Slide 6: "Seguilo en Baffé".
+- **Por qué funciona**: convierte gusto demostrado en status. Es la versión Letterboxd del influencer — reconocemos curaduría, no audiencia.
+
+**4. "Mapa del barrio"**
+- Slide 1: ilustración/screenshot del mapa de Baffé filtrado a un barrio.
+- Slides 2–6: zoom a sub-zonas con los 2–3 venues marcados de cada zona.
+- Slide 7: "Abrí el mapa en la app".
+
+**5. "Detrás de un ranking"**
+- Slide 1: el ranking final.
+- Slides 2–4: criterios — qué pesó (precio, ambiente, café específico, horarios).
+- Slide 5: lo que quedó afuera y por qué.
+- Slide 6: "Si discrepás, escribí tu reseña en la app".
+- Pilar **Cultura Baffé** puro. Hace transparente el criterio editorial.
+
+**6. "Antes / después"** (mes 2–3)
+- Slide 1: "Pocitos en mayo: 0 reseñas en este café".
+- Slide 2: "Pocitos en julio: 12 reseñas, 4.3 promedio, escritas por X gente".
+- Slide 3+: muestras de las reseñas.
+- **Cómo mostramos progreso narrado**, no como métrica vanity.
+
+---
+
+## Cómo mostramos la app
+
+Regla: la app aparece **al final** de la pieza, no al principio. Primero el lugar / la persona / la opinión; después "esto vive en Baffé".
+
+### Recursos de captura
+
+- **Screen recording vertical** del celular real (iOS principalmente — el flujo se ve más limpio).
+- **Mockups estáticos**: capturas para carruseles, con borde de iPhone simple. Sin sobreproducir.
+- **Pantallas clave que vale la pena mostrar**:
+  - Mapa con clusters al hacer zoom en Pocitos.
+  - Filtro abierto-ahora + tipo de venue.
+  - Detalle de un venue con reseñas reales scrolleables.
+  - Perfil de un reseñador con sus reseñas.
+  - El acto de escribir una reseña (pantalla de input + estrellas + publicar).
+
+### Lo que **no** mostramos
+
+- ❌ Pantallas vacías (lugares sin reseñas todavía). Si mostramos un venue que recién se agrega, hacemos el "antes/después" honesto, no fingimos.
+- ❌ Pantallas de admin / dashboard interno.
+- ❌ Loading states largos.
+
+---
+
+## Cómo mostramos el progreso
+
+El progreso es contenido. La gente quiere ver que algo está pasando. Hitos narrados convierten + retienen.
+
+### Hitos para celebrar públicamente
+
+| Hito | Cómo mostrarlo |
+|------|----------------|
+| Reseña #100 | Story + post: cita textual de la #100, mención a quién la escribió. |
+| Founding partner #5, #10, #25 | Foto del local + breve historia + "ahora está adentro". |
+| Primer mes en Pocitos cerrado | Carrusel "Pocitos en mayo en números": cafés cubiertos, reseñas escritas, reseñadores activos. |
+| Cuponera viva (junio) | Reel mostrando un usuario real canjeando un cupón en un local founding. |
+| Apertura a Cordón | Story countdown + post de bienvenida con los primeros 5 venues del nuevo barrio. |
+| Reseñador con 10+ reseñas | Feature en carrusel "reseñador del mes". |
+| MAU 500 / 1.000 / 1.500 | Story sobria + post si es 1K. Sin globos ni confeti. Tono Letterboxd: "1.000 personas escribiendo sobre lo que comen y toman en MVD". |
+
+### Tracker visible (interno + opcional público)
+
+Mantener un sheet/Notion con:
+- Reseñas/sem
+- MAU semanal
+- Founding partners onboardeados
+- Posts publicados por pilar
+
+Versión pública opcional al final de cada mes: 1 carrusel con los números. Hace que la gente sienta que el barco se mueve.
+
+---
+
+## Banco de ideas — Stories diarias (15 min/día)
+
+Stories es donde vive la **conversación**. No requiere producción nueva — todo del banco visual.
+
+### Mix recomendado (semana tipo)
+
+- **Lunes**: clip del reel del día + encuesta ("¿Conocían?").
+- **Martes**: repost de UGC con crédito (foto/reseña de un usuario).
+- **Miércoles**: backstage del carrusel ("hoy publicamos top 5 X, contame cuál falta").
+- **Jueves**: pregunta abierta ("¿Cuál es el café de Pocitos al que más volvés?").
+- **Viernes**: "Lugar del día" — un venue + foto + 1 frase.
+- **Sábado**: outreach honesto ("hoy salgo a grabar / a hablar con 3 locales", "fui a X y me pasó esto").
+- **Domingo**: countdown a la pieza del domingo (Detalle / behind the scenes).
+
+### Tipos de sticker que sí usamos
+- Encuesta (A vs B), preguntas abiertas, slider, repost de menciones, link al venue en la app.
+
+### Tipos que evitamos
+- Cuestionario ("¿cuál soy?"), countdowns de descuento, GIFs ruidosos.
+
+---
+
+## UGC y reposts — el motor de comunidad
+
+El reposteo sistemático es la **moneda interna** del modelo Letterboxd. Cuesta cero y le dice a todos: "si escribís bien, te vemos".
+
+### Reglas
+
+1. Toda reseña con cuerpo (>2 oraciones, opinión argumentada) es candidata a repost.
+2. Pedimos permiso siempre por DM antes de subirla. "¿Te parece si la subimos al feed con tu @?"
+3. Crédito visible: avatar + handle Baffé + handle IG si lo dio.
+4. Mínimo 3 reposts/sem en stories, ≥1 al feed por semana.
+5. **No editamos las palabras del usuario**. Si hay typos, dejamos.
+6. Una vez al mes: post-resumen "las mejores reseñas del mes", carrusel.
+
+### Qué NO reposteamos
+- Reseñas de 1 línea ("muy bueno!!").
+- Fotos sin contexto.
+- Cualquier cosa de venues que no esté en la app todavía.
+
+---
+
+## Voz y tono
+
+- **Cercano, montevideano, humor seco**. Tutear, no hablar de "ustedes" salvo a un local en outreach.
+- **Argumentado**. No decimos "está re bueno", decimos "tienen el cold brew servido en copa de vino, suena raro pero funciona porque [razón]".
+- **Honesto sobre lo que no nos convence**. Una reseña 3.5/5 con argumento vale más que un 5/5 vacío.
+- **Sin corporativismo**. Nada de "estamos emocionados de anunciar". Sí: "salió esto, pruébenlo".
+- **Sin hedging**. "Creo que tal vez sea uno de los mejores" → "es de los 3 mejores de Pocitos para laburar".
+
+---
+
+## Producción operativa — qué grabás cada vez que salís
+
+**Regla del banco visual**: cada salida a un café/bar = mínimo 15 min grabando b-roll raw. Sin esto, el lunes-de-batch se queda sin material.
+
+### Checklist de cada visita
+
+- [ ] Plano del exterior + cartel.
+- [ ] Plano de entrada (POV caminando).
+- [ ] Mostrador / barra.
+- [ ] Detalle: café siendo servido, plato siendo apoyado, alguien escribiendo en notebook.
+- [ ] Mesa propia con la app abierta sobre la mesa (o el venue cargado).
+- [ ] 1 plano hablado a cámara: "Estoy en X, voy a probar Y".
+- [ ] 1 detalle único del lugar (algo que no se ve en otro café).
+- [ ] Opcional: filmar a Joaco escribiendo la reseña en vivo, en la app.
+
+### Estructura del banco visual (carpeta)
 
 ```
-IG content (curadores + Baffé) → bio link → landing con CTA "abrí en la app"
-→ descarga → onboarding con follow → primer aporte
+banco-visual/
+├── pocitos/
+│   ├── 2026-05-XX_nombre-cafe/
+│   │   ├── exterior_*.mp4
+│   │   ├── interior_*.mp4
+│   │   ├── detalle_*.mp4
+│   │   └── app_*.mp4
+├── cordon/
+└── ciudad-vieja/
 ```
 
-KPIs revisados:
-- Followers IG: 100–500 → 1.500 (sem 5) → 3.000–4.000 (sem 10).
-- Reach mensual: 200K (mes 1) → 400K (mes 2).
-- Descargas: medir con UTM en bio + comparar semana a semana, baseline +X.
-- Aportes/sem (locales nuevos + reviews + posts): ≥30 (sem 6) → ≥100 (sem 10).
-- Curadores activos posteando ≥1 vez/sem: 5–8 sostenidos.
+Naming consistente = editor (Joaco o quien sea) encuentra clips en 30 segundos.
 
-5K seguidores reales en este plazo y budget no es realista. Llegar a 3.500 con comunidad que aporta vale más que 5K vacíos por sorteos. Los 5K se cierran en mes 3.
+---
 
-## Cronograma alto nivel
+## Lo que NO entra al hub (decidido explícito)
 
-### Sem 0–2: Producto + trabajo en paralelo
-- Producto: implementar las 3 features (onboarding follow, sección curadores, badge).
-- Marketing: reclutar curadores, producir batch de reels, identidad visual, teaser pre-launch.
+- ❌ Estrategia de "5–8 influencers verificados" (rechazada 2026-05-07, ver [[baffe-marketing-q2-2026]]).
+- ❌ Features de producto nuevas para soportar contenido (rol `verified_influencer`, onboarding follow, badge separado). El badge "reseñador destacado" sale con un flag chico cuando lo necesitemos, no antes.
+- ❌ Meta Ads en mayo. Reevaluar en junio si el orgánico no levanta.
+- ❌ Sorteos por follow + tag. Sorteos solo atados a reseñar / agregar venue.
+- ❌ Eventos físicos en mayo. "Baffé Crawl" o similares pasan a evaluación junio/julio.
+- ❌ "Influencer pesado" contratado. No alinea con el filtro de identidad.
 
-### Sem 3: Hard launch + nicho café (curador #1 ancla)
-- Lanzamiento coordinado de curadores.
-- Arranca serie "30 cafés en 30 días" (1 reel/día).
-- Highlights IG: "Cómo aportar", "Curadores", "Top cafés", "FAQ".
+---
 
-### Sem 4–5: Activación de comunidad + remote workers
-- Campaña **"Sumá tu lugar"**: cada usuario que agregue un local entra en sorteo semanal (gift card de café, financiado por canje con un local aliado).
-- Reels formato "lugares para laburar en MVD" (curador remote workers al frente).
-- Meta Ads USD 5–10/día sobre reels que ya performaron orgánicamente. Nunca posts cold.
-- Reposteo sistemático de reviews/fotos de usuarios en IG con crédito.
+## Cross-references
 
-### Sem 6–7: Bares + UGC
-- Curador after office al frente.
-- **"Reseña destacada"**: las mejores reviews de la app se republican en IG con crédito.
-- Concurso: "Mostranos tu bar/café favorito de MVD" — etiquetan a Baffé en stories.
-- Subir ad spend a USD 10–15/día sobre los 2–3 reels con mejor performance.
+- [[baffe-marketing-q2-2026]] — plan operativo, calendario semanal, outreach, KPIs, hitos por mes.
+- [[baffe-campana]] — pilares de contenido (origen), modelo de datos del hub Firebase.
+- [[baffe-web]] — identidad y modelo de monetización.
+- [[query-2026-05-03-baffe-modelo-monetizacion]] — reasoning detrás del modelo Letterboxd.
 
-### Sem 8–9: Empuje final + descargas
-- "Semana de descargas": pinned post + bio + stories diarias con CTA explícito a la app.
-- Cada feature de la app en un reel ("¿Sabías que podés filtrar por X?").
-- 1 colab con un **influencer pesado** (no curador fijo, contratado para un push puntual).
-- Evento físico opcional si entra el budget: "Baffé Crawl" — recorrida de 3 cafés/bares aliados un sábado, gratis para los primeros 30 que descarguen e inscriban en la app.
+---
 
-### Sem 10: Postmortem + decisión sobre UGC fija
-- Qué nicho/curador convirtió mejor a descarga y a aporte.
-- Decidir si contratar UGC fija para mes 3 o seguir con rotación de curadores.
+## Próximo paso operativo
 
-## Curadores: criterios y oferta
-
-**Criterios de selección** (curados, no masivos — empezar con 5–8):
-- Audiencia entre 3K–30K, MVD, engagement real (no inflado).
-- Vertical claro: café de especialidad, remote/coworking, bares/after office.
-- Ya producen contenido relacionado con descubrir lugares.
-
-**Qué reciben** (no plata, sino canje estructural):
-- Badge verificado visible en la app.
-- Aparición destacada en onboarding de cada usuario nuevo.
-- Primer acceso a features.
-- Co-branding en posts de Baffé.
-- Stats privadas: "esta semana ganaste X seguidores en Baffé".
-- Eventualmente: feature "curador del mes" con push extra.
-
-**Qué les pedimos**:
-- 1–2 posts/semana en su perfil de Baffé (reviews, recomendaciones).
-- 1 mención cruzada/mes desde su IG personal hacia Baffé.
-- Participación en el hard launch coordinado.
-
-## Tácticas para activar aportes (objetivo #4)
-
-1. Visibilidad del aporte: cada aporte (local, review, foto) se ve en feed con avatar y nombre. Si no se ve hoy, es prioridad de producto.
-2. Reposteo sistemático: review larga o foto buena → repost en IG con crédito. El incentivo más barato y efectivo.
-3. Gamificación liviana: highlight de IG "Top aportadores del mes". No hace falta sistema completo.
-4. Sorteos atados a aportes reales, nunca a follow + tag.
-5. CTA fijo al final de cada reel: "¿Conocés un lugar que falta? Sumalo en Baffé."
-
-## Cadencia de contenido fija (sem 3 en adelante)
-
-- **Reels**: 5–6 por semana en feed.
-- **Stories**: ≥2 por día (reposts de curadores, encuestas, BTS, "lugar del día").
-- **Posts estáticos**: 1–2 por semana (carruseles top 3, mapas, "lugar de la semana").
-- **Reposteo de UGC**: ≥3 por semana en stories, ≥1 por semana al feed.
-- **CTA fijo cierre de reel**: "¿Conocés un lugar que falta? Sumalo en Baffé."
-
-## Resumen de gasto en ads (USD)
-
-| Semana | Diario | Total semana |
-|--------|--------|--------------|
-| Sem 3 | 30–50 (solo lunes 1) | 30–50 |
-| Sem 4 | 5–7 | 35–49 |
-| Sem 5 | 7–10 | 49–70 |
-| Sem 6 | 10–12 | 70–84 |
-| Sem 7 | 12–15 | 84–105 |
-| Sem 8 | 15 | 105 |
-| Sem 9 | 15 | 105 |
-| Sem 10 | 0 (cierre) | 0 |
-| **Total** | — | **~480–570** |
-
-Ajustar a la baja si el budget máximo es USD 500. Las primeras semanas son flexibles, sem 7–9 son las que más impacto tienen y conviene no tocar.
-
-## Riesgos y mitigación
-
-| Riesgo | Mitigación |
-|--------|------------|
-| Las 3 features de producto se atrasan más de 2 sem | Marketing en paralelo no se detiene; el lanzamiento se posterga, no se hace a medias |
-| No conseguimos 5–8 curadores firmados antes del launch | Si en sem 2 hay menos de 4 cerrados, posponer launch 1 semana antes que arrancar débil |
-| Curadores no postean después del launch | Contrato verbal claro de cadencia, check-in semanal, "curador del mes" como zanahoria |
-| 3.000–4.000 seguidores se vuelve agresivo igual | Sem 6 checkpoint duro: si va < 1.500, redirigir todo el budget al curador/reel ganador |
-| Followers vacíos por sorteos | No hacer follow+tag, solo sorteos atados a aportes reales |
-| Quemar a los pocos aliados existentes | Empezar con 2–3, rotar, pedir poco (un repost), dar mucho |
-
-## Verificación
-
-- **Semanal**: planilla con followers, reach, link clicks, descargas (UTM), aportes nuevos (DB), curadores activos. Revisar viernes.
-- **Sem 2**: ¿hay 5–8 curadores cerrados? ¿las 3 features están listas o cerca? Si no → posponer launch.
-- **Sem 6 (mid-marketing)**: checkpoint duro. Si followers < 1.500 o aportes/sem < 20, pivot: cortar el nicho que peor performa, doblar en el mejor.
-- **Sem 10**: postmortem. Decisión sobre UGC fija + escalar mejor nicho a mes 3.
-
-## Archivos / próximos pasos de producto antes de marketing
-
-Las 3 features que destraban el plan (referencia: `C:\dev\baffe\BAFFE\CLAUDE.md`):
-
-- **Rol `verified_curator`**: agregar a `profiles.role` (hoy soporta `user`, `admin`, `verified_owner`). Migración + update de policies + UI de admin para asignar.
-- **Onboarding con sugerencias de seguir**: pantalla post-signup en `src/pages/` con lista de curadores. Hook nuevo `useSuggestedCurators` que liste perfiles con `role = 'verified_curator'`.
-- **Sección "Curadores" en muroSocial**: carousel/tab.
-- **Badge visible**: componente reutilizable que se renderice en avatar/header de posts/reviews/perfil cuando `role = 'verified_curator'`.
-
-Estimación de esfuerzo realista: 1.5–2 semanas si es prioridad única. Si se hace en paralelo con otras cosas, pueden ser 3.
+1. **Esta semana (jueves 7 → domingo 11 mayo)**:
+   - Decidir si `CALENDARIO.md` se reescribe acorde al nuevo plan o se borra (el calendario operativo ya vive en wiki Q2).
+   - Primera salida a Pocitos con la checklist del banco visual.
+   - Listar 5 reseñadores con criterio (no influencers) para invitarlos a aportar reseñas con foco editorial.
+2. **Lunes 11 mayo**: arranca el primer bloque de producción con el banco semilla.

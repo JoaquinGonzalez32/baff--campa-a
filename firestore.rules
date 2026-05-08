@@ -1,0 +1,11 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Hub interno de equipo cerrado — acceso abierto.
+    // Riesgo aceptado: cualquiera con la URL puede leer/escribir.
+    // No publicar el link en redes (documentado en wiki [[baffe-campana]]).
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}

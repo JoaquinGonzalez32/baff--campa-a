@@ -25,7 +25,12 @@ document.addEventListener('keydown', function(e) {
   if (!initFirebase()) return;
   try {
     await seedPillarsIfEmpty();
+    await seedChannelsIfEmpty();
+    await seedFormatsIfEmpty();
     subscribePillars();
+    subscribeChannels();
+    subscribeFormats();
+    await cleanupRejectedPieces();
     await seedIfEmpty();
     subscribePieces();
   } catch (e) {

@@ -9,367 +9,544 @@ var PILLAR_CONFIG = {
 };
 
 // ============================================================
-// PIEZAS DE LA CAMPAÑA — 10 semanas (mayo–julio 2026)
-// Mapeo de semanas del plan al calendario (mes, semana 1–4):
-//   Sem 0 → Mayo S2     Sem 5 → Junio S3
-//   Sem 1 → Mayo S3     Sem 6 → Junio S4
-//   Sem 2 → Mayo S4     Sem 7 → Julio S1
-//   Sem 3 → Junio S1    Sem 8 → Julio S2
-//   Sem 4 → Junio S2    Sem 9 → Julio S3
-//                       Sem 10 → Julio S4
-// month index: Mayo=4, Junio=5, Julio=6
+// PIEZAS DE LA CAMPAÑA — Plan Letterboxd (mayo–julio 2026)
+//
+// Reorientado el 2026-05-07. Plan anterior (influencer-centric) rechazado.
+// Norte: Letterboxd para cafés y bares. Foco geográfico Pocitos → Cordón →
+// Ciudad Vieja. Motor = reseñadores con criterio, no influencers por audiencia.
+// Estrategia operativa en wiki [[baffe-marketing-q2-2026]].
+// Hub de contenido en PLAN.md.
+//
+// month index: Mayo=4, Junio=5, Julio=6 (JS Date convention).
 // ============================================================
 var INITIAL_CONTENT = [
 
-  // ============== SEM 2 — TEASER PRE-LAUNCH ==============
+  // ============== SETUP — Mayo sem 1 (interno, no público) ==============
   {
-    id: 'camp_teaser_1',
-    pilar: 'det',
-    channel: 'Instagram',
-    format: 'Post + story',
-    title: 'Teaser pre-launch — "se viene algo distinto"',
-    copy: `Post (jueves 28 may, rompe el silencio de redes):\n\n"Estuvimos quietos. Estábamos construyendo.\n\nLa semana que viene Baffé deja de ser una app de descubrimiento más — y se vuelve la guía de cafés y bares de MVD hecha por los que salen.\n\nEl lunes lo vas a entender."\n\nStory complementaria:\n— Imagen oscura, logo Baffé centrado.\n— Texto: "Lunes 1/6. Algo nuevo." + countdown sticker hacia el lunes.`,
-    note: 'No revelar curadores todavía. El misterio es parte del gancho. La cuenta lleva 2 semanas en silencio — el primer post post-silencio captura más atención algorítmica si es grande, no si es un reel suelto.',
-    calendarSlot: { year: 2026, month: 4, week: 4, channel: 'Instagram' }
-  },
-  {
-    id: 'camp_teaser_2',
-    pilar: 'det',
-    channel: 'Instagram',
-    format: 'Story',
-    title: 'Teaser día 2 — countdown',
-    copy: `Story (viernes 29 may):\n\n— Foto en blanco y negro de un café/bar de MVD, sin nombre visible.\n— Texto: "Faltan 3 días."\n— Sticker countdown.\n— En segunda story: encuesta "¿Adivinás qué se viene?" con opciones absurdas + una pista real.`,
-    note: 'Mantener el misterio pero mostrar movimiento. La encuesta sirve para que los seguidores que ya están se enganchen y comenten.',
-    calendarSlot: { year: 2026, month: 4, week: 4, channel: 'Instagram' }
-  },
-  {
-    id: 'camp_teaser_3',
-    pilar: 'det',
-    channel: 'Instagram',
-    format: 'Story sneak peek',
-    title: 'Teaser día 3 — sneak peek de un curador',
-    copy: `Story (sábado 30 may):\n\n— Foto borrosa o silueta de un curador (uno de los firmados).\n— Texto: "El lunes te presentamos a la gente que va a recomendar dónde tomar café y dónde salir en MVD."\n— Sticker countdown 2 días.\n\nDomingo: confirmación interna con todos los curadores de coordinación para el lunes.`,
-    note: 'Recién acá empieza a soltarse la idea de "curadores". El sneak peek con cara borrosa genera curiosidad sin spoiler completo.',
-    calendarSlot: { year: 2026, month: 4, week: 4, channel: 'Instagram' }
-  },
-
-  // ============== SEM 3 — HARD LAUNCH ==============
-  {
-    id: 'camp_hardlaunch_reel',
-    pilar: 'com',
-    channel: 'Instagram',
-    format: 'Reel principal',
-    title: 'HARD LAUNCH — reel de presentación de curadores',
-    copy: `Reel (lunes 1 jun, ~45 seg):\n\nEstructura:\n— [0–3s] Hook: "MVD tiene cientos de cafés y bares. Estos 6 te van a decir cuáles importan."\n— [3–25s] Presentación rápida de cada curador: nombre, vertical (café de especialidad / remote / bares), 1 lugar que ya recomendaron en Baffé.\n— [25–40s] Voz off: "Baffé es la guía hecha por la gente que sabe. Seguilos adentro de la app."\n— [40–45s] CTA: "Link en bio. Bajate Baffé y empezá a seguirlos."\n\nMúsica: track instrumental MVD/uruguayo si entra, sino algo cálido tipo café/tarde.`,
-    note: 'El reel ES el evento. USD 30–50 de Meta Ads ese día puntual sobre este video, no sobre los demás. Cada curador hace su propio post el mismo día con el hashtag #BaffeMVD.',
-    calendarSlot: { year: 2026, month: 5, week: 1, channel: 'Instagram' }
-  },
-  {
-    id: 'camp_hardlaunch_post',
-    pilar: 'det',
-    channel: 'Instagram',
-    format: 'Post fijado',
-    title: 'HARD LAUNCH — post fijado de manifiesto',
-    copy: `Post fijado (lunes 1 jun):\n\n"Hoy Baffé deja de ser una app más.\n\nMontevideo no necesita otro Google Maps. Necesita una guía hecha por los que ya saben dónde se toma el mejor café, dónde se puede laburar tranquilo, y dónde se baja un after office bien.\n\nDesde hoy, 6 curadores verificados arman esa guía con nosotros, dentro de la app. Vas a poder seguirlos, ver lo que recomiendan en tiempo real, y sumar lo tuyo.\n\nBajate Baffé. Seguí a los curadores. Si conocés un lugar que falta, sumalo — los aportes se ven, con tu nombre.\n\n🔗 en bio.\n#BaffeMVD"`,
-    note: 'Post fijado durante toda la sem 3. Es el "documento de identidad" de la marca para cualquiera que llegue al perfil esta semana.',
-    calendarSlot: { year: 2026, month: 5, week: 1, channel: 'Instagram' }
-  },
-  {
-    id: 'camp_hardlaunch_stories',
-    pilar: 'com',
-    channel: 'Instagram',
-    format: 'Stories coordinadas',
-    title: 'HARD LAUNCH — stories del día',
-    copy: `Stories (lunes 1 jun, espaciadas durante el día):\n\n10am — "Hoy es el día. Bajate Baffé." + link app.\n2pm — Repost del primer curador que postee desde su cuenta personal mencionando Baffé.\n4pm — Story con métricas del día ("X descargas en 6h" si aplica) o frase de uno de los curadores.\n7pm — Cierre del día: "Esto recién empieza. Mañana arrancamos con #30CafesEn30Dias."\n\nRepostear todas las menciones de los 6 curadores cuando posteen.`,
-    note: 'La cadencia importa. No tirar todas las stories juntas — espaciarlas durante el día simula movimiento orgánico.',
-    calendarSlot: { year: 2026, month: 5, week: 1, channel: 'Instagram' }
-  },
-  {
-    id: 'camp_30cafes_serie',
-    pilar: 'desc',
-    channel: 'Instagram',
-    format: 'Reel diario (serie)',
-    title: '"30 cafés en 30 días" — serie de reels',
-    copy: `Serie de 30 reels cortos (15–25 seg cada uno), uno por día, mismo formato fijo:\n\nEstructura única:\n— [0–2s] Hook visual: zoom al café/lugar.\n— [2–10s] Nombre + barrio + 1 línea ("¿por qué este?").\n— [10–18s] Detalle clave: tipo de café, ambiente, precio, horarios.\n— [18–22s] Captura de cómo se ve en Baffé.\n— [22–25s] CTA fijo: "¿Conocés un lugar que falta? Sumalo en Baffé."\n\nArranca martes 2 de junio. 1 por día durante 30 días — termina en sem 7.\n\nGrabar en batches de 8–10 reels por salida (sábados de grabación).`,
-    note: 'Esta es la columna vertebral del contenido orgánico. Mismo formato repetido = velocidad de producción + reconocimiento de marca. NO improvisar formato cada día.',
-    calendarSlot: { year: 2026, month: 5, week: 1, channel: 'Instagram' }
-  },
-
-  // ============== REELS — FORMATOS REUTILIZABLES ==============
-  {
-    id: 'camp_reel_top3',
-    pilar: 'desc',
-    channel: 'Instagram',
-    format: 'Reel template',
-    title: 'Formato: "Top 3 cafés/bares para [X]"',
-    copy: `Template reutilizable. Variantes:\n\n"Top 3 cafés para laburar en MVD"\n"Top 3 bares para after office en Pocitos"\n"Top 3 lugares para una primera cita"\n"Top 3 cafés escondidos en Ciudad Vieja"\n\nEstructura (~30 seg):\n— Hook: "Si querés [X], estos 3 lugares en MVD."\n— 3 cards visuales (8 seg c/u): foto + nombre + barrio + 1 razón.\n— Cierre: "Todos están en Baffé. Link en bio."\n\nMínimo 1 por semana.`,
-    note: 'Top 3 es el formato más performante en IG en este nicho. Mantener visual consistente: misma plantilla, misma tipografía, mismas transiciones.',
-    calendarSlot: { year: 2026, month: 5, week: 1, channel: 'Instagram' }
-  },
-  {
-    id: 'camp_reel_cafe_escondido',
-    pilar: 'desc',
-    channel: 'Instagram',
-    format: 'Reel template',
-    title: 'Formato: "Café/bar escondido"',
-    copy: `Template reutilizable. Foco en lugares poco conocidos:\n\nEstructura (~20 seg):\n— Hook: "Está a 2 cuadras de [punto conocido] y casi nadie lo conoce."\n— Plano caminando hacia el lugar (POV).\n— Entrada: "Adentro:" + planos del ambiente, café/trago, gente.\n— Cierre: nombre + barrio + horarios + "lo subimos a Baffé hoy."\n\nIdeal para curador de café de especialidad.`,
-    note: 'El POV caminando funciona muy bien — genera la sensación de descubrimiento. No grabar el lugar como un comercial, grabarlo como si vos estuvieras llegando por primera vez.',
-    calendarSlot: { year: 2026, month: 5, week: 2, channel: 'Instagram' }
-  },
-  {
-    id: 'camp_reel_probamos',
-    pilar: 'desc',
-    channel: 'TikTok',
-    format: 'Reel template',
-    title: 'Formato: "Probamos X"',
-    copy: `Template reutilizable. Reseña honesta a cámara:\n\nEstructura (~30 seg):\n— "Probamos el café de [lugar]."\n— Reseña honesta: qué vale la pena, qué no.\n— Precio explícito.\n— Veredicto: "vale / no vale / depende."\n— Cierre: "Lo encontrás en Baffé."\n\nFunciona mejor en TikTok que en IG por el formato hablado.`,
-    note: 'La honestidad es el formato. Si todo es 10/10, nadie te cree. Si decís "el café estaba flojo pero el ambiente compensa" — te cree. Esa es la voz Baffé.',
-    calendarSlot: { year: 2026, month: 5, week: 2, channel: 'TikTok' }
-  },
-  {
-    id: 'camp_reel_mapa_rapido',
-    pilar: 'desc',
-    channel: 'Instagram',
-    format: 'Reel template',
-    title: 'Formato: "Mapa rápido de [zona/vibe]"',
-    copy: `Template reutilizable. Mapa visual:\n\nEstructura (~20 seg):\n— Mapa de MVD con pines animados.\n— "5 cafés en Pocitos para tomar algo solo." (o variante)\n— Cada pin se expande con foto + nombre.\n— Cierre: captura de la app Baffé con el mismo mapa.\n— "Filtralos vos en Baffé."\n\nPerfecto para mostrar el feature de mapa de la app.`,
-    note: 'Este formato cumple doble función: contenido útil + demo del producto sin que se note como demo. Hacer al menos 1 por mes por zona/vibe.',
-    calendarSlot: { year: 2026, month: 5, week: 2, channel: 'Instagram' }
-  },
-
-  // ============== SEM 4 — SUMÁ TU LUGAR + REMOTE WORKERS ==============
-  {
-    id: 'camp_suma_lanzamiento',
-    pilar: 'com',
-    channel: 'Instagram',
-    format: 'Post + reel',
-    title: '"Sumá tu lugar" — lanzamiento de campaña',
-    copy: `Lanzamiento martes 9 jun:\n\nPost:\n"En MVD hay cafés y bares que no están en ningún lado. Los conocen 30 personas y se mantienen así.\n\nQueremos cambiar eso — pero no lo podemos hacer solos.\n\nDesde hoy: cada usuario que sume un local nuevo a Baffé entra automáticamente en el sorteo semanal de una gift card de café (cortesía de [aliado]).\n\nNo hay 'follow + tag'. Hay aportes reales. Tu nombre queda en el local que sumás."\n\nReel acompañante: tutorial de 15 seg de cómo agregar un local en la app.\n\nCTA: "Bajate Baffé. Sumá tu favorito. Esta semana, vos elegís qué se ve."`,
-    note: 'La gift card es canjeada con un local aliado, no comprada. Sostenible y refuerza la red de aliados. Importante: sorteo atado a aporte real, NUNCA a follow + tag.',
-    calendarSlot: { year: 2026, month: 5, week: 2, channel: 'Instagram' }
-  },
-  {
-    id: 'camp_suma_app_banner',
-    pilar: 'com',
-    channel: 'En la app',
-    format: 'Banner',
-    title: '"Sumá tu lugar" — banner en la app',
-    copy: `Banner en home de la app durante sem 4 y 5:\n\n"¿Conocés un lugar que falta?\nSumá tu local favorito antes del viernes y entrá al sorteo semanal.\n[Botón: Sumar local] [link: Ver bases]"\n\nDespués del sorteo (lunes), cambiar copy a "Esta semana ganó [usuario]. ¿Cuál sumás vos?"`,
-    note: 'El banner en la app cierra el loop entre marketing IG y producto. Sin esto, el usuario que llega de IG no ve la campaña al abrir.',
-    calendarSlot: { year: 2026, month: 5, week: 2, channel: 'En la app' }
-  },
-  {
-    id: 'camp_suma_sorteo_1',
-    pilar: 'com',
-    channel: 'Instagram',
-    format: 'Story + post',
-    title: '"Sumá tu lugar" — primer sorteo (viernes 12 jun)',
-    copy: `Stories (viernes 12 jun):\n\n— "Llegó el primer sorteo de #SumáTuLugar."\n— Lista visual de los locales sumados esta semana (con nombre del usuario que lo sumó).\n— "Ganó: [nombre del usuario]. Por sumar [nombre del local], que ahora está en Baffé."\n— "El próximo viernes hay otra. Esta semana se sumaron 27 locales nuevos. ¿Cuál falta?"\n\nPost en feed: foto del local ganador + "Lo sumó [usuario]. Ahora está en Baffé. Buscalo."`,
-    note: 'Mostrar el número real de locales sumados refuerza el efecto comunidad. Si son 5, ponelo igual. La transparencia construye más confianza que el inflado.',
-    calendarSlot: { year: 2026, month: 5, week: 2, channel: 'Instagram' }
-  },
-  {
-    id: 'camp_remote_carrusel',
-    pilar: 'desc',
-    channel: 'Instagram',
-    format: 'Carrusel',
-    title: 'Carrusel: "5 cafés para laburar en MVD"',
-    copy: `Carrusel (sem 4):\n\nSlide 1: "5 cafés para laburar en MVD" + foto.\nSlide 2–6 (uno por café):\n— Foto del lugar.\n— Nombre + barrio.\n— ¿WiFi? ¿enchufes? ¿ruido? ¿espacio?\n— Precio del café promedio.\n— Captura de cómo se ve en Baffé.\nSlide 7: "Todos están en Baffé. Filtrá por 'para laburar' y los encontrás."\n\nCurador remote workers al frente — co-firma el carrusel.`,
-    note: 'El carrusel detallado funciona porque es referencia útil real, no influencer aesthetic. La gente lo guarda. Guardado > like en IG.',
-    calendarSlot: { year: 2026, month: 5, week: 2, channel: 'Instagram' }
-  },
-  {
-    id: 'camp_remote_pov_tt',
-    pilar: 'desc',
-    channel: 'TikTok',
-    format: 'Reel POV',
-    title: 'POV: "Buscás dónde laburar un martes a la mañana"',
-    copy: `POV (sem 5, TikTok):\n\n"POV: son las 9am de un martes y necesitás un lugar para laburar 4 horas.\n\nNo querés Starbucks. No querés tu casa. Querés algo bueno."\n\n— Plano de mano abriendo Baffé.\n— Filtro: "para laburar" + "WiFi" + "abierto ahora" + zona Pocitos.\n— Aparecen 3 opciones.\n— Plano caminando hacia uno.\n— Entrada: lugar real, mesa, enchufe, café.\n— Texto final: "ya."\n\nMúsica: lo-fi.`,
-    note: 'TikTok premia el formato POV — funciona mejor que carrusel. Mostrar el flujo real de la app sin que parezca tutorial. Que se vea simple.',
-    calendarSlot: { year: 2026, month: 5, week: 3, channel: 'TikTok' }
-  },
-
-  // ============== SEM 5 — CONSOLIDACIÓN ==============
-  {
-    id: 'camp_curador_del_mes_jun',
-    pilar: 'com',
-    channel: 'En la app',
-    format: 'Feature destacado',
-    title: 'Feature "Curador del mes" — Junio',
-    copy: `Feature destacado en home de la app durante sem 5–6:\n\n— Banner: "Curador del mes — [Nombre]"\n— Foto + bio corta del curador.\n— Sus 5 lugares más recomendados.\n— Botón "Seguir en Baffé".\n— Botón "Ver perfil".\n\nEn IG: post anunciando el feature + reel del curador caminando por sus 3 lugares favoritos.`,
-    note: 'El "curador del mes" es la zanahoria que sostiene la motivación de los curadores. Rotación: empezar por el de café (sem 5–6), luego remote (sem 7–8), luego bares (sem 9–10).',
-    calendarSlot: { year: 2026, month: 5, week: 3, channel: 'En la app' }
-  },
-  {
-    id: 'camp_repost_ugc_template',
-    pilar: 'com',
-    channel: 'Instagram',
-    format: 'Repost UGC',
-    title: 'Plantilla: repost de aporte de usuario',
-    copy: `Plantilla reutilizable (~3 por semana en stories, 1 por semana al feed):\n\nFeed:\n— Foto/review del usuario en Baffé.\n— Texto: "[Usuario] sumó [local] a Baffé esta semana y dejó esta reseña. Buscalo."\n— Crédito explícito al usuario.\n\nStories:\n— Captura del aporte en la app.\n— Tag al usuario.\n— "Gracias [usuario]. Esto es exactamente para lo que está Baffé."\n\nMantener consistente la frase "Esto es exactamente para lo que está Baffé" — empieza a funcionar como mantra.`,
-    note: 'El UGC reposteado es el incentivo más barato y efectivo para sostener aportes. Cada repost es señal a otros usuarios: "lo que aportes se va a ver". Tratar a cada aportador como protagonista.',
-    calendarSlot: { year: 2026, month: 5, week: 3, channel: 'Instagram' }
-  },
-  {
-    id: 'camp_suma_sorteo_2',
-    pilar: 'com',
-    channel: 'Instagram',
-    format: 'Story + post',
-    title: '"Sumá tu lugar" — segundo sorteo (viernes 19 jun)',
-    copy: `Mismo formato que el primer sorteo (camp_suma_sorteo_1) pero:\n\n— Resaltar el crecimiento: "Hace 2 semanas teníamos X locales en Baffé. Hoy tenemos Y."\n— Mostrar 2 reseñas destacadas de la semana junto con el ganador.\n— "El sorteo sigue cada viernes. La app crece con vos."`,
-    note: 'A partir del 2do sorteo, mostrar el crecimiento agregado. La progresión visible es lo que hace que más gente se sume.',
-    calendarSlot: { year: 2026, month: 5, week: 3, channel: 'Instagram' }
-  },
-
-  // ============== SEM 6 — CHECKPOINT + BARES ==============
-  {
-    id: 'camp_bares_top_after',
-    pilar: 'desc',
-    channel: 'Instagram',
-    format: 'Carrusel',
-    title: 'Carrusel: "Top bares para after office"',
-    copy: `Carrusel (sem 6, lunes 22 jun):\n\nSlide 1: "Bares de MVD para after office. Sin pretensión, con buena cerveza."\nSlide 2–6: 5 bares con foto, barrio, hora pico, trago insignia, precio promedio.\nSlide 7: "Filtrá 'after office' en Baffé y aparecen estos + 20 más."\n\nCurador de bares al frente. Con su voz, no la nuestra.`,
-    note: 'Marca el inicio formal del nicho bares. La voz del curador toma el centro acá — Baffé pasa a ser plataforma, no autor.',
-    calendarSlot: { year: 2026, month: 5, week: 4, channel: 'Instagram' }
-  },
-  {
-    id: 'camp_bares_reel_curador',
-    pilar: 'com',
-    channel: 'Instagram',
-    format: 'Reel colab',
-    title: 'Reel colab — curador de bares en su lugar favorito',
-    copy: `Reel colab (sem 6, ~30 seg):\n\n— Curador entra a su bar favorito de MVD.\n— Pide su trago habitual.\n— Cuenta en 20 seg por qué este bar y no otro.\n— Mientras habla: fondo del bar, plano del trago, gente.\n— Cierre: "Lo seguís en Baffé. Y a otros 5 más como él."\n\nSubir desde la cuenta de Baffé Y desde la cuenta del curador, mismo día.`,
-    note: 'El co-post duplica reach sin duplicar producción. Coordinar día y hora con el curador para postear simultáneo.',
-    calendarSlot: { year: 2026, month: 5, week: 4, channel: 'Instagram' }
-  },
-  {
-    id: 'camp_checkpoint_interno',
+    id: 'lb_setup_banco_visual',
     pilar: 'det',
     channel: 'En la app',
     format: 'Tarea interna',
-    title: 'CHECKPOINT DURO mid-marketing — lunes 22 jun',
-    copy: `Tarea interna (no se publica, es decisión de equipo):\n\nRevisar números a fin de sem 5:\n— Followers: ¿> 1.500? Si no, ALERTA.\n— Aportes/sem: ¿> 20? Si no, ALERTA.\n— Curadores activos posteando: ¿≥ 5 sostenidos?\n— Descargas/sem: tendencia.\n\nDecisiones:\n— Si followers < 1.500 → cortar nicho que peor performa, redirigir 100% del budget al mejor reel/curador.\n— Si aportes < 20 → revisar si hay fricción en el flujo de "agregar local". Subir prioridad de UI fixes.\n— Si curadores < 5 activos → check-in 1:1 con los inactivos esta semana.`,
-    note: 'Esto NO se postea. Está en el hub para que el equipo lo vea y lo cierre como tarea cuando se haga la revisión.',
-    calendarSlot: { year: 2026, month: 5, week: 4, channel: 'En la app' }
-  },
-
-  // ============== SEM 7 — UGC + CONCURSO ==============
-  {
-    id: 'camp_resena_destacada',
-    pilar: 'com',
-    channel: 'Instagram',
-    format: 'Repost serie',
-    title: '"Reseña destacada" — lanzamiento de serie semanal',
-    copy: `Lanzamiento lunes 29 jun + serie semanal de aquí en adelante:\n\nFormato:\n— 1 review larga/buena de la app por semana.\n— Republicada en IG con: foto del lugar + texto de la review + crédito al usuario + 1 línea de Baffé.\n— Tagueo del usuario.\n— Stickers "Reseña destacada — Sem [X]".\n\nLanzamiento: post anunciando que arranca + primera reseña destacada.\n\n"Las mejores reseñas de Baffé empiezan a tener su lugar en el feed. Si la tuya es buena, la republicamos."`,
-    note: 'Esto incentiva calidad de review (no solo cantidad). Saber que las buenas se republican hace que la gente las escriba mejor. Sostenible: 1 por semana hasta sem 10 y después.',
-    calendarSlot: { year: 2026, month: 6, week: 1, channel: 'Instagram' }
+    title: 'Banco visual semilla — 30+ clips de Pocitos',
+    copy: `Tarea operativa (no se publica):\n\nObjetivo: tener 30+ clips raw de venues de Pocitos antes del primer batch de edición (lunes 11 may).\n\nCheck por venue:\n— Plano exterior + cartel.\n— POV entrando.\n— Mostrador / barra.\n— Detalle (café siendo servido, plato apoyado, alguien escribiendo).\n— Mesa propia con la app abierta.\n— 1 plano hablado a cámara.\n— 1 detalle único del lugar.\n\nGuardar en banco-visual/pocitos/YYYY-MM-DD_nombre-cafe/.`,
+    note: 'Sin banco visual, el lunes-de-batch se queda sin material. Esta tarea es bloqueante para todo el calendario de contenido.',
+    calendarSlot: { year: 2026, month: 4, week: 2, channel: 'En la app' }
   },
   {
-    id: 'camp_concurso_mostranos',
-    pilar: 'com',
-    channel: 'Instagram',
-    format: 'Concurso',
-    title: 'Concurso: "Mostranos tu favorito de MVD"',
-    copy: `Concurso de 1 semana (martes 30 jun → domingo 5 jul):\n\nMecánica:\n— Subí una story con tu café/bar favorito de MVD.\n— Etiquetá a @baffemvd y al lugar.\n— Usá #BaffeMVD.\n— Las 5 mejores van al feed con crédito + el ganador recibe canje en un local aliado.\n\nNo follow + tag. La acción real es: mostrar un lugar.\n\nPost de lanzamiento:\n"Mostranos qué lugar de MVD nadie debería pasar por alto.\nLas mejores stories de la semana van al feed de Baffé. Y un canje a quien la rompa."`,
-    note: 'El concurso es UGC en escala. La condición de "mostrar el lugar" filtra automáticamente a usuarios que valoran la app. Premio simbólico, alcanza con un canje de un aliado.',
-    calendarSlot: { year: 2026, month: 6, week: 1, channel: 'Instagram' }
-  },
-
-  // ============== SEM 8 — SEMANA DE DESCARGAS ==============
-  {
-    id: 'camp_descargas_pinned',
-    pilar: 'det',
-    channel: 'Instagram',
-    format: 'Post fijado + bio',
-    title: '"Semana de descargas" — pinned post + bio',
-    copy: `Sem 8 (6–12 jul):\n\nNuevo post fijado (reemplaza al de hard launch):\n"Si seguís a Baffé y todavía no tenés la app — esta es la semana.\n\nDe lunes a domingo te vamos a mostrar todo lo que podés hacer adentro: filtrar por mood, seguir curadores, sumar lugares, ver reseñas reales.\n\nEsta es la app que estábamos construyendo. Bajala.\n\n🔗 en bio."\n\nBio actualizada: "↓ Bajate Baffé esta semana ↓" + link directo a stores.`,
-    note: 'Cambio de tono: las primeras semanas fue identidad/comunidad. Esta semana es conversión pura. El usuario que llega ya conoce — solo necesita el empujón final.',
-    calendarSlot: { year: 2026, month: 6, week: 2, channel: 'Instagram' }
-  },
-  {
-    id: 'camp_descargas_features_reel',
-    pilar: 'desc',
-    channel: 'Instagram',
-    format: 'Reel feature',
-    title: 'Reels feature de la app — "¿Sabías que podés...?"',
-    copy: `Serie de 5 reels durante la semana de descargas (1 por día):\n\n1. "¿Sabías que podés filtrar por 'abierto ahora' + 'cerca tuyo'?"\n2. "¿Sabías que podés ver lo que recomiendan los curadores en tiempo real?"\n3. "¿Sabías que podés guardar lugares en colecciones tipo 'para una cita'?"\n4. "¿Sabías que podés sumar tu lugar favorito y aparece tu nombre?"\n5. "¿Sabías que podés filtrar por horarios nocturnos / pet-friendly / con WiFi?"\n\nFormato fijo: 15 seg, captura de pantalla animada de la app, voz off.`,
-    note: 'Mostrar features concretos > hablar de la app en abstracto. Cada reel responde una pregunta que el usuario potencial ya se hizo.',
-    calendarSlot: { year: 2026, month: 6, week: 2, channel: 'Instagram' }
-  },
-  {
-    id: 'camp_descargas_influencer_pesado',
-    pilar: 'com',
-    channel: 'Instagram',
-    format: 'Colab paga',
-    title: 'Colab con influencer pesado — push final',
-    copy: `Sem 8: 1 colab con un influencer mediano/grande de MVD (gastronomía, lifestyle MVD, foodie).\n\nDeliverables esperados:\n— 1 reel principal en su cuenta + repost en stories.\n— Mención clara de Baffé como "la guía hecha por curadores en MVD".\n— Tag a @baffemvd.\n\nFee: parte de los USD 100–500 de budget total. Negociar a cambio de canje + featured como "curador invitado del mes" si encaja.\n\nCerrar contrato y brief en sem 6.`,
-    note: 'Acá ya están validados los formatos que convierten — sabés qué mensaje y qué tono funciona. El influencer pesado amplifica algo probado, no experimenta.',
-    calendarSlot: { year: 2026, month: 6, week: 2, channel: 'Instagram' }
-  },
-
-  // ============== SEM 9 — BAFFÉ CRAWL ==============
-  {
-    id: 'camp_crawl_anuncio',
-    pilar: 'com',
-    channel: 'Instagram',
-    format: 'Post + stories',
-    title: 'Baffé Crawl — anuncio del evento',
-    copy: `Anuncio (lunes 13 jul, evento sábado 18 jul):\n\nPost:\n"El sábado 18 hacemos algo distinto.\n\nBaffé Crawl: una recorrida por 3 cafés/bares aliados de MVD, gratis para los primeros 30 que descarguen Baffé y se anoten en la app.\n\nLa idea: salir a probar lugares que recomiendan los curadores. Conocer gente que también está en Baffé. Tomar algo, charlar.\n\nNo es un evento de marca. Es una salida real con 30 personas.\n\n🔗 Inscripción en bio (dentro de la app)."\n\nStories diarias hasta el sábado: countdown + caras de los curadores que van.`,
-    note: 'Si el budget no banca (USD 100–150 para canjes con los 3 locales), saltar el evento. Pero si entra: genera UGC masivo para 2 semanas siguientes.',
-    calendarSlot: { year: 2026, month: 6, week: 3, channel: 'Instagram' }
-  },
-  {
-    id: 'camp_crawl_documentacion',
-    pilar: 'com',
-    channel: 'Instagram',
-    format: 'Reel + carrusel',
-    title: 'Baffé Crawl — documentación del evento',
-    copy: `Sábado 18 jul + domingo 19 jul:\n\nDurante el evento:\n— Stories en vivo desde cada parada.\n— Encuestas: "¿cuál fue tu favorito?"\n— Repost de stories de los participantes.\n\nPost-evento (lunes 20 jul):\n— Carrusel con fotos de las 3 paradas + caras + frases sueltas de participantes.\n— Reel de 30 seg con el resumen del día.\n— "Esto fue Baffé Crawl. Los 3 locales: [tags]. Las próximas también empiezan en la app — bajala si querés estar en la siguiente."`,
-    note: 'El contenido del evento se reusa durante TODA la sem 10. Documentar generoso: video, fotos, audio si entra.',
-    calendarSlot: { year: 2026, month: 6, week: 3, channel: 'Instagram' }
-  },
-
-  // ============== SEM 10 — CIERRE ==============
-  {
-    id: 'camp_recap_carrusel',
-    pilar: 'det',
-    channel: 'Instagram',
-    format: 'Carrusel build in public',
-    title: 'Recap de campaña — build in public',
-    copy: `Carrusel (sem 10, lunes 20 jul):\n\nSlide 1: "8 semanas de campaña Baffé en números."\nSlide 2: Followers: 100 → [X]. Reach total: [X]. Descargas: +[X].\nSlide 3: Curadores activos: [X]. Locales sumados por la comunidad: [X]. Reseñas: [X].\nSlide 4: "Lo que más nos sorprendió: [insight real]."\nSlide 5: "Lo que viene en mes 3: [feature/expansión]."\nSlide 6: "Si llegaste hasta acá, ya sos parte. Gracias."\n\nSubir incluso si los números son chicos. La transparencia construye más confianza que el silencio.`,
-    note: 'Build in public es coherente con la voz de marca y con el diferencial de comunidad. La gente que ve esto y se siente parte → engagement orgánico para mes 3.',
-    calendarSlot: { year: 2026, month: 6, week: 4, channel: 'Instagram' }
-  },
-  {
-    id: 'camp_postmortem_interno',
+    id: 'lb_setup_lista_venues',
     pilar: 'det',
     channel: 'En la app',
     format: 'Tarea interna',
-    title: 'POSTMORTEM completo — domingo 26 jul',
-    copy: `Tarea interna (no se publica):\n\nReunión de cierre. Preguntas a responder:\n\n1. Followers: ¿llegamos a 3.000–4.000? ¿Cuánto creció orgánico vs. ads?\n2. Descargas: tendencia. ¿Qué reel/colab convirtió más?\n3. Aportes: ¿qué incentivo funcionó mejor (sorteo, repost, curador del mes)?\n4. Curadores: ¿quién posteó más? ¿quién trajo más seguidores reales? ¿quién no funcionó?\n5. Nichos: ¿café, remote o bares converte mejor?\n\nDecisiones para mes 3:\n— Escalar el mejor nicho.\n— Cerrar 5K seguidores.\n— Decidir si contratar UGC fija (sí/no según datos).\n— Plan de retención: usuarios que descargaron en sem 3-4, ¿siguen activos?`,
-    note: 'Cierre formal de la campaña. Si esta tarea no se cierra con datos, no aprendiste nada. Apartar 2 horas de domingo y cerrarla con el equipo.',
-    calendarSlot: { year: 2026, month: 6, week: 4, channel: 'En la app' }
+    title: 'Lista priorizada de 50 venues',
+    copy: `Tarea de 1 hora bloque único:\n\n— 50 venues totales: 20 Pocitos / 15 Cordón / 15 Ciudad Vieja.\n— Mes 1 prioriza Pocitos.\n— 5 columnas de tracking: contactado → respondió → demo → onboarded → primer post.\n— Tiers: 🥇 founding (1-20) gratis perpetuo / 🥈 early (21-100) 50% off perpetuo / 🥉 posteriores tarifa estándar.\n\nLanding sheet en Notion o Google Sheets. Plantilla de mensaje canónica con [VARIABLES].`,
+    note: 'Speech canónico documentado en [[baffe-marketing-q2-2026]]. No improvisar copy por venue.',
+    calendarSlot: { year: 2026, month: 4, week: 2, channel: 'En la app' }
   },
   {
-    id: 'camp_cta_fijo_aportes',
+    id: 'lb_setup_retention',
+    pilar: 'det',
+    channel: 'En la app',
+    format: 'Tarea interna',
+    title: 'Medir retention D7 + MAU baseline',
+    copy: `Tarea de 5 min en Supabase:\n\nQueries:\n— MAU últimos 30 días.\n— Retention D7 (% usuarios de cohort día N que abrieron app día N+7).\n— Reseñas por usuario activo (north-star metric).\n\nSi retention < 20% → leaky bucket. Pausar adquisición y arreglar producto/onboarding antes de empujar marketing.`,
+    note: 'Sin este dato, escalar adquisición es a ciegas. Bloqueante #1 del Q2 según wiki.',
+    calendarSlot: { year: 2026, month: 4, week: 2, channel: 'En la app' }
+  },
+  {
+    id: 'lb_setup_android_live',
+    pilar: 'det',
+    channel: 'En la app',
+    format: 'Tarea interna',
+    title: 'Android live en Play Store',
+    copy: `Tarea operativa: 12 testers × 14 días para pasar de testing a live.\n\nMensaje a círculo cercano pidiendo testers. Setup tracking de descargas Android desde Play Console.`,
+    note: 'Sin Android live se pierde la mitad del mercado MVD. Bloqueante de Mayo sem 1.',
+    calendarSlot: { year: 2026, month: 4, week: 2, channel: 'En la app' }
+  },
+
+  // ============== TEMPLATES REUTILIZABLES — TikTok ==============
+  {
+    id: 'lb_tpl_encontre_cafe',
+    pilar: 'desc',
+    channel: 'TikTok',
+    format: 'Template TikTok',
+    title: 'Template: "Encontré este café" (15-25s)',
+    copy: `Formato fijo, repetible 1+ vez por semana en lunes:\n\n[0-3s] Hook: cámara en mano entrando al lugar.\n[3-15s] Mostrador, café siendo servido, detalle único.\n[15-22s] Voiceover: ubicación + 1 dato específico ("queda a 2 cuadras de Williman, abre 8am, tienen un cold brew con tónica").\n[22-25s] Pantalla de la app mostrando el venue.\n\nFiltro identidad: NO es "10 cafés que tenés que probar". Es UN café con criterio.\nSiempre con barrio explícito en copy.`,
+    note: 'La columna vertebral del pilar Descubrimiento. Mismo formato repetido = velocidad de producción + reconocimiento de marca.',
+    calendarSlot: null
+  },
+  {
+    id: 'lb_tpl_resena_30s',
+    pilar: 'com',
+    channel: 'TikTok',
+    format: 'Template TikTok',
+    title: 'Template: "Reseña en 30 segundos"',
+    copy: `Estructura fija, hablada a cámara:\n\n"Fui a [lugar]. Lo bueno: [Y]. Lo discutible: [Z]. Volvería para: [W]."\n\nTermina con captura de la reseña dentro de Baffé + estrellas.\n\nFiltro identidad: la opinión personal con argumento ES el corazón Letterboxd. La honestidad sobre lo que NO convence vale más que un 5/5 vacío.`,
+    note: 'Si todo es 10/10, nadie cree. "El café estaba flojo pero el ambiente compensa" — esa es la voz Baffé.',
+    calendarSlot: null
+  },
+  {
+    id: 'lb_tpl_top3_barrio',
+    pilar: 'cul',
+    channel: 'TikTok',
+    format: 'Template TikTok/Reel',
+    title: 'Template: "Top 3 de [barrio] para [momento]"',
+    copy: `Formato (~30-45s):\n\n[0-3s] Hook: "Si querés [X] en [barrio], estos 3 lugares."\n[3-30s] Cuts rápidos de 3 venues, cada uno con 1 frase de por qué entra al ranking.\n[30-40s] Captura del ranking en la app.\n[40-45s] CTA: "Discrepás? Escribí tu reseña en Baffé."\n\nVariantes:\n— "Top 3 cafés de Pocitos para laburar"\n— "Top 3 bares de Cordón para primera cita"\n— "Top 3 desayunos antes de las 8 en Ciudad Vieja"\n\nMicro-rankings barriales se republican mejor que rankings país.`,
+    note: 'Los rankings cuestionables son los que generan conversación. Que se sienta editorial, no listado.',
+    calendarSlot: null
+  },
+  {
+    id: 'lb_tpl_pov_app',
+    pilar: 'desc',
+    channel: 'TikTok',
+    format: 'Template TikTok',
+    title: 'Template: POV "Abrí la app"',
+    copy: `Mostrar el flujo real de uso, no tutorial:\n\n[0-3s] "POV: son las 9am de un martes y necesitás un lugar para laburar 4 horas."\n[3-12s] Plano de mano abriendo Baffé. Filtro: "para laburar" + "WiFi" + "abierto ahora" + zona Pocitos.\n[12-18s] Caminando hacia el resultado.\n[18-22s] Lugar real: mesa, enchufe, café.\n[22-25s] Texto: "ya."\n\nMáximo 1 cada 2 semanas. La gente cansa rápido del screen recording.`,
+    note: 'TikTok premia POV. La app aparece como solución natural, no como demo.',
+    calendarSlot: null
+  },
+  {
+    id: 'lb_tpl_behind',
+    pilar: 'det',
+    channel: 'TikTok',
+    format: 'Template TikTok',
+    title: 'Template: "Behind the scenes" (domingos)',
+    copy: `Joaco grabando b-roll, hablando a cámara mientras camina:\n\n— "Estoy yendo al 5to café del día, todos van al banco visual."\n— "Hoy onboardé al primer founding partner de Cordón, mostremos cómo se ve."\n— "Salí a probar este lugar y me pasó esto..."\n\nHonesto, sin guion. Construye la narrativa "uno hace esto, no una empresa fría".`,
+    note: 'Pilar Detrás. Construye confianza. Sin sobreproducir — el rough es parte del valor.',
+    calendarSlot: null
+  },
+  {
+    id: 'lb_tpl_no_es_baffe',
+    pilar: 'cul',
+    channel: 'TikTok',
+    format: 'Template TikTok',
+    title: 'Template: "Esto NO es Baffé"',
+    copy: `Diferenciación por contraste, sin atacar marcas (~20s):\n\n[0-5s] Captura de Google reviews / TripAdvisor con reseñas vacías ("Todo lindo!! 5⭐").\n[5-15s] Cortar a una reseña real de Baffé con argumento.\n[15-20s] "Por eso existe esto."\n\nMáximo 1 vez por mes. Define la marca por lo que NO es.`,
+    note: 'No mencionar competidores con nombre — solo mostrar capturas. Tono: irónico, no agresivo.',
+    calendarSlot: null
+  },
+
+  // ============== TEMPLATES REUTILIZABLES — Carrusel IG ==============
+  {
+    id: 'lb_tpl_carrusel_top5',
+    pilar: 'cul',
+    channel: 'Instagram',
+    format: 'Template carrusel',
+    title: 'Template: "Top 5 [categoría] de [barrio]"',
+    copy: `Carrusel formato fijo (7 slides):\n\nSlide 1: portada con número + barrio + categoría.\nSlides 2-6: un venue por slide. Foto + frase corta de por qué entra.\nSlide 7: cierre con CTA "Ranking completo y reseñas en la app".\n\nEjemplos:\n— "Top 5 cafés para laburar en Pocitos"\n— "Top 5 bares para primera cita en Cordón"\n— "Top 5 desayunos para domingo lluvioso en Ciudad Vieja"\n\nPilar Cultura Baffé. Frecuencia: miércoles fijo.`,
+    note: 'Carrusel guardable > like. Diseño consistente entre carruseles para reconocimiento de marca.',
+    calendarSlot: null
+  },
+  {
+    id: 'lb_tpl_resena_destacada',
+    pilar: 'com',
+    channel: 'Instagram',
+    format: 'Template carrusel',
+    title: 'Template: "Reseña destacada de la semana"',
+    copy: `Carrusel semanal (5 slides):\n\nSlide 1: foto del venue.\nSlide 2: cita textual de la reseña (con permiso del autor — preguntar por DM antes).\nSlide 3-4: foto del venue + foto/avatar del autor.\nSlide 5: CTA "Leé la reseña completa en Baffé / @usuario".\n\nNO editar las palabras del usuario — si hay typos, dejar.\nMínimo 1 por semana después del lanzamiento de la serie.`,
+    note: 'El reposteo sistemático es el motor de comunidad — es el incentivo más barato y efectivo para que la gente escriba.',
+    calendarSlot: null
+  },
+  {
+    id: 'lb_tpl_resenador_mes',
+    pilar: 'com',
+    channel: 'Instagram',
+    format: 'Template carrusel',
+    title: 'Template: "Reseñador del mes"',
+    copy: `Carrusel mensual (6 slides):\n\nSlide 1: avatar + nombre + handle Baffé.\nSlide 2: stats — cuántas reseñas, barrios cubiertos, top venue para él/ella.\nSlide 3-5: 3 lugares que recomendó + por qué.\nSlide 6: "Seguilo en Baffé".\n\nCriterio de selección: GUSTO DEMOSTRADO en la app, NO audiencia externa.\n\nPor qué: convierte criterio en status. Es la versión Letterboxd del "influencer del mes". Recompensamos curaduría, no followers de IG.`,
+    note: 'No incluir métrica de followers IG en los stats. Las stats son: reseñas escritas, barrios cubiertos, gente que lo sigue dentro de Baffé.',
+    calendarSlot: null
+  },
+  {
+    id: 'lb_tpl_mapa_barrio',
+    pilar: 'desc',
+    channel: 'Instagram',
+    format: 'Template carrusel',
+    title: 'Template: "Mapa del barrio"',
+    copy: `Carrusel con foco geográfico (7 slides):\n\nSlide 1: ilustración/screenshot del mapa de Baffé filtrado a un barrio.\nSlides 2-6: zoom a sub-zonas con 2-3 venues marcados de cada zona.\nSlide 7: "Abrí el mapa en la app — filtralo vos."\n\nVariantes: "Mapa de cafés de Pocitos zona 26 de Marzo", "Bares de Cordón sobre Constituyente", etc.`,
+    note: 'Doble función: contenido útil + demo del producto sin que se note como demo.',
+    calendarSlot: null
+  },
+  {
+    id: 'lb_tpl_detras_ranking',
+    pilar: 'cul',
+    channel: 'Instagram',
+    format: 'Template carrusel',
+    title: 'Template: "Detrás de un ranking"',
+    copy: `Carrusel de transparencia editorial (6 slides):\n\nSlide 1: el ranking final (ej: top 5 cafés Pocitos para laburar).\nSlides 2-4: criterios — qué pesó (precio, ambiente, café específico, horarios, WiFi).\nSlide 5: lo que quedó afuera y por qué (ser explícito sobre exclusiones genera confianza).\nSlide 6: "Si discrepás, escribí tu reseña en la app".\n\nPilar Cultura Baffé puro. Hace transparente el criterio editorial.`,
+    note: 'Honestidad editorial > pretensión de objetividad. Aclarar siempre que es CRITERIO Baffé, no verdad universal.',
+    calendarSlot: null
+  },
+  {
+    id: 'lb_tpl_antes_despues',
+    pilar: 'det',
+    channel: 'Instagram',
+    format: 'Template carrusel',
+    title: 'Template: "Antes / Después" (mes 2-3)',
+    copy: `Carrusel de progreso (4-5 slides):\n\nSlide 1: "Pocitos en mayo: 0 reseñas en este café."\nSlide 2: "Pocitos en julio: 12 reseñas, 4.3 promedio, escritas por X gente."\nSlide 3+: muestras de las reseñas reales.\nÚltimo slide: "Esto es densidad. Esto es lo que estamos construyendo en MVD."\n\nUsar a partir de junio cuando ya hay base para comparar.`,
+    note: 'Cómo mostramos progreso narrado, no métrica vanity. La progresión visible es lo que hace que más gente se sume.',
+    calendarSlot: null
+  },
+
+  // ============== TEMPLATES — Stories diarias + UGC ==============
+  {
+    id: 'lb_tpl_repost_ugc',
+    pilar: 'com',
+    channel: 'Instagram',
+    format: 'Template stories',
+    title: 'Template: repost de aporte de usuario',
+    copy: `≥3 reposts/sem en stories, ≥1/sem al feed.\n\nReglas:\n1. Toda reseña con cuerpo (>2 oraciones, opinión argumentada) es candidata.\n2. Pedir permiso por DM siempre antes de subirla.\n3. Crédito visible: avatar + handle Baffé + handle IG si lo dio.\n4. Mantener mantra: "Esto es exactamente para lo que está Baffé."\n\nNO reposteamos:\n— Reseñas de 1 línea ("muy bueno!!").\n— Fotos sin contexto.\n— Cualquier cosa de venues que no estén en la app.`,
+    note: 'Cada repost es señal a otros usuarios: "lo que aportes se va a ver". Tratar a cada aportador como protagonista.',
+    calendarSlot: null
+  },
+  {
+    id: 'lb_tpl_stories_semana',
+    pilar: 'com',
+    channel: 'Instagram',
+    format: 'Template stories',
+    title: 'Template: mix de stories semana tipo (15 min/día)',
+    copy: `Sin producción nueva — todo del banco visual.\n\nLunes: clip del reel del día + encuesta.\nMartes: repost UGC con crédito.\nMiércoles: backstage del carrusel ("hoy publicamos top 5 X, contame cuál falta").\nJueves: pregunta abierta ("¿Cuál es el café de Pocitos al que más volvés?").\nViernes: "Lugar del día" — venue + foto + 1 frase.\nSábado: outreach honesto ("hoy salgo a grabar / a hablar con 3 locales").\nDomingo: countdown a la pieza Detrás.\n\nStickers que SÍ usamos: encuesta A/B, preguntas abiertas, slider, repost menciones, link al venue en app.\nStickers que NO: cuestionario "¿cuál soy?", countdowns de descuento, GIFs ruidosos.`,
+    note: 'Stories es donde vive la conversación. Constancia diaria > producción.',
+    calendarSlot: null
+  },
+  {
+    id: 'lb_tpl_cta_resenar',
     pilar: 'com',
     channel: 'Instagram',
     format: 'CTA recurrente',
     title: 'CTA fijo de cierre de reel',
-    copy: `Frase fija al final de TODOS los reels desde sem 3 en adelante:\n\n"¿Conocés un lugar que falta? Sumalo en Baffé."\n\nTipografía consistente. Color consistente. Mismo timing al cerrar el reel.\n\nDespués de 30 reels con esta frase, se vuelve mantra. La gente termina el reel pensando "¿qué lugar conozco yo?" — eso es exactamente lo que querés.`,
-    note: 'No tratar como un CTA cualquiera — es la columna vertebral de la activación de aportes. Si en algún reel se cambia "para variar", se pierde el efecto acumulativo. Repetir hasta el cansancio.',
+    copy: `Frase fija al cierre de TODOS los reels desde mes 1:\n\n"¿Conocés un lugar que falta? Sumalo y reseñalo en Baffé."\n\nVariantes según pilar:\n— Descubrimiento: "...Sumalo y reseñalo en Baffé."\n— Cultura: "Discrepás? Escribí tu reseña en Baffé."\n— Comunidad: "Tu reseña puede estar acá la próxima."\n— Detrás: "Bajate Baffé y empezá a aportar."\n\nTipografía + color + timing consistentes. Después de 30 reels, se vuelve mantra.`,
+    note: 'Diferencia clave con plan rechazado: el verbo principal es RESEÑAR (escribir con criterio), no solo "sumar" (agregar). Letterboxd no premia agregar lugares vacíos.',
+    calendarSlot: null
+  },
+
+  // ============== MAYO — POCITOS ==============
+  {
+    id: 'lb_may_lunes_lanzamiento',
+    pilar: 'desc',
+    channel: 'TikTok',
+    format: 'Reel/TikTok',
+    title: 'Mayo lunes 1 — primer "Encontré este café" en Pocitos',
+    copy: `Lunes 11 may. Primera pieza pública del Q2.\n\nUsar template lb_tpl_encontre_cafe. Café elegido: el que tenga la combinación más fuerte de "diferencial visual + posibilidad de founding partner".\n\nNO tratarlo como gran lanzamiento. Tono honesto: "Empiezo por Pocitos. Vamos a un café por semana, mínimo."\n\nCopy IG: "Pocitos, primer café del Q2. [Nombre] en [calle]. Lo que vale: [X]. Bajate Baffé si querés ver dónde más vamos."\n\nSin teaser previo. Sin hard launch.`,
+    note: 'El plan rechazado quería "fabricar evento". El plan Letterboxd construye despacio: 1 lugar por semana, dejar que la curaduría hable.',
+    calendarSlot: { year: 2026, month: 4, week: 3, channel: 'TikTok' }
+  },
+  {
+    id: 'lb_may_top5_pocitos_laburar',
+    pilar: 'cul',
+    channel: 'Instagram',
+    format: 'Carrusel',
+    title: 'Mayo mié — Top 5 cafés para laburar en Pocitos',
+    copy: `Miércoles 13 may. Usar template lb_tpl_carrusel_top5.\n\nCriterios por venue:\n— ¿WiFi estable?\n— ¿Enchufes accesibles?\n— ¿Nivel de ruido tolerable para llamadas?\n— ¿Horarios extendidos?\n— ¿Precio del café razonable para quedarse 3hs?\n\nIncluir 1 outsider (lugar poco conocido) entre los 5. Si todos son los obvios, el ranking no aporta.\n\nCopy: "Pocitos para laburar — el ranking de Baffé. Si discrepás, escribí tu reseña."`,
+    note: 'Específico > genérico. "Top 5 cafés para laburar en Pocitos" gana a "los mejores cafés de Uruguay".',
+    calendarSlot: { year: 2026, month: 4, week: 3, channel: 'Instagram' }
+  },
+  {
+    id: 'lb_may_viernes_repost_1',
+    pilar: 'com',
+    channel: 'Instagram',
+    format: 'Repost UGC',
+    title: 'Mayo viernes — primer reposteo de reseña real',
+    copy: `Viernes 15 may. Si todavía no hay reseñas con cuerpo (probable en mayo sem 1):\n\nAlternativa: pedirle a 2-3 amigos cercanos / círculo Baffé que escriban una reseña real ANTES del viernes. Genuina, con argumento. Pedir permiso para reposterla.\n\nFormato según template lb_tpl_repost_ugc.\n\nA partir de la sem 2-3 esto debería salir orgánico — gente real escribiendo, vos eligiendo la mejor.`,
+    note: 'Bootstraping del UGC. El círculo cercano es la primera ola — pero TIENE que ser reseña genuina y argumentada, no "muy bueno!!".',
+    calendarSlot: { year: 2026, month: 4, week: 3, channel: 'Instagram' }
+  },
+  {
+    id: 'lb_may_domingo_voz',
+    pilar: 'det',
+    channel: 'TikTok',
+    format: 'TikTok hablado',
+    title: 'Mayo dom — voz fundador "Por qué Pocitos primero"',
+    copy: `Domingo 17 may. ~30s, hablado a cámara, casero:\n\n"Estoy arrancando por Pocitos por una sola razón: densidad. 800 personas activas en Pocitos venden mejor a un café de Pocitos que 5.000 dispersos en Uruguay.\n\nEn 3 meses queremos tener Pocitos cubierto. Después Cordón. Después Ciudad Vieja.\n\nNo es 'los mejores cafés del país'. Es 'los mejores cafés de TU barrio'. La diferencia importa."\n\nCierre: clip caminando + CTA app.`,
+    note: 'Pilar Detrás. Construye narrativa estratégica sin sobreproducir. Honesto sobre el por qué.',
+    calendarSlot: { year: 2026, month: 4, week: 3, channel: 'TikTok' }
+  },
+  {
+    id: 'lb_may_top5_desayuno',
+    pilar: 'cul',
+    channel: 'Instagram',
+    format: 'Carrusel',
+    title: 'Mayo mié — Top 5 desayunos en Pocitos',
+    copy: `Miércoles 20 may. Variante del template carrusel top 5.\n\nCriterios:\n— ¿Abre antes de las 8?\n— ¿Tiene opción dulce + salada?\n— ¿Café decente?\n— ¿Precio para días de semana?\n— ¿Aguanta una reunión de trabajo?\n\nFoco: el desayuno como "ritual de barrio". Mostrar gente real desayunando.`,
+    note: 'Categorías por momento del día generan engagement. La gente las usa como referencia.',
+    calendarSlot: { year: 2026, month: 4, week: 4, channel: 'Instagram' }
+  },
+  {
+    id: 'lb_may_first_founding',
+    pilar: 'det',
+    channel: 'Instagram',
+    format: 'Post + reel',
+    title: 'Mayo — primer founding partner onboardeado',
+    copy: `Cuando se cierre el primer founding partner (idealmente sem 3-4 mayo):\n\nPost feed:\n— Foto del local + dueño/a.\n— "[Nombre del local] es nuestro founding partner #1. Eso significa: gratis perpetuo cuando lancemos cobro a locales en agosto. A cambio: feedback, testimonios, y voz editorial."\n— "La filosofía de Baffé es construir con los locales, no contra ellos."\n\nReel acompañante: 30s en el local, charla con dueño/a sobre por qué dijo que sí.`,
+    note: 'Hito narrable. Cada founding partner es contenido. Pedir permiso para usar imagen y nombre antes.',
+    calendarSlot: { year: 2026, month: 4, week: 4, channel: 'Instagram' }
+  },
+  {
+    id: 'lb_may_cierre_pocitos',
+    pilar: 'det',
+    channel: 'Instagram',
+    format: 'Carrusel build in public',
+    title: 'Mayo — cierre del mes "Pocitos en números"',
+    copy: `Sábado 30 may o domingo 31 may:\n\nCarrusel:\nSlide 1: "Pocitos en mayo — el primer mes."\nSlide 2: cafés cubiertos: [X]. Reseñas escritas: [Y]. Reseñadores activos: [Z].\nSlide 3: founding partners onboardeados: [N].\nSlide 4: top 3 reseñas más leídas (con permiso de autores).\nSlide 5: "Lo que más nos sorprendió: [insight real]."\nSlide 6: "Junio sumamos Cordón. Pocitos sigue creciendo. Si conocés un café de Pocitos que falta, sumalo."\n\nSubir incluso si los números son chicos. Transparencia construye más que silencio.`,
+    note: 'Build in public es coherente con la voz de marca. Sirve como kickoff narrativo de junio.',
+    calendarSlot: { year: 2026, month: 4, week: 4, channel: 'Instagram' }
+  },
+
+  // ============== JUNIO — + CORDÓN + CUPONERA ==============
+  {
+    id: 'lb_jun_apertura_cordon',
+    pilar: 'det',
+    channel: 'Instagram',
+    format: 'Post + stories',
+    title: 'Junio — apertura a Cordón',
+    copy: `Lunes 1 jun. Post anunciando expansión:\n\n"Mayo fue Pocitos. Junio sumamos Cordón.\n\n[X] cafés/bares de Cordón ya cargados, con primeras reseñas. Si vivís o salís por la zona — bajate Baffé y mostranos qué falta."\n\nStories countdown previa: vie 29 may + sáb 30 may + dom 31 may.\n\nCarrusel acompañante: 5 venues de Cordón con los que arrancamos.`,
+    note: 'Apertura escalonada por barrio = densidad por zona. Cordón se "estrena" con base mínima ya cargada, no vacío.',
+    calendarSlot: { year: 2026, month: 5, week: 1, channel: 'Instagram' }
+  },
+  {
+    id: 'lb_jun_cuponera_demo',
+    pilar: 'desc',
+    channel: 'TikTok',
+    format: 'Reel demo',
+    title: 'Junio — cuponera digital en acción',
+    copy: `Cuando la cuponera MVP esté viva (target: mediados junio):\n\nReel ~30s:\n— Usuario real entrando a un founding partner.\n— Pide café, muestra QR de la app al barista.\n— Barista escanea, descuento se aplica.\n— Cara del usuario sorprendido.\n— Texto: "Cuponera Baffé. Solo en founding partners. Por ahora."\n\nNO grabar como demo de producto. Grabarlo como momento real — porque LO ES.`,
+    note: 'Cuponera = primer mecanismo de monetización (cobro a locales en julio). Esta pieza es bisagra entre marketing y modelo de negocio.',
+    calendarSlot: { year: 2026, month: 5, week: 2, channel: 'TikTok' }
+  },
+  {
+    id: 'lb_jun_top5_bares_cordon',
+    pilar: 'cul',
+    channel: 'Instagram',
+    format: 'Carrusel',
+    title: 'Junio mié — Top 5 bares de Cordón',
+    copy: `Mediados junio. Template carrusel top 5 aplicado a Cordón:\n\n"Top 5 bares de Cordón — el ranking de Baffé."\n\nCriterios bares: trago insignia, ambiente, precio promedio, hora pico, qué tipo de noche es (tranquila / animada / mixta).\n\nIncluir contraste: 1 clásico + 1 outsider + 3 del medio.`,
+    note: 'Los bares aparecen recién en junio porque la base de Pocitos en mayo fue 100% café. Diversificación pilar a pilar, no nicho a nicho.',
+    calendarSlot: { year: 2026, month: 5, week: 2, channel: 'Instagram' }
+  },
+  {
+    id: 'lb_jun_resenador_del_mes',
+    pilar: 'com',
+    channel: 'Instagram',
+    format: 'Carrusel + feature',
+    title: 'Junio — Reseñador del mes',
+    copy: `Mediados junio. Template lb_tpl_resenador_mes.\n\nCriterio: usuario con ≥5 reseñas argumentadas en mayo. Si no llega, bajar el umbral a 3.\n\nPedir permiso. Coordinar repost desde su cuenta IG personal el mismo día.\n\nEn la app: banner home destacando al reseñador del mes con sus picks. Cambiar mensualmente.`,
+    note: 'Esta pieza reemplaza al "Influencer del mes" del plan rechazado. Premia gusto demostrado, no audiencia externa.',
+    calendarSlot: { year: 2026, month: 5, week: 2, channel: 'Instagram' }
+  },
+  {
+    id: 'lb_jun_antes_despues_pocitos',
+    pilar: 'det',
+    channel: 'Instagram',
+    format: 'Carrusel',
+    title: 'Junio — Pocitos antes/después (1 mes)',
+    copy: `Mediados-fin junio. Template lb_tpl_antes_despues:\n\nMostrar 3-4 cafés de Pocitos comparando mayo (cero/poca actividad) vs junio (X reseñas, gente activa).\n\nUsar reseñas reales (con permiso). Mostrar avatares y cantidad.\n\n"Esto es lo que estamos construyendo, café por café. Cordón ya arrancó. Ciudad Vieja viene en julio."`,
+    note: 'Cómo mostramos progreso. La densidad como producto narrativo.',
+    calendarSlot: { year: 2026, month: 5, week: 4, channel: 'Instagram' }
+  },
+  {
+    id: 'lb_jun_resena_destacada_serie',
+    pilar: 'com',
+    channel: 'Instagram',
+    format: 'Lanzamiento serie',
+    title: 'Junio — lanzamiento "Reseña destacada" semanal',
+    copy: `Lunes 1 jun. Anuncio del formato semanal:\n\n"Las mejores reseñas de Baffé empiezan a tener su lugar en el feed. Si la tuya es buena, la republicamos.\n\nCada lunes vamos a destacar UNA reseña: la del mes pasado, no por likes — por argumentación, gusto y honestidad.\n\nLa primera: [usuario] sobre [venue]."\n\nA partir de acá, salida semanal aplicando lb_tpl_resena_destacada.`,
+    note: 'Saber que las buenas se republican hace que la gente las escriba mejor. Sostenible: 1 por semana hasta fin de Q2 y después.',
+    calendarSlot: { year: 2026, month: 5, week: 1, channel: 'Instagram' }
+  },
+  {
+    id: 'lb_jun_detras_top5',
+    pilar: 'cul',
+    channel: 'Instagram',
+    format: 'Carrusel',
+    title: 'Junio — "Detrás del Top 5 cafés Pocitos"',
+    copy: `Última semana junio. Template lb_tpl_detras_ranking aplicado al primer ranking de mayo (Top 5 cafés para laburar Pocitos):\n\nMostrar criterios reales que usamos. Mostrar 2-3 venues que quedaron afuera y por qué (ej: "X tiene mejor café pero el WiFi es inestable").\n\nCierre: "El ranking se actualiza con tus reseñas. Si discrepás, escribí en Baffé."`,
+    note: 'Transparencia editorial. Diferencial Letterboxd: el criterio es público, no algorítmico.',
+    calendarSlot: { year: 2026, month: 5, week: 4, channel: 'Instagram' }
+  },
+
+  // ============== JULIO — + CIUDAD VIEJA + COBRO ==============
+  {
+    id: 'lb_jul_apertura_cv',
+    pilar: 'det',
+    channel: 'Instagram',
+    format: 'Post + stories',
+    title: 'Julio — apertura a Ciudad Vieja',
+    copy: `Lunes 1 jul. Post anunciando 3er barrio:\n\n"Mayo: Pocitos. Junio: Cordón. Julio: sumamos Ciudad Vieja.\n\nLa zona con la concentración más rara de cafés y bares de MVD — desde clásicos de los 50 a especialty 2024. Empezamos con [X] venues cargados.\n\nSi vivís, laburás o salís por Ciudad Vieja — bajate Baffé."\n\nCarrusel acompañante: 5 venues de Ciudad Vieja con primeras reseñas.`,
+    note: 'Tercer y último barrio del Q2. Cierra el foco geográfico antes de pensar en escalar.',
+    calendarSlot: { year: 2026, month: 6, week: 1, channel: 'Instagram' }
+  },
+  {
+    id: 'lb_jul_top5_cv',
+    pilar: 'cul',
+    channel: 'Instagram',
+    format: 'Carrusel',
+    title: 'Julio mié — Top 5 lugares de Ciudad Vieja',
+    copy: `Mediados julio. Template carrusel top 5.\n\nÁngulo distinto: Ciudad Vieja tiene mezcla — se puede ir por café diurno o por bar nocturno. Hacer "Top 5 lugares de Ciudad Vieja: 3 para el día, 2 para la noche."\n\nMostrar el contraste como parte del valor del barrio.`,
+    note: 'Adaptar la categoría al carácter del barrio. No forzar el mismo molde Pocitos en cada zona.',
+    calendarSlot: { year: 2026, month: 6, week: 2, channel: 'Instagram' }
+  },
+  {
+    id: 'lb_jul_pitch_locales',
+    pilar: 'det',
+    channel: 'Instagram',
+    format: 'Post abierto',
+    title: 'Julio — "Locales de Pocitos: hablémonos"',
+    copy: `Mediados julio. Post directo a venues:\n\n"En Pocitos hay [X] usuarios activos en Baffé. Escribieron [Y] reseñas en 2 meses. La cuponera está viva con [Z] founding partners.\n\nSi tenés un café o bar en Pocitos, Cordón o Ciudad Vieja: estamos arrancando a cobrar a locales nuevos. Pero hasta el local 100, hay 50% off perpetuo.\n\nDM si te interesa probar."\n\nNO es venta agresiva. Es invitación basada en datos reales.`,
+    note: 'Pivote del Q2 al modelo comercial. Solo funciona si los números de la primera línea son honestos. El pitch se sostiene por densidad demostrada, no por promesa.',
+    calendarSlot: { year: 2026, month: 6, week: 3, channel: 'Instagram' }
+  },
+  {
+    id: 'lb_jul_resenador_del_mes',
+    pilar: 'com',
+    channel: 'Instagram',
+    format: 'Carrusel + feature',
+    title: 'Julio — Reseñador del mes',
+    copy: `Mediados julio. Template lb_tpl_resenador_mes.\n\nCriterio elevado: a esta altura debería haber al menos 5 candidatos con ≥10 reseñas argumentadas. Elegir al de criterio más distintivo (no necesariamente el más prolífico).`,
+    note: 'Tercer mes consecutivo de la feature. Empieza a ser tradición — la gente sabe que existe y aspira.',
+    calendarSlot: { year: 2026, month: 6, week: 2, channel: 'Instagram' }
+  },
+  {
+    id: 'lb_jul_recap_q2',
+    pilar: 'det',
+    channel: 'Instagram',
+    format: 'Carrusel build in public',
+    title: 'Julio — Recap Q2 "Build in public"',
+    copy: `Domingo 26 o lunes 27 julio. Carrusel transparente:\n\nSlide 1: "3 meses, 3 barrios. Q2 Baffé en números."\nSlide 2: MAU concentrados en zona target: [X]. % de actividad en los 3 barrios: [Y]%.\nSlide 3: Reseñas escritas: [N]. Reseñas/usuario activo (north-star): [Z].\nSlide 4: Founding partners: [N]. Early adopters cobrando 50% off: [N].\nSlide 5: "Lo que sorprendió: [insight real]."\nSlide 6: "Lo que viene en agosto: [feature/expansión]."\nSlide 7: "Si llegaste hasta acá, ya sos parte. Gracias."\n\nPublicar incluso si los números no son perfectos. Transparencia construye más que silencio.`,
+    note: 'Cierre formal del Q2. Sirve para abrir conversación con prensa local, posibles inversores, otros founding partners potenciales.',
+    calendarSlot: { year: 2026, month: 6, week: 4, channel: 'Instagram' }
+  },
+  {
+    id: 'lb_jul_postmortem',
+    pilar: 'det',
+    channel: 'En la app',
+    format: 'Tarea interna',
+    title: 'Julio — postmortem Q2 (interno)',
+    copy: `Tarea interna domingo 26 jul. NO se publica.\n\nPreguntas a responder con datos:\n\n1. ¿MAU concentrados llegó a 1.500-2.000? ¿% en zona target?\n2. Retention D7: ¿>20%? ¿tendencia mes a mes?\n3. Reseñas/usuario activo: ¿subió o bajó? ¿qué pieza/formato impactó?\n4. ¿Qué tipo de contenido convirtió mejor a descarga? (TikTok vs reel vs carrusel vs stories)\n5. ¿Founding partners + early adopters: cuántos pagaron primer mes?\n6. Cuponera: ¿usos reales? ¿hay locales que pidieron sumarse después de ver casos?\n\nDecisiones para Q3 (agosto-octubre):\n— ¿Sumamos un 4to barrio o densificamos los 3?\n— Cobro masivo o seguimos en early?\n— Equipo: ¿hace falta sumar a alguien para outreach o producción?`,
+    note: 'Sin postmortem cerrado con datos, no hay aprendizaje. Apartar 2 hs de domingo.',
+    calendarSlot: { year: 2026, month: 6, week: 4, channel: 'En la app' }
+  },
+
+  // ============== HITOS CELEBRABLES (sin fecha fija) ==============
+  {
+    id: 'lb_hito_resena_100',
+    pilar: 'com',
+    channel: 'Instagram',
+    format: 'Story + post',
+    title: 'Hito: Reseña #100',
+    copy: `Cuando se publique la reseña #100 en Baffé:\n\nStory:\n— "Reseña #100: [usuario] sobre [venue]."\n— Cita textual de la reseña.\n— "Esto es exactamente para lo que está Baffé."\n\nPost feed (si la reseña vale): carrusel con el venue + cita + handle del usuario + "Ya somos 100 reseñas en MVD".\n\nPedir permiso al autor antes.`,
+    note: 'Hitos chicos celebrados público > hito grande inflado. Cada 100 reseñas hasta que deje de ser noticia.',
+    calendarSlot: null
+  },
+  {
+    id: 'lb_hito_founding_5',
+    pilar: 'det',
+    channel: 'Instagram',
+    format: 'Carrusel',
+    title: 'Hito: Founding partner #5',
+    copy: `Cuando se cierre el 5to founding partner:\n\nCarrusel con los 5:\n— Slide 1: "5 founding partners. Esto recién empieza."\n— Slides 2-6: foto + nombre + barrio + 1 frase del dueño/a.\n— Slide 7: "Si tenés un café o bar y querés ser uno de los próximos 15 founding partners — DM."\n\nPost simultáneo en cada local (con su permiso).`,
+    note: 'Mostrar el founding network como red, no como casos sueltos. Doble función: hito + outreach.',
+    calendarSlot: null
+  },
+  {
+    id: 'lb_hito_founding_25',
+    pilar: 'det',
+    channel: 'Instagram',
+    format: 'Post + reel',
+    title: 'Hito: Founding partner #25 (cierre del tier)',
+    copy: `Cuando se cierre el founding #25 (target: junio fin):\n\nPost: "Cerramos los 25 founding partners. Gracias.\n\nDe acá en adelante: tier early adopter (50% off perpetuo). Si querés entrar antes del local 100, DM."\n\nReel: rolodex de los 25 logos / fotos rápidas + voiceover.\n\nGenerar urgencia honesta sin manipulación.`,
+    note: 'El cierre del tier founding es noticia comercial real. Activa el siguiente tier.',
+    calendarSlot: null
+  },
+  {
+    id: 'lb_hito_mau_500',
+    pilar: 'det',
+    channel: 'Instagram',
+    format: 'Story',
+    title: 'Hito: MAU 500',
+    copy: `Cuando MAU alcance 500:\n\nStory sobria:\n— "500 personas usando Baffé este mes en MVD."\n— "Mayoría en Pocitos. Empezando en Cordón. La densidad importa más que el bruto."\n— Sticker preguntas: "¿Qué barrio te gustaría que sumemos después?"\n\nSin globos. Sin confetti. Tono Letterboxd.`,
+    note: '500 es el primer hito narrable de tracción. Si llega antes de la meta de junio, mejor — anunciarlo igual.',
+    calendarSlot: null
+  },
+  {
+    id: 'lb_hito_mau_1000',
+    pilar: 'det',
+    channel: 'Instagram',
+    format: 'Post + carrusel',
+    title: 'Hito: MAU 1.000',
+    copy: `Cuando MAU alcance 1.000:\n\nPost feed (no story):\n— "1.000 personas escribiendo sobre lo que comen y toman en MVD."\n— Carrusel: distribución por barrio + reseñas/usuario + top 3 lugares más reseñados + 1 cita destacada.\n\nFrase clave: "1.000 no es un número. Es el primer indicio de que esta cosa funciona."`,
+    note: 'Hito principal del Q2 si llega. Tiene peso narrativo para outreach a locales y para futura conversación con prensa local.',
+    calendarSlot: null
+  },
+  {
+    id: 'lb_hito_resenador_top',
+    pilar: 'com',
+    channel: 'Instagram',
+    format: 'Story',
+    title: 'Hito: primer reseñador con 10+ reseñas',
+    copy: `Cuando alguien llegue a 10 reseñas argumentadas:\n\nStory:\n— "[Usuario] acaba de pasar las 10 reseñas en Baffé."\n— "Esto es lo que llamamos un reseñador de criterio."\n— Tag al usuario.\n— Botón "Seguilo en Baffé".\n\nEs el camino al "Reseñador del mes". Mostrar que el camino existe motiva a otros.`,
+    note: 'Status público para gusto demostrado. Letterboxd-ismo en estado puro.',
     calendarSlot: null
   }
 
 ];
 
 var MONTH_NAMES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+var WEEKDAY_SHORT = ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
+
+// Mapa id → { month, day } para piezas con día específico.
+// Si una pieza tiene calendarSlot.day explícito, ese gana sobre este mapa.
+var CAMPAIGN_DAY_MAP = {
+  // Setup mayo
+  lb_setup_banco_visual:  { month: 4, day: 8 },
+  lb_setup_lista_venues:  { month: 4, day: 8 },
+  lb_setup_retention:     { month: 4, day: 8 },
+  lb_setup_android_live:  { month: 4, day: 8 },
+  // Mayo Pocitos
+  lb_may_lunes_lanzamiento: { month: 4, day: 11 },
+  lb_may_top5_pocitos_laburar: { month: 4, day: 13 },
+  lb_may_viernes_repost_1: { month: 4, day: 15 },
+  lb_may_domingo_voz: { month: 4, day: 17 },
+  lb_may_top5_desayuno: { month: 4, day: 20 },
+  lb_may_first_founding: { month: 4, day: 25 },
+  lb_may_cierre_pocitos: { month: 4, day: 30 },
+  // Junio + Cordón
+  lb_jun_apertura_cordon: { month: 5, day: 1 },
+  lb_jun_resena_destacada_serie: { month: 5, day: 1 },
+  lb_jun_cuponera_demo: { month: 5, day: 15 },
+  lb_jun_top5_bares_cordon: { month: 5, day: 17 },
+  lb_jun_resenador_del_mes: { month: 5, day: 18 },
+  lb_jun_antes_despues_pocitos: { month: 5, day: 27 },
+  lb_jun_detras_top5: { month: 5, day: 24 },
+  // Julio + Ciudad Vieja
+  lb_jul_apertura_cv: { month: 6, day: 1 },
+  lb_jul_top5_cv: { month: 6, day: 15 },
+  lb_jul_resenador_del_mes: { month: 6, day: 16 },
+  lb_jul_pitch_locales: { month: 6, day: 21 },
+  lb_jul_recap_q2: { month: 6, day: 27 },
+  lb_jul_postmortem: { month: 6, day: 26 }
+};
 
 var DEFAULT_PILLARS = [
   { id: 'desc', label: 'Descubrimiento',   color: '#4A3F8A' },
   { id: 'com',  label: 'Comunidad',        color: '#2E6B4F' },
   { id: 'cul',  label: 'Cultura Baffé',    color: '#C85A2A' },
   { id: 'det',  label: 'Detrás de escena', color: '#9B3060' }
+];
+
+// IDs del plan rechazado 2026-05-07 (influencer-centric).
+// Se borran de Firestore en migración one-shot — ver firebase-init.js cleanupRejectedPieces().
+var REJECTED_PIECE_IDS = [
+  'camp_teaser_1', 'camp_teaser_2', 'camp_teaser_3',
+  'camp_hardlaunch_reel', 'camp_hardlaunch_post', 'camp_hardlaunch_stories',
+  'camp_30cafes_serie',
+  'camp_reel_top3', 'camp_reel_cafe_escondido', 'camp_reel_probamos', 'camp_reel_mapa_rapido',
+  'camp_suma_lanzamiento', 'camp_suma_app_banner', 'camp_suma_sorteo_1',
+  'camp_remote_carrusel', 'camp_remote_pov_tt',
+  'camp_influencer_del_mes_jun', 'camp_repost_ugc_template', 'camp_suma_sorteo_2',
+  'camp_bares_top_after', 'camp_bares_reel_influencer', 'camp_checkpoint_interno',
+  'camp_resena_destacada', 'camp_concurso_mostranos',
+  'camp_descargas_pinned', 'camp_descargas_features_reel', 'camp_descargas_influencer_pesado',
+  'camp_crawl_anuncio', 'camp_crawl_documentacion',
+  'camp_recap_carrusel', 'camp_postmortem_interno', 'camp_cta_fijo_aportes'
 ];
 
 // ============================================================
